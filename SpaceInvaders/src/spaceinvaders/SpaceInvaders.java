@@ -27,45 +27,36 @@ public class SpaceInvaders extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setTitle( "Canvas Example" );
+        
+        int WIDTH = 1000;
+        int HEIGHT = 1000;
+        String TITLE = "Space Invaders";
+        
+        stage.setTitle(TITLE);
          
         Group root = new Group();
-        Scene theScene = new Scene( root );
-        stage.setScene( theScene );
+        Scene theScene = new Scene(root);
+        stage.setScene(theScene);
 
-        Canvas canvas = new Canvas( 400, 200 );
-        root.getChildren().add( canvas );
+        Canvas canvas = new Canvas(WIDTH, HEIGHT);
+        root.getChildren().add(canvas);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        gc.setFill( Color.RED );
-        gc.setStroke( Color.BLACK );
-        gc.setLineWidth(2);
-        Font theFont = Font.font( "Times New Roman", FontWeight.BOLD, 48 );
-        gc.setFont( theFont );
-        gc.fillText( "Hello, World!", 60, 50 );
-        gc.strokeText( "Hello, World!", 60, 50 );
-
-
+        GameManager Game = new GameManager(gc, canvas);
+        
+        Game.Start();
+        
         stage.show();
-
-//        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-//        
-//        Scene scene = new Scene(root);
-//        
-//        stage.setScene(scene);
-//        stage.show();
     }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
         launch(args);
         
-        GameManager Game = new GameManager();
-        
-        Game.Start();
     }
     
 }

@@ -8,6 +8,8 @@ package spaceinvaders;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 
 /**
  *
@@ -15,10 +17,17 @@ import javafx.fxml.Initializable;
  */
 public class GameManager implements Initializable {
     
-    Spaceship spacecraft;
+    Spaceship spaceship;
+    Canvas canvas;
+    GraphicsContext gc;
+
+    GameManager(GraphicsContext gc, Canvas canvas){
+        this.gc = gc;
+        this.canvas = canvas; 
+    }
     
     public void Start(){
-        spacecraft = new Spaceship();
+        spaceship = new Spaceship(gc, canvas);
     }
     
     public void Update(){

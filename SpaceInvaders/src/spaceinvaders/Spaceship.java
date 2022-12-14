@@ -8,6 +8,8 @@ package spaceinvaders;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 
@@ -17,28 +19,31 @@ import javafx.scene.text.Text;
  */
 public class Spaceship {
     
-    private int posX, posY;
-    private int life;
+    private int life = 3;
+    private double posX = 500.0;
+    private double posY = 500.0;
+    private double velocity;
     private boolean dead;
     
-    @FXML
-    Text text = new Text();
+    private int IMAGE_HEIGHT = 50;
+    private int IMAGE_WIDTH = 50;
+
+    GraphicsContext gc;
+    Canvas canvas;
     
     @FXML
-    final Image image = new Image("images/spaceship.png");
+    final Image image = new Image("images/spaceship.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
-    Spaceship() {
-        posX = 0;
-        posY = 0;
-        life = 3;
+    Spaceship(GraphicsContext gc, Canvas canvas) {
+        image.isPreserveRatio();
+        this.gc = gc;
+        this.canvas = canvas;
         dead = false;
         draw();
     }
     
     public void draw() {
-        text.setX(50);
-        text.setY(50);
-        text.setText("MICHEL");
+        gc.drawImage(image, posX, posY);
     }
 
     
