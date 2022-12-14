@@ -27,8 +27,8 @@ public class Spaceship {
     
     private final double posY = 500.0;
     
-    private final int IMAGE_HEIGHT = 60;
-    private final int IMAGE_WIDTH = 60;
+    private final int IMAGE_HEIGHT = 65;
+    private final int IMAGE_WIDTH = 65;
 
     private int WIDTH = 1600;
     private int HEIGHT = 900;

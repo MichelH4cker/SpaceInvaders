@@ -19,9 +19,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -57,8 +54,6 @@ public class SpaceInvaders extends Application {
             GraphicsContext gc = canvas.getGraphicsContext2D();
             
             GraphicsContext gcBackground = canvas.getGraphicsContext2D();
-            gcBackground.setFill(Color.BLACK);
-            gcBackground.drawImage(BACKGROUND_IMAGE, 0, 0);
             
             // KEYBOARD DETECTION
             ArrayList<String> input = new ArrayList<String>();
@@ -87,9 +82,8 @@ public class SpaceInvaders extends Application {
                 @Override
                 public void handle(long currentNanoTime) {
                     gc.clearRect(0, 0, WIDTH, HEIGHT);
-                    gcBackground.drawImage(BACKGROUND_IMAGE, 0, 0);
+                    gc.drawImage(BACKGROUND_IMAGE, 0, 0);
                     
-                    // time from the last frame to current frame
                     long t = (currentNanoTime - prevNanoTime);
                     
                     Game.Update(t, input);
