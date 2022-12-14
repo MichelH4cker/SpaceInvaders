@@ -27,8 +27,8 @@ public class Spaceship {
     
     private final double posY = 500.0;
     
-    private final int IMAGE_HEIGHT = 50;
-    private final int IMAGE_WIDTH = 50;
+    private final int IMAGE_HEIGHT = 60;
+    private final int IMAGE_WIDTH = 60;
 
     GraphicsContext gc;
     
@@ -46,8 +46,14 @@ public class Spaceship {
         gc.drawImage(image, posX, posY);
     }
     
-    public void handleAction(){
-
+    public void handleAction(ArrayList<String> inputKeyboard){
+        if (inputKeyboard.contains("SPACE")) {
+            System.out.println("OVO atirar!");
+        } else if (inputKeyboard.contains("LEFT")) {
+            moveLeft();
+        } else if (inputKeyboard.contains("RIGHT")) {
+            moveRight();
+        }
     }
     
     public void moveRight() {

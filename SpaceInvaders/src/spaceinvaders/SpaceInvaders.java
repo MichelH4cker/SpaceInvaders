@@ -5,6 +5,7 @@
  */
 package spaceinvaders;
 
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -33,45 +34,67 @@ public class SpaceInvaders extends Application {
     public void start(Stage stage) throws Exception {
         
         // CONFIGURATIONS VALUES
-        int WIDTH = 1000;
-        int HEIGHT = 1000;
+        int WIDTH = 1600;
+        int HEIGHT = 900;
+        final Image BACKGROUND_IMAGE = new Image("images/background-image.jpg", WIDTH, HEIGHT, false, false);
+
         String TITLE = "Space Invaders";
         
         try {
             // GRAPHICS CONFIGURATIONS
             stage.setTitle(TITLE);
-            stage.setFullScreen(true);
+            stage.setFullScreen(false);
+            stage.setMaximized(false);
             stage.setResizable(false);
 
             Group root = new Group();
             Scene scene = new Scene(root);
-            String css = this.getClass().getResource("main.css").toExternalForm();
-            scene.getStylesheets().add(css);
             stage.setScene(scene);
 
             Canvas canvas = new Canvas(WIDTH, HEIGHT);
             root.getChildren().add(canvas);
             
             GraphicsContext gc = canvas.getGraphicsContext2D();
-                              
+            
+            GraphicsContext gcBackground = canvas.getGraphicsContext2D();
+            gcBackground.setFill(Color.BLACK);
+            gcBackground.drawImage(BACKGROUND_IMAGE, 0, 0);
+            
+            // KEYBOARD DETECTION
+            ArrayList<String> input = new ArrayList<String>();
+            
+            scene.setOnKeyPressed((KeyEvent e) -> {
+                String code = e.getCode().toString();
+                // only add once... prevent duplicates
+                if ( !input.contains(code) ) input.add( code );
+            });
+            
+            scene.setOnKeyReleased((KeyEvent e) -> {
+                String code = e.getCode().toString();
+                input.remove(code);
+            });
+            
             // GAME ADMINISTRATION
             GameManager Game = new GameManager(gc);
             
             Game.Start();
             
-            // ABSTRACT ANIMATION TIMER
+            // MAIN GAME LOOP 
             new AnimationTimer() {
                 
                 long prevNanoTime = 0;
                 
                 @Override
                 public void handle(long currentNanoTime) {
+                    gc.clearRect(0, 0, WIDTH, HEIGHT);
+                    gcBackground.drawImage(BACKGROUND_IMAGE, 0, 0);
+                    
                     // time from the last frame to current frame
                     long t = (currentNanoTime - prevNanoTime);
-
-                    Game.Update(t);
-
+                    
+                    Game.Update(t, input);
                     if (Game.getGameOver()) this.stop();
+                    
                 }
             }.start();
             

@@ -8,9 +8,12 @@ package spaceinvaders;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
 
 /**
  *
@@ -34,8 +37,11 @@ public class GameManager implements Initializable {
         spaceship = new Spaceship(gc);
     }
     
-    public void Update(long time){
-       
+    public void Update(long time, ArrayList<String> inputKeyboard){
+        // SPACESHIP ACTION
+        spaceship.handleAction(inputKeyboard);
+        spaceship.draw();
+        
     }
     
     public void Finish(){
