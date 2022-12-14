@@ -32,22 +32,34 @@ public class SpaceInvaders extends Application {
         int HEIGHT = 1000;
         String TITLE = "Space Invaders";
         
-        stage.setTitle(TITLE);
-         
-        Group root = new Group();
-        Scene theScene = new Scene(root);
-        stage.setScene(theScene);
+        try {
+            stage.setTitle(TITLE);
+            stage.setFullScreen(true);
+            stage.setResizable(false);
 
-        Canvas canvas = new Canvas(WIDTH, HEIGHT);
-        root.getChildren().add(canvas);
+            Group root = new Group();
+            Scene scene = new Scene(root);
+            String css = this.getClass().getResource("main.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            stage.setScene(scene);
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+            Canvas canvas = new Canvas(WIDTH, HEIGHT);
+            root.getChildren().add(canvas);
 
-        GameManager Game = new GameManager(gc, canvas);
-        
-        Game.Start();
-        
-        stage.show();
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+
+            GameManager Game = new GameManager(gc, canvas);
+
+            Game.Start();
+
+            stage.show();
+        } catch (Exception e) {
+            System.err.println("ERRO!");
+            System.err.println("Cause: " + e.getCause());
+            System.err.println("Message: " + e.getMessage());
+            System.err.println("Localized Message: " + e.getLocalizedMessage());
+            System.err.println("Stack Trace: " + e.getStackTrace());
+        }
     }
 
     /**
