@@ -30,6 +30,9 @@ public class Spaceship {
     private final int IMAGE_HEIGHT = 60;
     private final int IMAGE_WIDTH = 60;
 
+    private int WIDTH = 1600;
+    private int HEIGHT = 900;
+    
     GraphicsContext gc;
     
     @FXML
@@ -49,11 +52,19 @@ public class Spaceship {
     public void handleAction(ArrayList<String> inputKeyboard){
         if (inputKeyboard.contains("SPACE")) {
             System.out.println("OVO atirar!");
-        } else if (inputKeyboard.contains("LEFT")) {
+        } else if (inputKeyboard.contains("LEFT") && !isOnLeftTheWall()) {
             moveLeft();
-        } else if (inputKeyboard.contains("RIGHT")) {
+        } else if (inputKeyboard.contains("RIGHT") && !isOntheRightWall()) {
             moveRight();
         }
+    }
+
+    public boolean isOnLeftTheWall() {
+        return posX == 0;
+    }
+    
+    public boolean isOntheRightWall(){
+        return (posX == WIDTH - IMAGE_WIDTH);
     }
     
     public void moveRight() {
