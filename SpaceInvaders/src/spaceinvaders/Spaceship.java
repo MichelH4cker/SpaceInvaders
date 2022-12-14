@@ -6,6 +6,7 @@
 package spaceinvaders;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -21,23 +22,22 @@ public class Spaceship {
     
     private int life = 3;
     private double posX = 500.0;
-    private double posY = 500.0;
-    private double velocity;
+    private double velocity = 5.0;
     private boolean dead;
     
-    private int IMAGE_HEIGHT = 50;
-    private int IMAGE_WIDTH = 50;
+    private final double posY = 500.0;
+    
+    private final int IMAGE_HEIGHT = 50;
+    private final int IMAGE_WIDTH = 50;
 
     GraphicsContext gc;
-    Canvas canvas;
     
     @FXML
     final Image image = new Image("images/spaceship.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
-    Spaceship(GraphicsContext gc, Canvas canvas) {
+    Spaceship(GraphicsContext gc) {
         image.isPreserveRatio();
         this.gc = gc;
-        this.canvas = canvas;
         dead = false;
         draw();
     }
@@ -45,6 +45,17 @@ public class Spaceship {
     public void draw() {
         gc.drawImage(image, posX, posY);
     }
+    
+    public void handleAction(){
 
+    }
+    
+    public void moveRight() {
+        posX += velocity;
+    }
+
+    public void moveLeft(){
+        posX -= velocity;
+    }
     
 }
