@@ -5,14 +5,20 @@
  */
 package spaceinvaders;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
+
 /**
  *
  * @author michel
  */
-public class GameManager {
+public class GameManager implements Initializable {
+    
+    Spaceship spacecraft;
     
     public void Start(){
-        
+        spacecraft = new Spaceship();
     }
     
     public void Update(){
@@ -21,6 +27,11 @@ public class GameManager {
     
     public void Finish(){
         
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
