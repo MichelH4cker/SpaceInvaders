@@ -25,7 +25,7 @@ public class Spaceship {
     private double velocity = 5.0;
     private boolean dead;
     
-    private final double posY = 500.0;
+    private double posY = 500.0;
     
     private final int IMAGE_HEIGHT = 65;
     private final int IMAGE_WIDTH = 65;
@@ -33,12 +33,15 @@ public class Spaceship {
     private int WIDTH = 1600;
     private int HEIGHT = 900;
     
+    Cenario cenario;
+    
     GraphicsContext gc;
     
     @FXML
     final Image image = new Image("images/spaceship.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
     Spaceship(GraphicsContext gc) {
+        cenario = new Cenario();
         image.isPreserveRatio();
         this.gc = gc;
         dead = false;
@@ -52,9 +55,9 @@ public class Spaceship {
     public void handleAction(ArrayList<String> inputKeyboard){
         if (inputKeyboard.contains("SPACE")) {
             System.out.println("OVO atirar!");
-        } else if (inputKeyboard.contains("LEFT") && !isOnLeftTheWall()) {
+        } else if (inputKeyboard.contains("LEFT") && !cenario.itsOnTheLeftWall(posX)) {
             moveLeft();
-        } else if (inputKeyboard.contains("RIGHT") && !isOntheRightWall()) {
+        } else if (inputKeyboard.contains("RIGHT") && !cenario.itsOnTheRightWall(posX + IMAGE_WIDTH)) {
             moveRight();
         }
     }
