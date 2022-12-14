@@ -55,7 +55,8 @@ public class Spaceship {
     public void handleAction(ArrayList<String> inputKeyboard){
         if (inputKeyboard.contains("SPACE")) {
             System.out.println("OVO atirar!");
-        } else if (inputKeyboard.contains("LEFT") && !cenario.itsOnTheLeftWall(posX)) {
+        } 
+        if (inputKeyboard.contains("LEFT") && !isOnLeftTheWall()) {
             moveLeft();
         } else if (inputKeyboard.contains("RIGHT") && !cenario.itsOnTheRightWall(posX + IMAGE_WIDTH)) {
             moveRight();
