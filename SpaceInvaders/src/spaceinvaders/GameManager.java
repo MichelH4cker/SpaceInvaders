@@ -40,6 +40,9 @@ public class GameManager implements Initializable {
     public void Update(long time, ArrayList<String> inputKeyboard){
         // SPACESHIP ACTION
         spaceship.handleAction(inputKeyboard);
+        if (!spaceship.getBullet().isDestroyed()){
+            spaceship.getBullet().moveUp();
+        }
         spaceship.draw();
     }
     

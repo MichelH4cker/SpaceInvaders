@@ -29,11 +29,8 @@ public class Spaceship {
     private final int IMAGE_HEIGHT = 65;
     private final int IMAGE_WIDTH = 65;
 
-    private int WIDTH = 1600;
-    private int HEIGHT = 900;
-    
-    private double X_BULLET_SPAWN;
-    private double y_BULLET_SPAWN;
+    private int CANVAS_WIDTH = 1600;
+    private int CANVAS_HEIGHT = 900;
     
     private Bullet bullet;
     
@@ -51,15 +48,23 @@ public class Spaceship {
         draw();
     }
     
+    public Bullet getBullet(){
+        return this.bullet;
+    }
+    
     public void draw() {
         gc.drawImage(image, posX, posY);
     }
     
     public void handleAction(ArrayList<String> inputKeyboard){
-        if (inputKeyboard.contains("SPACE") && !bullet.isDestroyed()) {
-            bullet.spawn((posX + X_BULLET_SPAWN) / 2, (posY + y_BULLET_SPAWN) / 2);
+        if (inputKeyboard.contains("SPACE") && bullet.isDestroyed()) {
+            System.out.println("estou atirando");
+            System.out.println("RESULTADO DO REMELEXO MATEMATICO: " + (posX + IMAGE_WIDTH) / 2);
+            bullet.spawn(posX, posY);
         } 
         if (inputKeyboard.contains("LEFT") && !isOnLeftTheWall()) {
+            System.out.println("posicao x da nave: " + posX);
+            System.out.println("Largura da foto" + image.getWidth());
             moveLeft();
         } else if (inputKeyboard.contains("RIGHT") && !cenario.itsOnTheRightWall(posX + IMAGE_WIDTH)) {
             moveRight();
@@ -71,7 +76,7 @@ public class Spaceship {
     }
     
     public boolean isOntheRightWall(){
-        return (posX == WIDTH - IMAGE_WIDTH);
+        return (posX == CANVAS_WIDTH - IMAGE_WIDTH);
     }
     
     public void moveRight() {

@@ -19,8 +19,8 @@ public class Bullet {
     private double velocity = 10.0;
     private boolean destroyed;
     
-    private final int IMAGE_HEIGHT = 5;
-    private final int IMAGE_WIDTH = 5;
+    private final int IMAGE_HEIGHT = 60;
+    private final int IMAGE_WIDTH = 60;
     
     final Image image = new Image("images/bullet.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
@@ -28,7 +28,7 @@ public class Bullet {
     
     Bullet(GraphicsContext gc) {
         this.gc = gc;
-        this.destroyed = false;
+        this.destroyed = true;
     }
     
     public boolean isDestroyed(){
@@ -40,16 +40,22 @@ public class Bullet {
     }
     
     public void spawn(double initial_x, double initial_y){
+        this.destroyed = false;
         posX = initial_x;        
         posY = initial_y;
+        System.out.println("X: " + posX);
+        System.out.println("Y:" + posY);
     }
     
     public void moveUp(){
-        posY += velocity;
+        System.out.println("esta movendo para cima! e a posicao e " + posY);
+        posY -= velocity;
+        draw();
     }
     
     public void moveDown(){
-        posY -= velocity;
+        posY += velocity;
+        draw();
     }
     
 }
