@@ -41,7 +41,6 @@ public class GameManager implements Initializable {
         // SPACESHIP ACTION
         spaceship.handleAction(inputKeyboard);
         spaceship.draw();
-        
     }
     
     public void Finish(){

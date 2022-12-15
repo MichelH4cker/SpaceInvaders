@@ -20,12 +20,11 @@ import javafx.scene.text.Text;
  */
 public class Spaceship {
     
-    private int life = 3;
+    private final double posY = 500.0;
     private double posX = 500.0;
+    private int life = 3;
     private double velocity = 5.0;
     private boolean dead;
-    
-    private double posY = 500.0;
     
     private final int IMAGE_HEIGHT = 65;
     private final int IMAGE_WIDTH = 65;
@@ -33,7 +32,10 @@ public class Spaceship {
     private int WIDTH = 1600;
     private int HEIGHT = 900;
     
-    Cenario cenario;
+    private double X_BULLET_SPAWN;
+    private double y_BULLET_SPAWN;
+    
+    private Bullet bullet;
     
     GraphicsContext gc;
     
@@ -45,6 +47,7 @@ public class Spaceship {
         image.isPreserveRatio();
         this.gc = gc;
         dead = false;
+        bullet = new Bullet(gc);
         draw();
     }
     
@@ -53,8 +56,8 @@ public class Spaceship {
     }
     
     public void handleAction(ArrayList<String> inputKeyboard){
-        if (inputKeyboard.contains("SPACE")) {
-            System.out.println("OVO atirar!");
+        if (inputKeyboard.contains("SPACE") && !bullet.isDestroyed()) {
+            bullet.spawn((posX + X_BULLET_SPAWN) / 2, (posY + y_BULLET_SPAWN) / 2);
         } 
         if (inputKeyboard.contains("LEFT") && !isOnLeftTheWall()) {
             moveLeft();
