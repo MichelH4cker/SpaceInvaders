@@ -20,22 +20,22 @@ import javafx.scene.text.Text;
  */
 public class Spaceship {
     
-    private int life = 3;
+    private final double posY = 500.0;
     private double posX = 500.0;
+    private int life = 3;
     private double velocity = 5.0;
     private boolean dead;
-    
-    private double posY = 500.0;
     
     private final int IMAGE_HEIGHT = 65;
     private final int IMAGE_WIDTH = 65;
 
-    private int WIDTH = 1600;
-    private int HEIGHT = 900;
+    private int CANVAS_WIDTH = 1600;
+    private int CANVAS_HEIGHT = 900;
     
-    Cenario cenario;
+    private Bullet bullet;
     
     GraphicsContext gc;
+    Cenario cenario;
     
     @FXML
     final Image image = new Image("images/spaceship.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
@@ -45,7 +45,12 @@ public class Spaceship {
         image.isPreserveRatio();
         this.gc = gc;
         dead = false;
+        bullet = new Bullet(gc);
         draw();
+    }
+    
+    public Bullet getBullet(){
+        return this.bullet;
     }
     
     public void draw() {
@@ -53,21 +58,14 @@ public class Spaceship {
     }
     
     public void handleAction(ArrayList<String> inputKeyboard){
-        if (inputKeyboard.contains("SPACE")) {
-            System.out.println("OVO atirar!");
-        } else if (inputKeyboard.contains("LEFT") && !cenario.itsOnTheLeftWall(posX)) {
+        if (inputKeyboard.contains("SPACE") && bullet.isDestroyed()) {
+            bullet.spawn(posX, posY);
+        } 
+        if (inputKeyboard.contains("LEFT") && !cenario.itsOnTheLeftWall(posX)) {
             moveLeft();
         } else if (inputKeyboard.contains("RIGHT") && !cenario.itsOnTheRightWall(posX + IMAGE_WIDTH)) {
             moveRight();
         }
-    }
-
-    public boolean isOnLeftTheWall() {
-        return posX == 0;
-    }
-    
-    public boolean isOntheRightWall(){
-        return (posX == WIDTH - IMAGE_WIDTH);
     }
     
     public void moveRight() {
