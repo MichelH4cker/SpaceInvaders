@@ -7,6 +7,8 @@ package spaceinvaders;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
@@ -61,10 +63,7 @@ public class GameManager implements Initializable {
         }
         
         // MOVE ALIENS
-        for (int i = 0; i < ALIENS_LEFT; i++) {
-            aliens.get(i).moveRight();
-            System.out.println("Novo x: " + aliens.get(i).getPosX());
-        }
+        moveAliens();
         
         // DESENHA
         spaceship.draw();
@@ -75,8 +74,35 @@ public class GameManager implements Initializable {
         
     }
 
+    public void moveAliens(){
+        Alien alienMaxX = Collections.max(aliens, Comparator.comparing(Alien::getPosX));
+        Alien alienMinX = Collections.min(aliens, Comparator.comparing(Alien::getPosX));
+        Alien alienMaxY = Collections.max(aliens, Comparator.comparing(Alien::getPosY));
+        
+        if (cenario.itsOnTheLeftWall(alienMinX.getPosX())) {
+           for (Alien alien : aliens){
+               alien.moveDown();
+               alien.moveRight();
+               alien.setIsMovingToRight(!alien.getIsMovingToRight());
+           }
+        } else if (cenario.itsOnTheRightWall(alienMaxX.getPosX() + alienMaxX.getImageWidth())){
+            for (Alien alien : aliens){
+                alien.moveDown();
+                alien.moveLeft();
+                alien.setIsMovingToRight(!alien.getIsMovingToRight());
+            }
+        } else if (alienMaxY.getIsMovingToRight()){
+            for (Alien alien : aliens) alien.moveRight();
+        } else {
+            for (Alien alien : aliens) alien.moveLeft();
+        }
+        
+    }
+    
     public void setsAliensInitialPosition(ArrayList<Alien> aliens){
-        double posX = 0, posY = 0;
+        double initialX = aliens.get(0).getVelocityX();
+        double initialY = 0;
+        double posX = initialX, posY = initialY;
         int counter = 1;
         for (Alien alien : aliens){
             alien.setPosX(posX);
@@ -84,7 +110,7 @@ public class GameManager implements Initializable {
             posX += alien.getOffsetX() + alien.getImageWidth();
             if (counter == cenario.getNumberAliensColumn()) {
                 posY += alien.getOffsetY() + alien.getImageHeight();
-                posX = 0;
+                posX = initialX;
                 counter = 0;
             }
             counter++;
@@ -96,7 +122,7 @@ public class GameManager implements Initializable {
             alien.draw(alien.getPosX(), alien.getPosY());
         }
     }
-    
+     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

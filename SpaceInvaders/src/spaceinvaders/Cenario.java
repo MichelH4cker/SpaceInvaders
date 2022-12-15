@@ -30,19 +30,19 @@ public class Cenario {
     }
     
     public boolean itsOnTheLeftWall(double x){
-        return x == 0;
+        return x <= 0;
     }
 
     public boolean itsOnTheRightWall(double x) {
-        return x == WIDTH_SCREEN;
+        return x >= WIDTH_SCREEN;
     }
     
     public boolean itsOnTheTop(double y){
-        return y == 0;
+        return y <= 0;
     }
     
     public boolean itsOnTheBotton(double y){
-        return y == HEIGHT_SCREEN;
+        return y >= HEIGHT_SCREEN;
     }
     
 }

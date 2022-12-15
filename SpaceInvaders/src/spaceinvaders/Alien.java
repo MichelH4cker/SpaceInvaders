@@ -22,8 +22,10 @@ public class Alien {
     private double OFFSET_Y = 10.0;
     private double posX;
     private double posY;
-    private double velocity = 0.3;
+    private double velocityX = 3;
+    private double velocityY = 10;
     private boolean dead;
+    private boolean isMovingToRight;
     
     GraphicsContext gc;
     Bullet bullet;
@@ -35,7 +37,24 @@ public class Alien {
     
     Alien(GraphicsContext gc) {
         this.gc = gc;
-        life = 3;
+        this.isMovingToRight = true;
+        this.life = 3;
+    }
+    
+    public double getVelocityX(){
+        return this.velocityX;
+    }
+    
+    public double getVelocityY(){
+        return this.velocityY;
+    }
+    
+    public boolean getIsMovingToRight(){
+        return this.isMovingToRight;
+    }
+    
+    public void setIsMovingToRight(boolean isMovingToRight){
+        this.isMovingToRight = isMovingToRight;
     }
     
     public double getOffsetX(){
@@ -75,10 +94,14 @@ public class Alien {
     }
     
     public void moveRight(){
-        posX += velocity;
+        posX += velocityX;
     }
 
     public void moveLeft(){
-        posY -= velocity;
+        posX -= velocityX;
+    }
+    
+    public void moveDown(){
+        posY += velocityY;
     }
 }
