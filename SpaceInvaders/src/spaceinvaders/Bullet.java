@@ -25,10 +25,16 @@ public class Bullet {
     final Image image = new Image("images/bullet.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
     GraphicsContext gc;
+    Cenario cenario;
     
     Bullet(GraphicsContext gc) {
         this.gc = gc;
         this.destroyed = true;
+        cenario = new Cenario();
+    }
+    
+    public double getPosY(){
+        return posY;
     }
     
     public boolean isDestroyed(){
@@ -43,19 +49,18 @@ public class Bullet {
         this.destroyed = false;
         posX = initial_x;        
         posY = initial_y;
-        System.out.println("X: " + posX);
-        System.out.println("Y:" + posY);
     }
     
     public void moveUp(){
-        System.out.println("esta movendo para cima! e a posicao e " + posY);
         posY -= velocity;
         draw();
+        destroyed = cenario.itsOnTheTop(posY + IMAGE_HEIGHT);
     }
     
     public void moveDown(){
         posY += velocity;
         draw();
+        destroyed = cenario.itsOnTheBotton(posY);
     }
     
 }

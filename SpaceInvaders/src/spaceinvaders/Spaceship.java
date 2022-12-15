@@ -35,6 +35,7 @@ public class Spaceship {
     private Bullet bullet;
     
     GraphicsContext gc;
+    Cenario cenario;
     
     @FXML
     final Image image = new Image("images/spaceship.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
@@ -58,25 +59,13 @@ public class Spaceship {
     
     public void handleAction(ArrayList<String> inputKeyboard){
         if (inputKeyboard.contains("SPACE") && bullet.isDestroyed()) {
-            System.out.println("estou atirando");
-            System.out.println("RESULTADO DO REMELEXO MATEMATICO: " + (posX + IMAGE_WIDTH) / 2);
             bullet.spawn(posX, posY);
         } 
-        if (inputKeyboard.contains("LEFT") && !isOnLeftTheWall()) {
-            System.out.println("posicao x da nave: " + posX);
-            System.out.println("Largura da foto" + image.getWidth());
+        if (inputKeyboard.contains("LEFT") && !cenario.itsOnTheLeftWall(posX)) {
             moveLeft();
         } else if (inputKeyboard.contains("RIGHT") && !cenario.itsOnTheRightWall(posX + IMAGE_WIDTH)) {
             moveRight();
         }
-    }
-
-    public boolean isOnLeftTheWall() {
-        return posX == 0;
-    }
-    
-    public boolean isOntheRightWall(){
-        return (posX == CANVAS_WIDTH - IMAGE_WIDTH);
     }
     
     public void moveRight() {
