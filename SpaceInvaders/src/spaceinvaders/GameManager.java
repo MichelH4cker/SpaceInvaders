@@ -40,37 +40,60 @@ public class GameManager implements Initializable {
     
     public void Start(){
         spaceship = new Spaceship(gc);
+        
+        // CREATE ALIENS
         aliens = new ArrayList<Alien>();
         for (int i = 0; i < ALIENS_LEFT; i++) {
             Alien alien = new Alien(gc);
             aliens.add(alien);
         }
+        
+        // SET POSICOES DOS ALIENS
+        setsAliensInitialPosition(aliens);
+        
     }
     
     public void Update(long time, ArrayList<String> inputKeyboard){
-        drawAliens();
-        
         // SPACESHIP ACTION
         spaceship.handleAction(inputKeyboard);
         if (!spaceship.getBullet().isDestroyed()){
             spaceship.getBullet().moveUp();
         }
+        
+        // MOVE ALIENS
+        for (int i = 0; i < ALIENS_LEFT; i++) {
+            aliens.get(i).moveRight();
+            System.out.println("Novo x: " + aliens.get(i).getPosX());
+        }
+        
+        // DESENHA
         spaceship.draw();
+        drawAliens();
     }
     
     public void Finish(){
         
     }
 
-    public void drawAliens(){
-        int pos_x = 0, pos_y = 0;
-        for (int line = 0; line < cenario.getNumberAliensLine(); line++) {
-            for (int column = 0; column < cenario.getNumberAliensColumn(); column++) {
-                aliens.get(column).draw(pos_x, pos_y);
-                pos_x += aliens.get(column).getOffsetX() + aliens.get(column).getImageWidth();
+    public void setsAliensInitialPosition(ArrayList<Alien> aliens){
+        double posX = 0, posY = 0;
+        int counter = 1;
+        for (Alien alien : aliens){
+            alien.setPosX(posX);
+            alien.setPosY(posY);
+            posX += alien.getOffsetX() + alien.getImageWidth();
+            if (counter == cenario.getNumberAliensColumn()) {
+                posY += alien.getOffsetY() + alien.getImageHeight();
+                posX = 0;
+                counter = 0;
             }
-            pos_x = 0;
-            pos_y += aliens.get(line).getOffsetY() + aliens.get(line).getImageHeight();
+            counter++;
+        }
+    }
+    
+    public void drawAliens(){
+        for (Alien alien : aliens) {
+            alien.draw(alien.getPosX(), alien.getPosY());
         }
     }
     

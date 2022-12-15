@@ -22,7 +22,7 @@ public class Alien {
     private double OFFSET_Y = 10.0;
     private double posX;
     private double posY;
-    private double velocity = 5.0;
+    private double velocity = 0.3;
     private boolean dead;
     
     GraphicsContext gc;
@@ -54,15 +54,31 @@ public class Alien {
         return this.IMAGE_HEIGHT;
     }
     
-    public void draw(int pos_x, int pos_y){
+    public double getPosX(){
+        return this.posX;        
+    }
+    
+    public double getPosY(){
+        return this.posY;
+    }
+    
+    public void setPosX(double posX){
+        this.posX = posX;
+    }
+    
+    public void setPosY(double posY){
+        this.posY = posY;
+    }
+    
+    public void draw(double pos_x, double pos_y){
         gc.drawImage(image, pos_x, pos_y);
     }
     
     public void moveRight(){
-        
+        posX += velocity;
     }
 
     public void moveLeft(){
-        
+        posY -= velocity;
     }
 }
