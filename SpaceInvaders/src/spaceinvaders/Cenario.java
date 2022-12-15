@@ -15,8 +15,20 @@ public class Cenario {
     
     private int WIDTH_SCREEN = 1600;
     private int HEIGHT_SCREEN = 900;
+    private int ALIENS_LEFT = 40;
+    private int NUMBER_ALIENS_LINE = 4;
+    private int NUMBER_ALIENS_COLUMN = 10;
+    
     final Image BACKGROUND_IMAGE = new Image("images/background-image.jpg", WIDTH_SCREEN, HEIGHT_SCREEN, false, false);
 
+    public int getNumberAliensLine(){
+        return this.NUMBER_ALIENS_LINE;
+    }
+    
+    public int getNumberAliensColumn(){
+        return this.NUMBER_ALIENS_COLUMN;
+    }
+    
     public boolean itsOnTheLeftWall(double x){
         return x == 0;
     }
