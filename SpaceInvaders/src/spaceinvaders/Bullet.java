@@ -7,6 +7,7 @@ package spaceinvaders;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -21,6 +22,10 @@ public class Bullet {
     
     private final int IMAGE_HEIGHT = 60;
     private final int IMAGE_WIDTH = 60;
+    
+    private final int IMAGE_ALIEN_HEIGHT = 50;
+    private final int IMAGE_ALIEN_WIDTH = 50;
+
     
     final Image image = new Image("images/bullet.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
@@ -42,6 +47,8 @@ public class Bullet {
     }
     
     public void destroy(){
+        posX = 0;
+        posY = 0;
         this.destroyed = true;
     }
     
@@ -67,4 +74,22 @@ public class Bullet {
         destroyed = cenario.itsOnTheBotton(posY);
     }
     
+    public Rectangle getBounds() {
+        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
+    }
+    
+    public boolean collidedWithAlien(Alien alien){
+        Rectangle rec_bullet = getBounds();
+        Rectangle rec_alien = alien.getBounds();
+        
+        if (rec_bullet.getBoundsInParent().intersects(rec_alien.getBoundsInParent())) {
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean collidedWithSpaceship(double x, double y){
+        return false;
+    }
+
 }

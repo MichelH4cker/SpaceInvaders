@@ -7,6 +7,7 @@ package spaceinvaders;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -40,6 +41,10 @@ public class Alien {
         this.isMovingToRight = true;
         this.life = 3;
         bullet = new Bullet(gc);
+    }
+    
+    public Rectangle getBounds() {
+        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
     }
     
     public double getVelocityX(){
@@ -92,6 +97,16 @@ public class Alien {
 
     public Bullet getBullet(){
         return this.bullet;
+    }
+    
+    public void destroy(){
+        posX = 50;
+        posY = 0;
+        dead = true;
+    }
+    
+    public boolean isDead(){
+        return this.dead;
     }
     
     public void draw(double pos_x, double pos_y){

@@ -58,11 +58,23 @@ public class GameManager implements Initializable {
     }
 
     public void Update(long time, ArrayList<String> inputKeyboard){
+        Bullet bullet_spaceship = spaceship.getBullet();
+
         // SPACESHIP ACTION
         spaceship.handleAction(inputKeyboard);
-        if (!spaceship.getBullet().isDestroyed()){
-            spaceship.getBullet().moveUp();
+        if (!bullet_spaceship.isDestroyed()){
+            bullet_spaceship.moveUp();
+            
+            // COLISÃO COM ALIEN
+            for (Alien alien : aliens) {
+                if (bullet_spaceship.collidedWithAlien(alien)) {
+                    bullet_spaceship.destroy();
+                    aliens.remove(alien);
+                    break;
+                }
+            }
         }
+        
         
         // MOVE ALIENS
         moveAliens();
@@ -70,8 +82,7 @@ public class GameManager implements Initializable {
         // ALIENS SHOOT
         if (alien_bullet.isDestroyed()) {
             aliensShoot();
-        }
-        
+        }        
         
         if (alien_bullet != null && !alien_bullet.isDestroyed()){
             alien_bullet.moveDown();
@@ -89,30 +100,15 @@ public class GameManager implements Initializable {
     public void aliensShoot(){
         Alien alien_shooter;
         
-        int TOTAL_COLUMNS = cenario.getNumberAliensColumn();
-        int jumped_lines = cenario.getNumberAliensLine();
+        int total_columns = cenario.getNumberAliensColumn();
         
         int minRange = 0;
-        int maxRange = TOTAL_COLUMNS - 1;
+        int maxRange = total_columns - 1;
         int column_random = (int) Math.floor(Math.random() * (maxRange - minRange + 1) + minRange);        
         
-        boolean FIRE_IN_THE_HOLE = false;
-        while (!FIRE_IN_THE_HOLE) {    
-            // CALCULO PARA ENCONTRAR O INDEX PERFEITO
-            int index = column_random + (TOTAL_COLUMNS * (jumped_lines - 1)); 
-                    
-            alien_shooter = aliens.get(index);
-            
-            if (alien_shooter != null){
-                FIRE_IN_THE_HOLE = true;
-                alien_bullet = alien_shooter.getBullet();
-                alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
-            } else if (jumped_lines == 0){
-                break;
-            } else {
-                jumped_lines--;
-            }
-        }
+        alien_shooter = aliens.get(column_random);
+        alien_bullet = alien_shooter.getBullet();
+        alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
     }
     
     public void moveAliens(){
