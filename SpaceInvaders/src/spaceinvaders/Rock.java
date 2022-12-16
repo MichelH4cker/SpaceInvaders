@@ -21,7 +21,7 @@ public class Rock {
     private double posX;
     private double posY;
     
-    private int life = 5;
+    private int life = 6;
     
     private final Image image = new Image("images/rock.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
@@ -54,6 +54,9 @@ public class Rock {
         return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
     }
     
+    public int getLife(){
+        return this.life;
+    }
     
     public void hit(){
         life--;
