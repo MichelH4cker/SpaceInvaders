@@ -92,9 +92,14 @@ public class GameManager implements Initializable {
         }        
         
         if (alien_bullet != null && !alien_bullet.isDestroyed()){
+            // MOVE TIRO DOS ALIENS
             alien_bullet.moveDown();
+            
+            // VERIFICA SE TIRO ACERTOU SPACESHIP
             if (alien_bullet.collided(spaceship.getBounds())){
-                System.out.println("colidiu");
+                alien_bullet.destroy();
+                spaceship.hit();
+                cenario.heart_images.remove(cenario.heart_images.size() - 1);
             }
         }
         

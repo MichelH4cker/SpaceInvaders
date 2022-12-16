@@ -65,6 +65,10 @@ public class Spaceship {
         return life;
     }
     
+    public void hit(){
+        life -= 1;
+    }
+    
     public Bullet getBullet(){
         return this.bullet;
     }
