@@ -7,6 +7,7 @@ package spaceinvaders;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -48,6 +49,11 @@ public class Rock {
     public double getPosY(){
         return this.posY;
     }
+    
+    public Rectangle getBounds() {
+        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
+    }
+    
     
     public void hit(){
         life--;
