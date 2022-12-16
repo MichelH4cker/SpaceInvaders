@@ -25,9 +25,10 @@ public class GameManager implements Initializable {
     
     private int ALIENS_LEFT = 40;
     private boolean GAME_OVER = false;
-    
     private long PREV_ALIEN_MOVEMENT;
     private long ALIEN_MOVEMENT_DELAY = (long) 1e9;
+    
+    private boolean guided_shooting = false;
     
     Spaceship spaceship;
     Bullet alien_bullet;
@@ -78,9 +79,6 @@ public class GameManager implements Initializable {
                 }
             }
         }
-        System.out.println("TIME = " + TIME);
-        System.out.println("ALIEN_MOVEMENT_DELAY = " + ALIEN_MOVEMENT_DELAY);
-        System.out.println("PREV_ALIEN_MOVEMENT = " + PREV_ALIEN_MOVEMENT);
 
         // MOVE ALIENS WITH DELAY
         if (TIME - PREV_ALIEN_MOVEMENT > ALIEN_MOVEMENT_DELAY) {
@@ -118,6 +116,15 @@ public class GameManager implements Initializable {
     }
     
     public void aliensShoot(){
+        if (guided_shooting){
+            guidedShoot();
+        } else {
+            randomShoot();
+        }
+        guided_shooting = !guided_shooting;
+    }
+    
+    public void randomShoot(){
         Alien alien_shooter;
         
         int total_columns = cenario.getNumberAliensColumn();
@@ -134,7 +141,34 @@ public class GameManager implements Initializable {
             }
             lines_traveled++;
         }
-       
+    }
+    
+    public void guidedShoot(){
+        Alien alien_shooter;
+        int index_closest = findClosest(spaceship.getPosX());
+        int lines_traveled = 0;
+        for (int i = index_closest; lines_traveled < cenario.getNumberAliensLine(); i += cenario.getNumberAliensColumn()) {
+            if (aliens.get(i).isFrontLine()){
+                alien_shooter = aliens.get(i);
+                alien_bullet = alien_shooter.getBullet();
+                alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+            }
+            lines_traveled++;
+        }
+    }
+
+    public int findClosest(double target){
+        int idx = 0;
+        double dist = Math.abs(aliens.get(0).getPosX() - target);
+        
+        for (int i = 1; i < aliens.size(); i++) {
+            double cdist = Math.abs(aliens.get(i).getPosX() - target);
+            if (cdist < dist) {
+                idx = i;
+                dist = cdist;
+            }
+        }
+        return idx;
     }
     
     public void moveAliens(){

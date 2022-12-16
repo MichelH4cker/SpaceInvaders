@@ -50,6 +50,10 @@ public class Spaceship {
         draw();
     }
     
+    public double getPosX(){
+        return this.posX;
+    }
+    
     public Rectangle getBounds() {
         return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
     }
