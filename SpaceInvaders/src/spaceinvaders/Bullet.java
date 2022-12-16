@@ -41,6 +41,10 @@ public class Bullet {
         return this.destroyed;
     }
     
+    public void destroy(){
+        this.destroyed = true;
+    }
+    
     public void draw(){
         gc.drawImage(image, posX, posY);
     }

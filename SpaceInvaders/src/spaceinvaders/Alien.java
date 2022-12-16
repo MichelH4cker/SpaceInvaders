@@ -22,8 +22,10 @@ public class Alien {
     private double OFFSET_Y = 10.0;
     private double posX;
     private double posY;
-    private double velocity = 5.0;
+    private double velocityX = 1;
+    private double velocityY = 20;
     private boolean dead;
+    private boolean isMovingToRight;
     
     GraphicsContext gc;
     Bullet bullet;
@@ -35,7 +37,25 @@ public class Alien {
     
     Alien(GraphicsContext gc) {
         this.gc = gc;
-        life = 3;
+        this.isMovingToRight = true;
+        this.life = 3;
+        bullet = new Bullet(gc);
+    }
+    
+    public double getVelocityX(){
+        return this.velocityX;
+    }
+    
+    public double getVelocityY(){
+        return this.velocityY;
+    }
+    
+    public boolean getIsMovingToRight(){
+        return this.isMovingToRight;
+    }
+    
+    public void setIsMovingToRight(boolean isMovingToRight){
+        this.isMovingToRight = isMovingToRight;
     }
     
     public double getOffsetX(){
@@ -54,15 +74,39 @@ public class Alien {
         return this.IMAGE_HEIGHT;
     }
     
-    public void draw(int pos_x, int pos_y){
+    public double getPosX(){
+        return this.posX;        
+    }
+    
+    public double getPosY(){
+        return this.posY;
+    }
+    
+    public void setPosX(double posX){
+        this.posX = posX;
+    }
+    
+    public void setPosY(double posY){
+        this.posY = posY;
+    }
+
+    public Bullet getBullet(){
+        return this.bullet;
+    }
+    
+    public void draw(double pos_x, double pos_y){
         gc.drawImage(image, pos_x, pos_y);
     }
     
     public void moveRight(){
-        
+        posX += velocityX;
     }
 
     public void moveLeft(){
-        
+        posX -= velocityX;
+    }
+    
+    public void moveDown(){
+        posY += velocityY;
     }
 }
