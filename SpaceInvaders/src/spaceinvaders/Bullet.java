@@ -35,7 +35,7 @@ public class Bullet {
     Bullet(GraphicsContext gc) {
         this.gc = gc;
         this.destroyed = true;
-        cenario = new Cenario();
+        cenario = new Cenario(gc);
     }
     
     public double getPosY(){

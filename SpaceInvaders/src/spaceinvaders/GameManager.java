@@ -34,7 +34,7 @@ public class GameManager implements Initializable {
     
     GameManager(GraphicsContext gc){
         this.gc = gc;
-        cenario = new Cenario();
+        cenario = new Cenario(gc);
         alien_bullet = new Bullet(gc);
     }
     
@@ -93,6 +93,7 @@ public class GameManager implements Initializable {
         // DESENHA
         spaceship.draw();
         drawAliens();
+        cenario.drawMenu();
     }
     
     public void Finish(){

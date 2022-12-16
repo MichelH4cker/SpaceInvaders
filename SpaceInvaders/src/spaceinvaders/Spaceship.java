@@ -21,17 +21,19 @@ import javafx.scene.text.Text;
  */
 public class Spaceship {
     
-    private final double posY = 500.0;
-    private double posX = 500.0;
-    private int life = 3;
-    private double velocity = 5.0;
-    private boolean dead;
-    
     private final int IMAGE_HEIGHT = 65;
     private final int IMAGE_WIDTH = 65;
 
     private int CANVAS_WIDTH = 1600;
     private int CANVAS_HEIGHT = 900;
+    
+    private int OFFSET_SPAWN = 40;
+    
+    private final double posY;
+    private double posX = 500.0;
+    private int life = 3;
+    private double velocity = 5.0;
+    private boolean dead;
     
     private Bullet bullet;
     
@@ -42,16 +44,21 @@ public class Spaceship {
     final Image image = new Image("images/spaceship.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
     Spaceship(GraphicsContext gc) {
-        cenario = new Cenario();
-        image.isPreserveRatio();
         this.gc = gc;
-        dead = false;
+        cenario = new Cenario(gc);
+        image.isPreserveRatio();
         bullet = new Bullet(gc);
+        posY = CANVAS_HEIGHT - OFFSET_SPAWN - cenario.getSizeBottonMenu();
+        dead = false;
         draw();
     }
     
     public Rectangle getBounds() {
         return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
+    }
+    
+    public int  getLife(){
+        return life;
     }
     
     public Bullet getBullet(){
