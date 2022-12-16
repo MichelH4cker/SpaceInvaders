@@ -77,15 +77,28 @@ public class GameManager implements Initializable {
         
         // SPACESHIP ACTION
         spaceship.handleAction(inputKeyboard);
+        
+        // TIRO DA SPACESHIP
         if (!bullet_spaceship.isDestroyed()){
             bullet_spaceship.moveUp();
             
-            // COLISÃO COM ALIEN
+            // ACERTOU UM ALIEN
             for (Alien alien : aliens) {
                 if (bullet_spaceship.collided(alien.getBounds())) {
                     bullet_spaceship.destroy();
                     changeFrontLine(alien);
                     aliens.remove(alien);
+                    break;
+                }
+            }
+            
+            // ACERTOU UMA ROCHA
+            for (Rock rock : rocks){
+                if (bullet_spaceship.collided(rock.getBounds())) {
+                    rock.hit();
+                    if (rock.getLife() == 0) rocks.remove(rock);
+                    bullet_spaceship.destroy();
+                    System.out.println("spaceship acertou alien");
                     break;
                 }
             }
@@ -106,13 +119,24 @@ public class GameManager implements Initializable {
             // MOVE TIRO DOS ALIENS
             alien_bullet.moveDown();
             
+            // VERIFICA SE TIRO DO ALIEN ACERTOU ROCHA
+            for (Rock rock : rocks){
+                if (alien_bullet.collided(rock.getBounds())){
+                    rock.hit();
+                    if (rock.getLife() == 0) rocks.remove(rock);
+                    alien_bullet.destroy();
+                    System.out.println("Alien acertou rocha");
+                    break;
+                }
+            }
+            
             // VERIFICA SE TIRO ACERTOU SPACESHIP
             if (alien_bullet.collided(spaceship.getBounds())){
                 alien_bullet.destroy();
                 spaceship.hit();
                 cenario.heart_images.remove(cenario.heart_images.size() - 1);
             }
-        } 
+        }
         
         // DESENHA
         spaceship.draw();
@@ -124,7 +148,7 @@ public class GameManager implements Initializable {
     public void Finish(){
         
     }
-    
+      
     public void setRocks(){
         double POS_X = cenario.getOffsetRock();
         for (Rock rock : rocks){
