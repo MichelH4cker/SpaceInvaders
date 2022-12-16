@@ -22,8 +22,8 @@ public class Alien {
     private double OFFSET_Y = 10.0;
     private double posX;
     private double posY;
-    private double velocityX = 3;
-    private double velocityY = 10;
+    private double velocityX = 1;
+    private double velocityY = 20;
     private boolean dead;
     private boolean isMovingToRight;
     
@@ -39,6 +39,7 @@ public class Alien {
         this.gc = gc;
         this.isMovingToRight = true;
         this.life = 3;
+        bullet = new Bullet(gc);
     }
     
     public double getVelocityX(){
@@ -87,6 +88,10 @@ public class Alien {
     
     public void setPosY(double posY){
         this.posY = posY;
+    }
+
+    public Bullet getBullet(){
+        return this.bullet;
     }
     
     public void draw(double pos_x, double pos_y){
