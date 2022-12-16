@@ -69,6 +69,7 @@ public class GameManager implements Initializable {
             for (Alien alien : aliens) {
                 if (bullet_spaceship.collided(alien.getBounds())) {
                     bullet_spaceship.destroy();
+                    changeFrontLine(alien);
                     aliens.remove(alien);
                     break;
                 }
@@ -99,6 +100,14 @@ public class GameManager implements Initializable {
         
     }
     
+    public void changeFrontLine(Alien dead_alien){
+        int dead_alien_index = aliens.indexOf(dead_alien);
+        int new_front_alien_index = dead_alien_index - cenario.getNumberAliensColumn();
+        if (new_front_alien_index > 0){
+            aliens.get(new_front_alien_index).setFrontLine(true);
+        } 
+    }
+    
     public void aliensShoot(){
         Alien alien_shooter;
         
@@ -107,10 +116,16 @@ public class GameManager implements Initializable {
         int minRange = 0;
         int maxRange = total_columns - 1;
         int column_random = (int) Math.floor(Math.random() * (maxRange - minRange + 1) + minRange);        
-        
-        alien_shooter = aliens.get(column_random);
-        alien_bullet = alien_shooter.getBullet();
-        alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+        int lines_traveled = 0;
+        for (int i = column_random; lines_traveled < cenario.getNumberAliensLine(); i += cenario.getNumberAliensColumn()) {
+            if (aliens.get(i).isFrontLine()){
+                alien_shooter = aliens.get(i);
+                alien_bullet = alien_shooter.getBullet();
+                alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+            }
+            lines_traveled++;
+        }
+       
     }
     
     public void moveAliens(){
@@ -153,6 +168,16 @@ public class GameManager implements Initializable {
                 counter = 0;
             }
             counter++;
+        }
+        setAliensFrontLine();
+    }
+    
+    public void setAliensFrontLine(){
+        int TOTAL_COLUMNS = cenario.getNumberAliensColumn();
+        aliens.get(5 + (ALIENS_LEFT - TOTAL_COLUMNS)).setFrontLine(true);
+
+        for (int i = 0; i < ALIENS_LEFT - 3 * TOTAL_COLUMNS; i++){
+            aliens.get(i + (ALIENS_LEFT - TOTAL_COLUMNS)).setFrontLine(true);
         }
     }
     
