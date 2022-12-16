@@ -23,10 +23,11 @@ public class Alien {
     private double OFFSET_Y = 10.0;
     private double posX;
     private double posY;
-    private double velocityX = 1;
+    private double velocityX = 30;
     private double velocityY = 20;
     private boolean dead;
     private boolean isMovingToRight;
+    private boolean frontLine;
     
     GraphicsContext gc;
     Bullet bullet;
@@ -37,6 +38,7 @@ public class Alien {
     final Image image = new Image("images/alien.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
     Alien(GraphicsContext gc) {
+        this.frontLine = false;
         this.gc = gc;
         this.isMovingToRight = true;
         this.life = 3;
@@ -61,6 +63,14 @@ public class Alien {
     
     public void setIsMovingToRight(boolean isMovingToRight){
         this.isMovingToRight = isMovingToRight;
+    }
+    
+    public boolean isFrontLine(){
+        return this.frontLine;
+    }
+    
+    public void setFrontLine(boolean frontLine){
+        this.frontLine = frontLine;
     }
     
     public double getOffsetX(){
