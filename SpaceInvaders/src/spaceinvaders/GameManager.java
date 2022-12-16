@@ -25,6 +25,10 @@ public class GameManager implements Initializable {
     
     private int ALIENS_LEFT = 40;
     private boolean GAME_OVER = false;
+    private long PREV_ALIEN_MOVEMENT;
+    private long ALIEN_MOVEMENT_DELAY = (long) 1e9;
+    
+    private boolean guided_shooting = false;
     
     Spaceship spaceship;
     Bullet alien_bullet;
@@ -57,9 +61,9 @@ public class GameManager implements Initializable {
         
     }
 
-    public void Update(long time, ArrayList<String> inputKeyboard){
+    public void Update(long TIME, ArrayList<String> inputKeyboard){
         Bullet bullet_spaceship = spaceship.getBullet();
-
+        
         // SPACESHIP ACTION
         spaceship.handleAction(inputKeyboard);
         if (!bullet_spaceship.isDestroyed()){
@@ -69,14 +73,18 @@ public class GameManager implements Initializable {
             for (Alien alien : aliens) {
                 if (bullet_spaceship.collided(alien.getBounds())) {
                     bullet_spaceship.destroy();
+                    changeFrontLine(alien);
                     aliens.remove(alien);
                     break;
                 }
             }
         }
-        
-        // MOVE ALIENS
-        moveAliens();
+
+        // MOVE ALIENS WITH DELAY
+        if (TIME - PREV_ALIEN_MOVEMENT > ALIEN_MOVEMENT_DELAY) {
+            moveAliens();
+            PREV_ALIEN_MOVEMENT = TIME;
+        }
         
         // ALIENS SHOOT
         if (alien_bullet.isDestroyed()) {
@@ -100,7 +108,24 @@ public class GameManager implements Initializable {
         
     }
     
+    public void changeFrontLine(Alien dead_alien){
+        int dead_alien_index = aliens.indexOf(dead_alien);
+        int new_front_alien_index = dead_alien_index - cenario.getNumberAliensColumn();
+        if (new_front_alien_index > 0){
+            aliens.get(new_front_alien_index).setFrontLine(true);
+        } 
+    }
+    
     public void aliensShoot(){
+        if (guided_shooting){
+            guidedShoot();
+        } else {
+            randomShoot();
+        }
+        guided_shooting = !guided_shooting;
+    }
+    
+    public void randomShoot(){
         Alien alien_shooter;
         
         int total_columns = cenario.getNumberAliensColumn();
@@ -108,10 +133,43 @@ public class GameManager implements Initializable {
         int minRange = 0;
         int maxRange = total_columns - 1;
         int column_random = (int) Math.floor(Math.random() * (maxRange - minRange + 1) + minRange);        
+        int lines_traveled = 0;
+        for (int i = column_random; lines_traveled < cenario.getNumberAliensLine(); i += cenario.getNumberAliensColumn()) {
+            if (aliens.get(i).isFrontLine()){
+                alien_shooter = aliens.get(i);
+                alien_bullet = alien_shooter.getBullet();
+                alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+            }
+            lines_traveled++;
+        }
+    }
+    
+    public void guidedShoot(){
+        Alien alien_shooter;
+        int index_closest = findClosest(spaceship.getPosX());
+        int lines_traveled = 0;
+        for (int i = index_closest; lines_traveled < cenario.getNumberAliensLine(); i += cenario.getNumberAliensColumn()) {
+            if (aliens.get(i).isFrontLine()){
+                alien_shooter = aliens.get(i);
+                alien_bullet = alien_shooter.getBullet();
+                alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+            }
+            lines_traveled++;
+        }
+    }
+
+    public int findClosest(double target){
+        int idx = 0;
+        double dist = Math.abs(aliens.get(0).getPosX() - target);
         
-        alien_shooter = aliens.get(column_random);
-        alien_bullet = alien_shooter.getBullet();
-        alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+        for (int i = 1; i < aliens.size(); i++) {
+            double cdist = Math.abs(aliens.get(i).getPosX() - target);
+            if (cdist < dist) {
+                idx = i;
+                dist = cdist;
+            }
+        }
+        return idx;
     }
     
     public void moveAliens(){
@@ -154,6 +212,16 @@ public class GameManager implements Initializable {
                 counter = 0;
             }
             counter++;
+        }
+        setAliensFrontLine();
+    }
+    
+    public void setAliensFrontLine(){
+        int TOTAL_COLUMNS = cenario.getNumberAliensColumn();
+        aliens.get(5 + (ALIENS_LEFT - TOTAL_COLUMNS)).setFrontLine(true);
+
+        for (int i = 0; i < ALIENS_LEFT - 3 * TOTAL_COLUMNS; i++){
+            aliens.get(i + (ALIENS_LEFT - TOTAL_COLUMNS)).setFrontLine(true);
         }
     }
     
