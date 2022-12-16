@@ -78,17 +78,11 @@ public class Bullet {
         return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
     }
     
-    public boolean collidedWithAlien(Alien alien){
+    public boolean collided(Rectangle target_rectangle){
         Rectangle rec_bullet = getBounds();
-        Rectangle rec_alien = alien.getBounds();
-        
-        if (rec_bullet.getBoundsInParent().intersects(rec_alien.getBoundsInParent())) {
+        if (rec_bullet.getBoundsInParent().intersects(target_rectangle.getBoundsInParent())) {
             return true;
         }
-        return false;
-    }
-    
-    public boolean collidedWithSpaceship(double x, double y){
         return false;
     }
 

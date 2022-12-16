@@ -67,14 +67,13 @@ public class GameManager implements Initializable {
             
             // COLISÃO COM ALIEN
             for (Alien alien : aliens) {
-                if (bullet_spaceship.collidedWithAlien(alien)) {
+                if (bullet_spaceship.collided(alien.getBounds())) {
                     bullet_spaceship.destroy();
                     aliens.remove(alien);
                     break;
                 }
             }
         }
-        
         
         // MOVE ALIENS
         moveAliens();
@@ -86,6 +85,9 @@ public class GameManager implements Initializable {
         
         if (alien_bullet != null && !alien_bullet.isDestroyed()){
             alien_bullet.moveDown();
+            if (alien_bullet.collided(spaceship.getBounds())){
+                System.out.println("colidiu");
+            }
         }
         
         // DESENHA
