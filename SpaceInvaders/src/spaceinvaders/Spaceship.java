@@ -20,17 +20,19 @@ import javafx.scene.text.Text;
  */
 public class Spaceship {
     
-    private final double posY = 500.0;
-    private double posX = 500.0;
-    private int life = 3;
-    private double velocity = 5.0;
-    private boolean dead;
+    private int CANVAS_WIDTH = 1600;
+    private int CANVAS_HEIGHT = 900;
     
     private final int IMAGE_HEIGHT = 65;
     private final int IMAGE_WIDTH = 65;
-
-    private int CANVAS_WIDTH = 1600;
-    private int CANVAS_HEIGHT = 900;
+    
+    private final int OFFSET_Y_SPAWN = 30;
+    
+    private final double posY = CANVAS_HEIGHT - IMAGE_HEIGHT - OFFSET_Y_SPAWN;
+    private double posX = 500.0;
+    private int life = 3;
+    private double velocity = 8.0;
+    private boolean dead;
     
     private Bullet bullet;
     

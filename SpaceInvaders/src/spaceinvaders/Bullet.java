@@ -16,7 +16,7 @@ public class Bullet {
 
     private double posX;
     private double posY;
-    private double velocity = 10.0;
+    private double velocity = 15.0;
     private boolean destroyed;
     
     private final int IMAGE_HEIGHT = 60;
