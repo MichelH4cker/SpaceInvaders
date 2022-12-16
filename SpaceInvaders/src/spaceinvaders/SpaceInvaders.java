@@ -84,9 +84,7 @@ public class SpaceInvaders extends Application {
                     gc.clearRect(0, 0, WIDTH, HEIGHT);
                     gc.drawImage(BACKGROUND_IMAGE, 0, 0);
                     
-                    long t = (currentNanoTime - prevNanoTime);
-                    
-                    Game.Update(t, input);
+                    Game.Update(currentNanoTime, input);
                     if (Game.getGameOver()) this.stop();
                     
                 }

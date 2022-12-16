@@ -23,7 +23,7 @@ public class Alien {
     private double OFFSET_Y = 10.0;
     private double posX;
     private double posY;
-    private double velocityX = 1;
+    private double velocityX = 30;
     private double velocityY = 20;
     private boolean dead;
     private boolean isMovingToRight;

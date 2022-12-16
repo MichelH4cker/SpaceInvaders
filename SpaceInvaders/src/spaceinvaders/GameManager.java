@@ -26,6 +26,9 @@ public class GameManager implements Initializable {
     private int ALIENS_LEFT = 40;
     private boolean GAME_OVER = false;
     
+    private long PREV_ALIEN_MOVEMENT;
+    private long ALIEN_MOVEMENT_DELAY = (long) 1e9;
+    
     Spaceship spaceship;
     Bullet alien_bullet;
     GraphicsContext gc;
@@ -57,9 +60,9 @@ public class GameManager implements Initializable {
         
     }
 
-    public void Update(long time, ArrayList<String> inputKeyboard){
+    public void Update(long TIME, ArrayList<String> inputKeyboard){
         Bullet bullet_spaceship = spaceship.getBullet();
-
+        
         // SPACESHIP ACTION
         spaceship.handleAction(inputKeyboard);
         if (!bullet_spaceship.isDestroyed()){
@@ -75,9 +78,15 @@ public class GameManager implements Initializable {
                 }
             }
         }
-        
-        // MOVE ALIENS
-        moveAliens();
+        System.out.println("TIME = " + TIME);
+        System.out.println("ALIEN_MOVEMENT_DELAY = " + ALIEN_MOVEMENT_DELAY);
+        System.out.println("PREV_ALIEN_MOVEMENT = " + PREV_ALIEN_MOVEMENT);
+
+        // MOVE ALIENS WITH DELAY
+        if (TIME - PREV_ALIEN_MOVEMENT > ALIEN_MOVEMENT_DELAY) {
+            moveAliens();
+            PREV_ALIEN_MOVEMENT = TIME;
+        }
         
         // ALIENS SHOOT
         if (alien_bullet.isDestroyed()) {
