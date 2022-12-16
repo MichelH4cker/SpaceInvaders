@@ -135,10 +135,12 @@ public class GameManager implements Initializable {
         int column_random = (int) Math.floor(Math.random() * (maxRange - minRange + 1) + minRange);        
         int lines_traveled = 0;
         for (int i = column_random; lines_traveled < cenario.getNumberAliensLine(); i += cenario.getNumberAliensColumn()) {
-            if (aliens.get(i).isFrontLine()){
-                alien_shooter = aliens.get(i);
-                alien_bullet = alien_shooter.getBullet();
-                alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+            if (i < aliens.size()){
+                if (aliens.get(i).isFrontLine()){
+                    alien_shooter = aliens.get(i);
+                    alien_bullet = alien_shooter.getBullet();
+                    alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+                }
             }
             lines_traveled++;
         }
@@ -149,10 +151,12 @@ public class GameManager implements Initializable {
         int index_closest = findClosest(spaceship.getPosX());
         int lines_traveled = 0;
         for (int i = index_closest; lines_traveled < cenario.getNumberAliensLine(); i += cenario.getNumberAliensColumn()) {
-            if (aliens.get(i).isFrontLine()){
-                alien_shooter = aliens.get(i);
-                alien_bullet = alien_shooter.getBullet();
-                alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+            if (i < aliens.size()){
+                if (aliens.get(i).isFrontLine()){
+                    alien_shooter = aliens.get(i);
+                    alien_bullet = alien_shooter.getBullet();
+                    alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+                }
             }
             lines_traveled++;
         }
