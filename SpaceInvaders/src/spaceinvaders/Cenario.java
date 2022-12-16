@@ -27,8 +27,8 @@ public class Cenario {
     private final int HEIGHT_SCREEN = 900;
     private final int WIDTH_HEART = 50;
     private final int HEIGHT_HEART = 50;
-    private final int NUMBER_ALIENS_LINE = 4;
-    private final int NUMBER_ALIENS_COLUMN = 10;
+    private final int NUMBER_ALIENS_LINE = 5;
+    private final int NUMBER_ALIENS_COLUMN = 11;
     private double WIDTH_ROCK = 50;
     private final double OFFSET_ROCK = (WIDTH_SCREEN - (3 * WIDTH_ROCK)) / 4;
     private final double OFFSET_X = 50;

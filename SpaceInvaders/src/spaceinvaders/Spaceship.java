@@ -21,8 +21,8 @@ import javafx.scene.text.Text;
  */
 public class Spaceship {
     
-    private final int IMAGE_HEIGHT = 65;
-    private final int IMAGE_WIDTH = 65;
+    private final int IMAGE_HEIGHT = 70;
+    private final int IMAGE_WIDTH = 70;
 
     private int CANVAS_WIDTH = 1600;
     private int CANVAS_HEIGHT = 900;
@@ -32,7 +32,7 @@ public class Spaceship {
     private final double posY;
     private double posX = 500.0;
     private int life = 3;
-    private double velocity = 5.0;
+    private double velocity = 7.0;
     private boolean dead;
     
     private Bullet bullet;
