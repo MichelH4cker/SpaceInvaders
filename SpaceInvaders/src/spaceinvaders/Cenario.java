@@ -21,21 +21,23 @@ import javafx.scene.text.FontWeight;
  */
 public class Cenario {
     
-    private int WIDTH_SCREEN = 1600;
-    private int HEIGHT_SCREEN = 900;
-    private int WIDTH_HEART = 50;
-    private int HEIGHT_HEART = 50;
     private int ALIENS_LEFT = 40;
-    private int NUMBER_ALIENS_LINE = 4;
-    private int NUMBER_ALIENS_COLUMN = 10;
-   
-    private double OFFSET_X = 50;
-    private double OFFSET_Y = 20;
-    private double FONT_SIZE = 36;
-    private double WIDTH_LINE = 5;
-    private double SIZE_BOTTON_MENU = 4 * OFFSET_Y + FONT_SIZE + WIDTH_LINE;
-    private double END_OF_LIFE_TEXT = 220; // chute
-    private double OFFSET_HEART_IMAGE = 60;
+    
+    private final int WIDTH_SCREEN = 1600;
+    private final int HEIGHT_SCREEN = 900;
+    private final int WIDTH_HEART = 50;
+    private final int HEIGHT_HEART = 50;
+    private final int NUMBER_ALIENS_LINE = 4;
+    private final int NUMBER_ALIENS_COLUMN = 10;
+    private double WIDTH_ROCK = 50;
+    private final double OFFSET_ROCK = (WIDTH_SCREEN - (3 * WIDTH_ROCK)) / 4;
+    private final double OFFSET_X = 50;
+    private final double OFFSET_Y = 20;
+    private final double FONT_SIZE = 36;
+    private final double WIDTH_LINE = 5;
+    private final double SIZE_BOTTON_MENU = 4 * OFFSET_Y + FONT_SIZE + WIDTH_LINE;
+    private final double END_OF_LIFE_TEXT = 220; // chute
+    private final double OFFSET_HEART_IMAGE = 60;
     
     String LIFE_TEXT = "LIFE: ";
     Font DOGICA_PIXEL_BOLD = Font.loadFont("file:src/fonts/dogicapixelbold.ttf", FONT_SIZE);
@@ -54,6 +56,18 @@ public class Cenario {
         for (int i = 0; i < 3; i++){
             heart_images.add(HEART_IMAGE);
         }
+    }
+    
+    public double getCanvasHeight(){
+        return this.HEIGHT_SCREEN;
+    }
+    
+    public double getWidthRock(){
+        return this.WIDTH_ROCK;
+    }
+    
+    public double getOffsetRock(){
+        return this.OFFSET_ROCK;
     }
     
     public double getSizeBottonMenu(){

@@ -22,9 +22,11 @@ import javafx.scene.input.KeyEvent;
  * @author michel
  */
 public class GameManager implements Initializable {
-    
+        
     private int ALIENS_LEFT = 40;
+    private int ROCKS = 3;
     private boolean GAME_OVER = false;
+    
     private long PREV_ALIEN_MOVEMENT;
     private long ALIEN_MOVEMENT_DELAY = (long) 1e9;
     
@@ -34,6 +36,7 @@ public class GameManager implements Initializable {
     Bullet alien_bullet;
     GraphicsContext gc;
     ArrayList<Alien> aliens;
+    ArrayList<Rock> rocks;
     Cenario cenario;
     
     GameManager(GraphicsContext gc){
@@ -59,6 +62,14 @@ public class GameManager implements Initializable {
         // SET POSICOES DOS ALIENS
         setsAliensInitialPosition(aliens);
         
+        // CREATE ROCKS
+        rocks = new ArrayList<Rock>();
+        for (int i = 0; i < ROCKS; i++) {
+            rocks.add(new Rock(gc));
+        }
+        
+        // SET ROCKS
+        setRocks();
     }
 
     public void Update(long TIME, ArrayList<String> inputKeyboard){
@@ -101,16 +112,26 @@ public class GameManager implements Initializable {
                 spaceship.hit();
                 cenario.heart_images.remove(cenario.heart_images.size() - 1);
             }
-        }
+        } 
         
         // DESENHA
         spaceship.draw();
         drawAliens();
         cenario.drawMenu();
+        for (Rock rock : rocks) rock.draw();
     }
     
     public void Finish(){
         
+    }
+    
+    public void setRocks(){
+        double POS_X = cenario.getOffsetRock();
+        for (Rock rock : rocks){
+            rock.setPosX(POS_X);
+            rock.setPosY(cenario.getCanvasHeight() - 350);
+            POS_X += cenario.getWidthRock() + cenario.getOffsetRock();
+        }
     }
     
     public void changeFrontLine(Alien dead_alien){
