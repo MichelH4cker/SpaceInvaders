@@ -5,7 +5,15 @@
  */
 package spaceinvaders;
 
+import com.sun.org.apache.bcel.internal.generic.F2D;
+import java.io.InputStream;
+import javafx.scene.text.Font;
+import java.util.ArrayList;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.text.FontWeight;
 
 /**
  *
@@ -15,12 +23,43 @@ public class Cenario {
     
     private int WIDTH_SCREEN = 1600;
     private int HEIGHT_SCREEN = 900;
+    private int WIDTH_HEART = 50;
+    private int HEIGHT_HEART = 50;
     private int ALIENS_LEFT = 40;
     private int NUMBER_ALIENS_LINE = 4;
     private int NUMBER_ALIENS_COLUMN = 10;
+   
+    private double OFFSET_X = 50;
+    private double OFFSET_Y = 20;
+    private double FONT_SIZE = 36;
+    private double WIDTH_LINE = 5;
+    private double SIZE_BOTTON_MENU = 4 * OFFSET_Y + FONT_SIZE + WIDTH_LINE;
+    private double END_OF_LIFE_TEXT = 220; // chute
+    private double OFFSET_HEART_IMAGE = 60;
+    
+    String LIFE_TEXT = "LIFE: ";
+    Font DOGICA_PIXEL_BOLD = Font.loadFont("file:src/fonts/dogicapixelbold.ttf", FONT_SIZE);
+
+    Line line;
     
     final Image BACKGROUND_IMAGE = new Image("images/background-image.jpg", WIDTH_SCREEN, HEIGHT_SCREEN, false, false);
-
+    final Image HEART_IMAGE = new Image("images/heart.png", WIDTH_HEART, HEIGHT_HEART, false, false);
+    ArrayList<Image> heart_images;
+    
+    GraphicsContext gc;
+            
+    Cenario (GraphicsContext gc){
+        this.gc = gc;
+        heart_images = new ArrayList<Image>();
+        for (int i = 0; i < 3; i++){
+            heart_images.add(HEART_IMAGE);
+        }
+    }
+    
+    public double getSizeBottonMenu(){
+        return SIZE_BOTTON_MENU;
+    }
+    
     public int getNumberAliensLine(){
         return this.NUMBER_ALIENS_LINE;
     }
@@ -45,4 +84,22 @@ public class Cenario {
         return y >= HEIGHT_SCREEN;
     }
     
+    public void drawMenu(){
+        // DESENHA LINHA
+        gc.setStroke(Color.WHITE);
+        gc.setLineWidth(WIDTH_LINE);
+        gc.strokeLine(OFFSET_X, HEIGHT_SCREEN - FONT_SIZE - (2 * OFFSET_Y), WIDTH_SCREEN - OFFSET_X, HEIGHT_SCREEN - FONT_SIZE -  2 * OFFSET_Y);        
+        
+        // DESENHA TEXTO VIDA
+        gc.setFont(DOGICA_PIXEL_BOLD);
+        gc.setFill(Color.WHITE) ;
+        gc.fillText(LIFE_TEXT, OFFSET_X, HEIGHT_SCREEN - OFFSET_Y);
+        
+        // DESENHA CORAÇÕES
+        int mulitply_space = 0;
+        for (int i = 0; i < heart_images.size(); i++){
+            gc.drawImage(HEART_IMAGE, END_OF_LIFE_TEXT + mulitply_space * OFFSET_HEART_IMAGE, HEIGHT_SCREEN - SIZE_BOTTON_MENU / 2);
+            mulitply_space++;
+        }
+    }
 }
