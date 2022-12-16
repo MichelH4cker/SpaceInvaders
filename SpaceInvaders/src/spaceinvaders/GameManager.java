@@ -15,7 +15,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 /**
  *
@@ -31,6 +34,14 @@ public class GameManager implements Initializable {
     private long ALIEN_MOVEMENT_DELAY = (long) 1e9;
     
     private boolean guided_shooting = false;
+    private boolean PLAYER_WON = false;
+    
+    int WIDTH = 1600;
+    int HEIGHT = 900;
+    int FONT_SIZE = 70;
+    private final Image BACKGROUND_IMAGE = new Image("images/background-image.jpg", WIDTH, HEIGHT, false, false);
+    Font DOGICA_PIXEL_BOLD = Font.loadFont("file:src/fonts/dogicapixelbold.ttf", FONT_SIZE);
+
     
     Spaceship spaceship;
     Bullet alien_bullet;
@@ -87,6 +98,7 @@ public class GameManager implements Initializable {
                 if (bullet_spaceship.collided(alien.getBounds())) {
                     bullet_spaceship.destroy();
                     changeFrontLine(alien);
+                    ALIENS_LEFT--;
                     aliens.remove(alien);
                     break;
                 }
@@ -143,12 +155,37 @@ public class GameManager implements Initializable {
         drawAliens();
         cenario.drawMenu();
         for (Rock rock : rocks) rock.draw();
+        
+        checkGameOver();
     }
     
     public void Finish(){
+        gc.clearRect(0, 0, WIDTH, HEIGHT);
+        gc.drawImage(BACKGROUND_IMAGE, 0, 0);
         
+        gc.setFont(DOGICA_PIXEL_BOLD);
+        gc.setFill(Color.WHITE) ;
+        
+        String RESULT;
+        if (PLAYER_WON){
+            RESULT = "VOCÊ GANHOU!";
+        } else {
+            RESULT = "VOCÊ PERDEU!";
+        }
+            
+        gc.fillText(RESULT, (WIDTH / 2) - 380, HEIGHT / 2);
     }
       
+    public void checkGameOver(){
+        if (ALIENS_LEFT == 0){
+            PLAYER_WON = true;
+            GAME_OVER = true;
+        } else if (spaceship.getLife() == 0){
+            PLAYER_WON = false;
+            GAME_OVER = true;
+        }
+    }
+    
     public void setRocks(){
         double POS_X = cenario.getOffsetRock();
         for (Rock rock : rocks){

@@ -58,6 +58,10 @@ public class Cenario {
         }
     }
     
+    public double getCanvasWidth(){
+        return this.WIDTH_SCREEN;
+    }
+    
     public double getCanvasHeight(){
         return this.HEIGHT_SCREEN;
     }

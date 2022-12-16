@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -44,27 +45,28 @@ public class SpaceInvaders extends Application {
             stage.setMaximized(false);
             stage.setResizable(false);
 
-            Group root = new Group();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-
+            // HANDLE WITH GAME SCENE
+            Group game_group = new Group();
+            Scene game_scene = new Scene(game_group);
+    
             Canvas canvas = new Canvas(WIDTH, HEIGHT);
-            root.getChildren().add(canvas);
+            game_group.getChildren().add(canvas);
             
             GraphicsContext gc = canvas.getGraphicsContext2D();
-            
             GraphicsContext gcBackground = canvas.getGraphicsContext2D();
+            
+            stage.setScene(game_scene);
             
             // KEYBOARD DETECTION
             ArrayList<String> input = new ArrayList<String>();
             
-            scene.setOnKeyPressed((KeyEvent e) -> {
+            game_scene.setOnKeyPressed((KeyEvent e) -> {
                 String code = e.getCode().toString();
                 // only add once... prevent duplicates
                 if ( !input.contains(code) ) input.add( code );
             });
             
-            scene.setOnKeyReleased((KeyEvent e) -> {
+            game_scene.setOnKeyReleased((KeyEvent e) -> {
                 String code = e.getCode().toString();
                 input.remove(code);
             });
@@ -85,12 +87,13 @@ public class SpaceInvaders extends Application {
                     gc.drawImage(BACKGROUND_IMAGE, 0, 0);
                     
                     Game.Update(currentNanoTime, input);
-                    if (Game.getGameOver()) this.stop();
+                    if (Game.getGameOver()) {
+                        Game.Finish();
+                    }
                     
                 }
             }.start();
             
-            Game.Finish();
             
             // SHOW STAGE
             stage.show();
