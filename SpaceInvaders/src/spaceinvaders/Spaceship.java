@@ -21,13 +21,16 @@ import javafx.scene.text.Text;
  */
 public class Spaceship {
     
-    private final int IMAGE_HEIGHT = 70;
-    private final int IMAGE_WIDTH = 70;
+    private long PREV_SHOOT = 0;
+    private long SHOOT_DELAY = (long) 0.65e9;
+    
+    private final int IMAGE_HEIGHT = 80;
+    private final int IMAGE_WIDTH = 80;
 
     private int CANVAS_WIDTH = 1600;
     private int CANVAS_HEIGHT = 900;
     
-    private int OFFSET_SPAWN = 40;
+    private int OFFSET_SPAWN = 60;
     
     private final double posY;
     private double posX = 500.0;
@@ -57,6 +60,10 @@ public class Spaceship {
         return this.posX;
     }
     
+    public double getPosY(){
+        return this.posY;
+    }
+    
     public Rectangle getBounds() {
         return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
     }
@@ -77,9 +84,10 @@ public class Spaceship {
         gc.drawImage(image, posX, posY);
     }
     
-    public void handleAction(ArrayList<String> inputKeyboard){
-        if (inputKeyboard.contains("SPACE") && bullet.isDestroyed()) {
+    public void handleAction(ArrayList<String> inputKeyboard, long TIME){
+        if (inputKeyboard.contains("SPACE") && bullet.isDestroyed() && TIME - PREV_SHOOT > SHOOT_DELAY) {
             bullet.spawn(posX, posY);
+            PREV_SHOOT = TIME;
         } 
         if (inputKeyboard.contains("LEFT") && !cenario.itsOnTheLeftWall(posX)) {
             moveLeft();

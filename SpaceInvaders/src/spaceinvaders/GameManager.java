@@ -25,7 +25,7 @@ import javafx.scene.text.Font;
  * @author michel
  */
 public class GameManager implements Initializable {
-        
+
     private int ALIENS_LEFT = 55;
     private int ROCKS = 3;
     private boolean GAME_OVER = false;
@@ -33,7 +33,7 @@ public class GameManager implements Initializable {
     private long PREV_ALIEN_MOVEMENT;
     private long ALIEN_MOVEMENT_DELAY = (long) 1e9;
     private long PREV_ALIEN_SHOOT;
-    private long ALIEN_SHOOT_DELAY = (long) 3e9; 
+    private long ALIEN_SHOOT_DELAY = (long) 1e9; 
     private long ALIEN_SHOOT_UPGRADE_DELAY = (long) 0.5e9;
     
     private boolean guided_shooting = false;
@@ -44,7 +44,6 @@ public class GameManager implements Initializable {
     int FONT_SIZE = 70;
     private final Image BACKGROUND_IMAGE = new Image("images/background-image.png", WIDTH, HEIGHT, false, false);
     Font DOGICA_PIXEL_BOLD = Font.loadFont("file:src/fonts/dogicapixelbold.ttf", FONT_SIZE);
-
     
     Spaceship spaceship;
     Bullet alien_bullet;
@@ -76,6 +75,9 @@ public class GameManager implements Initializable {
         // SET POSICOES DOS ALIENS
         setsAliensInitialPosition(aliens);
         
+        // MARCA QUAIS ALIENS SÃO DA LINHA DE FRENTE
+        setAliensFrontLine();
+
         // CREATE ROCKS
         rocks = new ArrayList<Rock>();
         for (int i = 0; i < ROCKS; i++) {
@@ -87,10 +89,11 @@ public class GameManager implements Initializable {
     }
 
     public void Update(long TIME, ArrayList<String> inputKeyboard){
+        checkGameOver();
         Bullet bullet_spaceship = spaceship.getBullet();
         
         // SPACESHIP ACTION
-        spaceship.handleAction(inputKeyboard);
+        spaceship.handleAction(inputKeyboard, TIME);
         
         // TIRO DA SPACESHIP
         if (!bullet_spaceship.isDestroyed()){
@@ -111,8 +114,11 @@ public class GameManager implements Initializable {
             for (Rock rock : rocks){
                 if (bullet_spaceship.collided(rock.getBounds())) {
                     rock.hit();
-                    if (rock.getLife() == 0) rocks.remove(rock);
+                    System.out.println("acertou");
                     bullet_spaceship.destroy();
+                    if (rock.getLife() == 0){
+                        rocks.remove(rock);
+                    }
                     break;
                 }
             }
@@ -138,7 +144,9 @@ public class GameManager implements Initializable {
             for (Rock rock : rocks){
                 if (alien_bullet.collided(rock.getBounds())){
                     rock.hit();
-                    if (rock.getLife() == 0) rocks.remove(rock);
+                    if (rock.getLife() == 0) {
+                        rocks.remove(rock);
+                    }
                     alien_bullet.destroy();
                     break;
                 }
@@ -158,7 +166,6 @@ public class GameManager implements Initializable {
         cenario.drawMenu();
         for (Rock rock : rocks) rock.draw();
         
-        checkGameOver();
     }
     
     public void Finish(){
@@ -198,11 +205,19 @@ public class GameManager implements Initializable {
     }
     
     public void changeFrontLine(Alien dead_alien){
-        int dead_alien_index = aliens.indexOf(dead_alien);
-        int new_front_alien_index = dead_alien_index - cenario.getNumberAliensColumn();
-        if (new_front_alien_index > 0){
-            aliens.get(new_front_alien_index).setFrontLine(true);
-        } 
+        double x = dead_alien.getPosX();
+        double greater_y = -1;
+        for (Alien alien : aliens){
+            if (x == alien.getPosX() && greater_y < alien.getPosY()){
+                greater_y = alien.getPosY();
+            }
+        }
+        for (Alien alien : aliens){
+            if (x == alien.getPosX() && greater_y == alien.getPosY()){
+                alien.setFrontLine(true);
+            }
+        }
+        
     }
     
     public void aliensShoot(){
@@ -237,34 +252,34 @@ public class GameManager implements Initializable {
     }
     
     public void guidedShoot(){
-        Alien alien_shooter;
-        int index_closest = findClosest(spaceship.getPosX());
-        int lines_traveled = 0;
-        for (int i = index_closest; lines_traveled < cenario.getNumberAliensLine(); i += cenario.getNumberAliensColumn()) {
-            if (i < aliens.size()){
-                if (aliens.get(i).isFrontLine()){
-                    alien_shooter = aliens.get(i);
-                    alien_bullet = alien_shooter.getBullet();
-                    alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
-                    System.out.println("vai atirar");
-                }
+        double pos_x = findClosestX(spaceship.getPosX());
+        double greater_y = -1;
+        for (Alien alien : aliens){
+            if (pos_x == alien.getPosX() && greater_y < alien.getPosY()){
+                greater_y = alien.getPosY();
             }
-            lines_traveled++;
         }
+        for (Alien alien : aliens){
+            if (pos_x == alien.getPosX() && greater_y == alien.getPosY()){
+                alien_bullet = alien.getBullet();
+                alien_bullet.spawn(alien.getPosX(), alien.getPosY());
+            }
+        }
+        
     }
-
-    public int findClosest(double target){
-        int idx = 0;
+    
+    public double findClosestX(double target){
+        double posX = aliens.get(0).getPosX();
         double dist = Math.abs(aliens.get(0).getPosX() - target);
         
         for (int i = 1; i < aliens.size(); i++) {
             double cdist = Math.abs(aliens.get(i).getPosX() - target);
             if (cdist < dist) {
-                idx = i;
                 dist = cdist;
+                posX = aliens.get(i).getPosX();
             }
         }
-        return idx;
+        return posX;
     }
     
     public void moveAliens(){
@@ -312,7 +327,6 @@ public class GameManager implements Initializable {
             }
             counter++;
         }
-        setAliensFrontLine();
     }
     
     public void setAliensFrontLine(){

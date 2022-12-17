@@ -34,7 +34,7 @@ public class SpaceInvaders extends Application {
         // CONFIGURATIONS VALUES
         int WIDTH = 1600;
         int HEIGHT = 900;
-        final Image BACKGROUND_IMAGE = new Image("images/background-image.png", WIDTH, HEIGHT, false, false);
+        final Image BACKGROUND_IMAGE = new Image("images/background_space_invaders.png", WIDTH, HEIGHT, false, false);
 
         String TITLE = "Space Invaders";
         

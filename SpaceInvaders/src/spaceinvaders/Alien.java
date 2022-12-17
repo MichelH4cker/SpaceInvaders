@@ -33,7 +33,7 @@ public class Alien {
     private int IMAGE_WIDTH = 70;
     private int IMAGE_HEIGHT = 70;
     
-    final Image image = new Image("images/alien.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    final Image image = new Image("images/alien-1.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
     Alien(GraphicsContext gc) {
         this.frontLine = false;
