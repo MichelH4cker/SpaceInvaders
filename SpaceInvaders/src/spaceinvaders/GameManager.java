@@ -15,7 +15,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 /**
  *
@@ -23,14 +26,25 @@ import javafx.scene.input.KeyEvent;
  */
 public class GameManager implements Initializable {
         
-    private int ALIENS_LEFT = 40;
+    private int ALIENS_LEFT = 55;
     private int ROCKS = 3;
     private boolean GAME_OVER = false;
     
     private long PREV_ALIEN_MOVEMENT;
     private long ALIEN_MOVEMENT_DELAY = (long) 1e9;
+    private long PREV_ALIEN_SHOOT;
+    private long ALIEN_SHOOT_DELAY = (long) 3e9; 
+    private long ALIEN_SHOOT_UPGRADE_DELAY = (long) 0.5e9;
     
     private boolean guided_shooting = false;
+    private boolean PLAYER_WON = false;
+    
+    int WIDTH = 1600;
+    int HEIGHT = 900;
+    int FONT_SIZE = 70;
+    private final Image BACKGROUND_IMAGE = new Image("images/background-image.png", WIDTH, HEIGHT, false, false);
+    Font DOGICA_PIXEL_BOLD = Font.loadFont("file:src/fonts/dogicapixelbold.ttf", FONT_SIZE);
+
     
     Spaceship spaceship;
     Bullet alien_bullet;
@@ -87,6 +101,7 @@ public class GameManager implements Initializable {
                 if (bullet_spaceship.collided(alien.getBounds())) {
                     bullet_spaceship.destroy();
                     changeFrontLine(alien);
+                    ALIENS_LEFT--;
                     aliens.remove(alien);
                     break;
                 }
@@ -98,7 +113,6 @@ public class GameManager implements Initializable {
                     rock.hit();
                     if (rock.getLife() == 0) rocks.remove(rock);
                     bullet_spaceship.destroy();
-                    System.out.println("spaceship acertou alien");
                     break;
                 }
             }
@@ -111,9 +125,10 @@ public class GameManager implements Initializable {
         }
         
         // ALIENS SHOOT
-        if (alien_bullet.isDestroyed()) {
+        if (TIME - PREV_ALIEN_SHOOT > ALIEN_SHOOT_DELAY) {
             aliensShoot();
-        }        
+            PREV_ALIEN_SHOOT = TIME;
+        }
         
         if (alien_bullet != null && !alien_bullet.isDestroyed()){
             // MOVE TIRO DOS ALIENS
@@ -125,7 +140,6 @@ public class GameManager implements Initializable {
                     rock.hit();
                     if (rock.getLife() == 0) rocks.remove(rock);
                     alien_bullet.destroy();
-                    System.out.println("Alien acertou rocha");
                     break;
                 }
             }
@@ -143,17 +157,42 @@ public class GameManager implements Initializable {
         drawAliens();
         cenario.drawMenu();
         for (Rock rock : rocks) rock.draw();
+        
+        checkGameOver();
     }
     
     public void Finish(){
+        gc.clearRect(0, 0, WIDTH, HEIGHT);
+        gc.drawImage(BACKGROUND_IMAGE, 0, 0);
         
+        gc.setFont(DOGICA_PIXEL_BOLD);
+        gc.setFill(Color.WHITE) ;
+        
+        String RESULT;
+        if (PLAYER_WON){
+            RESULT = "VOCÊ GANHOU!";
+        } else {
+            RESULT = "VOCÊ PERDEU!";
+        }
+            
+        gc.fillText(RESULT, (WIDTH / 2) - 380, HEIGHT / 2);
     }
       
+    public void checkGameOver(){
+        if (ALIENS_LEFT == 0){
+            PLAYER_WON = true;
+            GAME_OVER = true;
+        } else if (spaceship.getLife() == 0){
+            PLAYER_WON = false;
+            GAME_OVER = true;
+        }
+    }
+    
     public void setRocks(){
         double POS_X = cenario.getOffsetRock();
         for (Rock rock : rocks){
             rock.setPosX(POS_X);
-            rock.setPosY(cenario.getCanvasHeight() - 350);
+            rock.setPosY(cenario.getCanvasHeight() - 400);
             POS_X += cenario.getWidthRock() + cenario.getOffsetRock();
         }
     }
@@ -190,6 +229,7 @@ public class GameManager implements Initializable {
                     alien_shooter = aliens.get(i);
                     alien_bullet = alien_shooter.getBullet();
                     alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+
                 }
             }
             lines_traveled++;
@@ -206,6 +246,7 @@ public class GameManager implements Initializable {
                     alien_shooter = aliens.get(i);
                     alien_bullet = alien_shooter.getBullet();
                     alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+                    System.out.println("vai atirar");
                 }
             }
             lines_traveled++;
@@ -232,17 +273,21 @@ public class GameManager implements Initializable {
         Alien alienMaxY = Collections.max(aliens, Comparator.comparing(Alien::getPosY));
         
         if (cenario.itsOnTheLeftWall(alienMinX.getPosX())) {
-           for (Alien alien : aliens){
-               alien.moveDown();
-               alien.moveRight();
-               alien.setIsMovingToRight(!alien.getIsMovingToRight());
-           }
+            for (Alien alien : aliens){
+                alien.increaseVelocity();
+                alien.moveDown();
+                alien.moveRight();
+                alien.setIsMovingToRight(!alien.getIsMovingToRight());
+            }
+            ALIEN_SHOOT_DELAY -= ALIEN_SHOOT_UPGRADE_DELAY;
         } else if (cenario.itsOnTheRightWall(alienMaxX.getPosX() + alienMaxX.getImageWidth())){
             for (Alien alien : aliens){
+                alien.increaseVelocity();
                 alien.moveDown();
                 alien.moveLeft();
                 alien.setIsMovingToRight(!alien.getIsMovingToRight());
             }
+            ALIEN_SHOOT_DELAY -= ALIEN_SHOOT_UPGRADE_DELAY;
         } else if (alienMaxY.getIsMovingToRight()){
             for (Alien alien : aliens) alien.moveRight();
         } else {
@@ -272,10 +317,9 @@ public class GameManager implements Initializable {
     
     public void setAliensFrontLine(){
         int TOTAL_COLUMNS = cenario.getNumberAliensColumn();
-        aliens.get(5 + (ALIENS_LEFT - TOTAL_COLUMNS)).setFrontLine(true);
-
-        for (int i = 0; i < ALIENS_LEFT - 3 * TOTAL_COLUMNS; i++){
-            aliens.get(i + (ALIENS_LEFT - TOTAL_COLUMNS)).setFrontLine(true);
+        for (int index = ALIENS_LEFT - cenario.getNumberAliensColumn(); 
+                index < ALIENS_LEFT; index++){
+            aliens.get(index).setFrontLine(true);
         }
     }
     

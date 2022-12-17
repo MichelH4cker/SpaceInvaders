@@ -15,16 +15,14 @@ import javafx.scene.shape.Rectangle;
  */
 public class Alien {
     
-    // 4 linhas de aliens
-    // 10 colunas de aliens
-    
     private int life;
-    private double OFFSET_X = 15.0;
+    private double OFFSET_X = 23.0;
     private double OFFSET_Y = 10.0;
     private double posX;
     private double posY;
-    private double velocityX = 30;
+    private double velocityX = 20;
     private double velocityY = 20;
+    private double UPGRADE_VELOCITY = 5;
     private boolean dead;
     private boolean isMovingToRight;
     private boolean frontLine;
@@ -32,8 +30,8 @@ public class Alien {
     GraphicsContext gc;
     Bullet bullet;
     
-    private int IMAGE_WIDTH = 50;
-    private int IMAGE_HEIGHT = 50;
+    private int IMAGE_WIDTH = 70;
+    private int IMAGE_HEIGHT = 70;
     
     final Image image = new Image("images/alien.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
@@ -107,6 +105,10 @@ public class Alien {
 
     public Bullet getBullet(){
         return this.bullet;
+    }
+    
+    public void increaseVelocity(){
+        velocityX += UPGRADE_VELOCITY;
     }
     
     public void destroy(){

@@ -15,13 +15,13 @@ import javafx.scene.shape.Rectangle;
  */
 public class Rock {
  
-    private double IMAGE_WIDTH = 150;
-    private double IMAGE_HEIGHT = 150;
+    private double IMAGE_WIDTH = 230;
+    private double IMAGE_HEIGHT = 230;
     
     private double posX;
     private double posY;
     
-    private int life = 6;
+    private int life = 15;
     
     private final Image image = new Image("images/rock.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
