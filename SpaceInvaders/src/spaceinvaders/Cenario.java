@@ -44,7 +44,7 @@ public class Cenario {
 
     Line line;
     
-    final Image BACKGROUND_IMAGE = new Image("images/background-image.jpg", WIDTH_SCREEN, HEIGHT_SCREEN, false, false);
+    final Image BACKGROUND_IMAGE = new Image("images/background-image.png", WIDTH_SCREEN, HEIGHT_SCREEN, false, false);
     final Image HEART_IMAGE = new Image("images/heart.png", WIDTH_HEART, HEIGHT_HEART, false, false);
     ArrayList<Image> heart_images;
     

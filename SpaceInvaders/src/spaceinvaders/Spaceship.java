@@ -53,7 +53,6 @@ public class Spaceship {
         bullet = new Bullet(gc);
         posY = CANVAS_HEIGHT - OFFSET_SPAWN - cenario.getSizeBottonMenu();
         dead = false;
-        draw();
     }
     
     public double getPosX(){

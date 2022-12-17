@@ -33,8 +33,8 @@ public class Alien {
     private int IMAGE_WIDTH = 70;
     private int IMAGE_HEIGHT = 70;
     
-    final Image alien1a = new Image("images/alien-1a.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
-    final Image alien1b = new Image("images/alien-1b.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    final Image alien1a = new Image("images/alien-2a.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    final Image alien1b = new Image("images/alien-2b.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     Image image;
     
     Alien(GraphicsContext gc) {

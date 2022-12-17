@@ -23,7 +23,7 @@ public class Rock {
     
     private int life = 20;
     
-    private final Image image = new Image("images/rock-pixel.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    private final Image image = new Image("images/rock.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
     GraphicsContext gc;
     Rock(GraphicsContext gc){
