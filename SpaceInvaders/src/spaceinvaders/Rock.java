@@ -51,7 +51,7 @@ public class Rock {
     }
     
     public Rectangle getBounds() {
-        return new Rectangle(posX + 30, posY - 30, IMAGE_WIDTH - 60, IMAGE_HEIGHT);
+        return new Rectangle(posX + 30, posY + 10, IMAGE_WIDTH - 60, IMAGE_HEIGHT - 10);
     }
     
     public int getLife(){

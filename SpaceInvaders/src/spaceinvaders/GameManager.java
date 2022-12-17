@@ -290,6 +290,7 @@ public class GameManager implements Initializable {
         if (cenario.itsOnTheLeftWall(alienMinX.getPosX())) {
             for (Alien alien : aliens){
                 alien.increaseVelocity();
+                alien.changeImage();
                 alien.moveDown();
                 alien.moveRight();
                 alien.setIsMovingToRight(!alien.getIsMovingToRight());
@@ -297,6 +298,7 @@ public class GameManager implements Initializable {
             ALIEN_SHOOT_DELAY -= ALIEN_SHOOT_UPGRADE_DELAY;
         } else if (cenario.itsOnTheRightWall(alienMaxX.getPosX() + alienMaxX.getImageWidth())){
             for (Alien alien : aliens){
+                alien.changeImage();
                 alien.increaseVelocity();
                 alien.moveDown();
                 alien.moveLeft();
@@ -304,9 +306,15 @@ public class GameManager implements Initializable {
             }
             ALIEN_SHOOT_DELAY -= ALIEN_SHOOT_UPGRADE_DELAY;
         } else if (alienMaxY.getIsMovingToRight()){
-            for (Alien alien : aliens) alien.moveRight();
+            for (Alien alien : aliens) {
+                alien.changeImage();
+                alien.moveRight();
+            }
         } else {
-            for (Alien alien : aliens) alien.moveLeft();
+            for (Alien alien : aliens) {
+                alien.changeImage();
+                alien.moveLeft();
+            }
         }
         
     }
