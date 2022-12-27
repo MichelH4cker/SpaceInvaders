@@ -106,6 +106,10 @@ public class GameManager implements Initializable {
                     changeFrontLine(alien);
                     ALIENS_LEFT--;
                     aliens.remove(alien);
+                    
+                    Sound sound = new Sound();
+                    sound.selectSound(sound.getSound().SHOOT);
+                    sound.play();
                     break;
                 }
             }

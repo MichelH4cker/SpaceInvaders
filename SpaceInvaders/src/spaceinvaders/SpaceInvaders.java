@@ -79,6 +79,10 @@ public class SpaceInvaders extends Application {
         AnimationTimer timer = new MyTimer();
         timer.start();
         
+        Sound sound = new Sound();
+        sound.selectSound(sound.getSound().SOUNDTRACK);
+        sound.play();
+        
         // SHOW STAGE
         stage.show();
     }
@@ -122,7 +126,7 @@ public class SpaceInvaders extends Application {
         game_scene.setOnKeyReleased((KeyEvent e) -> {
             String code = e.getCode().toString();
             input.remove(code);
-            });
+        });
     }
     
     /**
