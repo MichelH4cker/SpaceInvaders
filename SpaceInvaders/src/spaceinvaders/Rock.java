@@ -15,13 +15,13 @@ import javafx.scene.shape.Rectangle;
  */
 public class Rock {
  
-    private double IMAGE_WIDTH = 230;
-    private double IMAGE_HEIGHT = 230;
+    private double IMAGE_WIDTH = 180;
+    private double IMAGE_HEIGHT = 180;
     
     private double posX;
     private double posY;
     
-    private int life = 15;
+    private int life = 20;
     
     private final Image image = new Image("images/rock.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
@@ -51,7 +51,7 @@ public class Rock {
     }
     
     public Rectangle getBounds() {
-        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
+        return new Rectangle(posX + 30, posY + 10, IMAGE_WIDTH - 60, IMAGE_HEIGHT - 10);
     }
     
     public int getLife(){

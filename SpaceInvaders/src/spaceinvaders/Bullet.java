@@ -20,8 +20,8 @@ public class Bullet {
     private double velocity = 15.0;
     private boolean destroyed;
     
-    private final int IMAGE_HEIGHT = 60;
-    private final int IMAGE_WIDTH = 60;
+    private final int IMAGE_HEIGHT = 80;
+    private final int IMAGE_WIDTH = 80;
     
     private final int IMAGE_ALIEN_HEIGHT = 50;
     private final int IMAGE_ALIEN_WIDTH = 50;
