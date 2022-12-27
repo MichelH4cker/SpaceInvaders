@@ -76,18 +76,14 @@ public class SpaceInvaders extends Application {
         Game = new GameManager(gc);
         Game.Start();
         
-        AnimationTimer timer = new MyTimer();
-        timer.start();
-        
-        //Sound sound = new Sound();
-        //sound.selectSound(sound.getSound().SOUNDTRACK);
-        //sound.play();
+        AnimationTimer GameTimer = new GameTimer();
+        GameTimer.start();
         
         // SHOW STAGE
         stage.show();
     }
     
-    private class MyTimer extends AnimationTimer {
+    private class GameTimer extends AnimationTimer {
         
         @Override
         public void handle(long currentNanoTime) {
@@ -105,7 +101,10 @@ public class SpaceInvaders extends Application {
             gc.drawImage(BACKGROUND_IMAGE_GAME, 0, 0);
 
             Game.Update(currentNanoTime, input);
-            if (Game.getGameOver()) Game.Finish();
+            if (Game.getGameOver()) {
+                Game.Finish();
+                this.stop();
+            }
             
         }
         
