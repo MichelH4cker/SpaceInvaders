@@ -20,8 +20,12 @@ public class Sound {
     URL soundURL[] = new URL[30];
     
     private static final int __SOUNDTRACK__ = 0;
-    private static final int __ALIEN_HIT__ = 1;
-
+    private static final int __SPACESHIP_SHOOT__ = 1;
+    private static final int __ALIEN_SHOOT__ = 2;
+    private static final int __SPACESHIP_HIT__ = 3;
+    private static final int __ALIEN_HIT__ = 4;
+    private static final int __ALIEN_MOVE_0__ = 5;
+    private static final int __ALIEN_MOVE_1__ = 6;
     
     enum sounds {
         SOUNDTRACK,
@@ -37,7 +41,12 @@ public class Sound {
     
     public Sound(){
         soundURL[__SOUNDTRACK__] = getClass().getResource("/sounds/acdc.wav");
-        soundURL[__ALIEN_HIT__] = getClass().getResource("/sounds/hit-0.wav");
+        soundURL[__SPACESHIP_SHOOT__] = getClass().getResource("/sounds/shoot-2.wav");
+        soundURL[__ALIEN_SHOOT__] = getClass().getResource("/sounds/shoot-3.wav");
+        soundURL[__SPACESHIP_HIT__] = getClass().getResource("/sounds/hit-1.wav");
+        soundURL[__ALIEN_HIT__] = getClass().getResource("/sounds/score-0.wav");
+        soundURL[__ALIEN_MOVE_0__] = getClass().getResource("");
+        soundURL[__ALIEN_MOVE_1__] = getClass().getResource("");
     }
     
     public sounds getSound(){
@@ -50,8 +59,23 @@ public class Sound {
         case SOUNDTRACK:
             key = __SOUNDTRACK__;
             break;
+        case SPACESHIP_SHOOT:
+            key = __SPACESHIP_SHOOT__;
+            break;
+        case ALIEN_SHOOT:
+            key = __ALIEN_SHOOT__;
+            break;    
+        case SPACESHIP_HIT:
+            key = __SPACESHIP_HIT__;
+            break;
         case ALIEN_HIT:
             key = __ALIEN_HIT__;
+            break;
+        case ALIEN_MOVE_0:
+            key = __ALIEN_MOVE_0__;
+            break;
+        case ALIEN_MOVE_1:
+            key = __ALIEN_MOVE_1__;
             break;
         default:
             break;
