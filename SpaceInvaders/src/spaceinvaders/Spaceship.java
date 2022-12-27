@@ -87,6 +87,10 @@ public class Spaceship {
         if (inputKeyboard.contains("SPACE") && bullet.isDestroyed() && TIME - PREV_SHOOT > SHOOT_DELAY) {
             bullet.spawn(posX, posY);
             PREV_SHOOT = TIME;
+            // SOM
+            Sound sound = new Sound();
+            sound.selectSound(sound.getSound().SPACESHIP_SHOOT);
+            sound.play();
         } 
         if (inputKeyboard.contains("LEFT") && !cenario.itsOnTheLeftWall(posX)) {
             moveLeft();

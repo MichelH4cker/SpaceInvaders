@@ -31,13 +31,14 @@ public class GameManager implements Initializable {
     private boolean GAME_OVER = false;
     
     private long PREV_ALIEN_MOVEMENT;
-    private long ALIEN_MOVEMENT_DELAY = (long) 1e9;
+    private long ALIEN_MOVEMENT_DELAY = (long) 1.2e9;
     private long PREV_ALIEN_SHOOT;
     private long ALIEN_SHOOT_DELAY = (long) 1e9; 
     private long ALIEN_SHOOT_UPGRADE_DELAY = (long) 0.5e9;
     
     private boolean guided_shooting = false;
     private boolean PLAYER_WON = false;
+    private boolean CHANGE_SOUND = false;
     
     int WIDTH = 1600;
     int HEIGHT = 900;
@@ -51,7 +52,7 @@ public class GameManager implements Initializable {
     ArrayList<Alien> aliens;
     ArrayList<Rock> rocks;
     Cenario cenario;
-    
+
     GameManager(GraphicsContext gc){
         this.gc = gc;
         cenario = new Cenario(gc);
@@ -106,7 +107,10 @@ public class GameManager implements Initializable {
                     changeFrontLine(alien);
                     ALIENS_LEFT--;
                     aliens.remove(alien);
-                    
+                    // SOM
+                    Sound sound = new Sound();
+                    sound.selectSound(sound.getSound().ALIEN_HIT);
+                    sound.play();
                     break;
                 }
             }
@@ -129,6 +133,17 @@ public class GameManager implements Initializable {
         if (TIME - PREV_ALIEN_MOVEMENT > ALIEN_MOVEMENT_DELAY) {
             moveAliens();
             PREV_ALIEN_MOVEMENT = TIME;
+            
+            // SOM
+            Sound sound = new Sound();
+            // SOM DIFERERENTE PARA CADA PASSADA
+            if (CHANGE_SOUND){
+                sound.selectSound(sound.getSound().ALIEN_MOVE_0);
+            } else {
+                sound.selectSound(sound.getSound().ALIEN_MOVE_1);
+            }
+            CHANGE_SOUND = !CHANGE_SOUND;
+            sound.play();
         }
         
         // ALIENS SHOOT
@@ -158,6 +173,10 @@ public class GameManager implements Initializable {
                 alien_bullet.destroy();
                 spaceship.hit();
                 cenario.heart_images.remove(cenario.heart_images.size() - 1);
+                // SOM
+                Sound sound = new Sound();
+                sound.selectSound(sound.getSound().SPACESHIP_HIT);
+                sound.play();
             }
         }
         

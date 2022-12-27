@@ -79,9 +79,9 @@ public class SpaceInvaders extends Application {
         AnimationTimer timer = new MyTimer();
         timer.start();
         
-        Sound sound = new Sound();
-        sound.selectSound(sound.getSound().SOUNDTRACK);
-        sound.play();
+        //Sound sound = new Sound();
+        //sound.selectSound(sound.getSound().SOUNDTRACK);
+        //sound.play();
         
         // SHOW STAGE
         stage.show();
