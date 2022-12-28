@@ -7,6 +7,7 @@ package spaceinvaders;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 /**
  *
@@ -14,32 +15,39 @@ import javafx.scene.image.Image;
  */
 public class Alien {
     
-    // 4 linhas de aliens
-    // 10 colunas de aliens
-    
     private int life;
-    private double OFFSET_X = 15.0;
+    private double OFFSET_X = 23.0;
     private double OFFSET_Y = 10.0;
     private double posX;
     private double posY;
-    private double velocityX = 1;
+    private double velocityX = 20;
     private double velocityY = 20;
+    private double UPGRADE_VELOCITY = 5;
     private boolean dead;
     private boolean isMovingToRight;
+    private boolean frontLine;
     
     GraphicsContext gc;
     Bullet bullet;
     
-    private int IMAGE_WIDTH = 50;
-    private int IMAGE_HEIGHT = 50;
+    private int IMAGE_WIDTH = 70;
+    private int IMAGE_HEIGHT = 70;
     
-    final Image image = new Image("images/alien.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    final Image alien1a = new Image("images/alien-2a.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    final Image alien1b = new Image("images/alien-2b.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    Image image;
     
     Alien(GraphicsContext gc) {
+        this.frontLine = false;
         this.gc = gc;
         this.isMovingToRight = true;
         this.life = 3;
         bullet = new Bullet(gc);
+        image = alien1a;
+    }
+    
+    public Rectangle getBounds() {
+        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
     }
     
     public double getVelocityX(){
@@ -56,6 +64,14 @@ public class Alien {
     
     public void setIsMovingToRight(boolean isMovingToRight){
         this.isMovingToRight = isMovingToRight;
+    }
+    
+    public boolean isFrontLine(){
+        return this.frontLine;
+    }
+    
+    public void setFrontLine(boolean frontLine){
+        this.frontLine = frontLine;
     }
     
     public double getOffsetX(){
@@ -92,6 +108,28 @@ public class Alien {
 
     public Bullet getBullet(){
         return this.bullet;
+    }
+    
+    public void increaseVelocity(){
+        velocityX += UPGRADE_VELOCITY;
+    }
+    
+    public void destroy(){
+        posX = 50;
+        posY = 0;
+        dead = true;
+    }
+    
+    public boolean isDead(){
+        return this.dead;
+    }
+    
+    public void changeImage(){
+        if (image == alien1a){
+            image = alien1b;
+        } else {
+            image = alien1a;
+        }
     }
     
     public void draw(double pos_x, double pos_y){

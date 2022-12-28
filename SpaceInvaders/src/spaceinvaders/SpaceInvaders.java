@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
@@ -26,86 +27,107 @@ import javafx.stage.Stage;
  * @author michel
  */
 public class SpaceInvaders extends Application {
-     
+        
+    // CONFIGURATIONS VALUES
+    private int WIDTH = 1600;
+    private int HEIGHT = 900;
+    
+    private boolean GAME_BEGIN = false;
+    
+    private final Image BACKGROUND_IMAGE_GAME = new Image("images/background_space_invaders.png", WIDTH, HEIGHT, false, false);
+    private final Image BACKGROUND_IMAGE_MENU = new Image("images/main-background.png", WIDTH, HEIGHT, false, false);
+    
+    private final String TITLE = "Space Invaders";
+    
+    private GraphicsContext gc;
+    private GameManager Game;
+    private ArrayList<String> input;
+
     @Override
     public void start(Stage stage) throws Exception {
         
-        // CONFIGURATIONS VALUES
-        int WIDTH = 1600;
-        int HEIGHT = 900;
-        final Image BACKGROUND_IMAGE = new Image("images/background-image.jpg", WIDTH, HEIGHT, false, false);
-
-        String TITLE = "Space Invaders";
+        initUI(stage);
         
-        try {
-            // GRAPHICS CONFIGURATIONS
-            stage.setTitle(TITLE);
-            stage.setFullScreen(false);
-            stage.setMaximized(false);
-            stage.setResizable(false);
-
-            Group root = new Group();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-
-            Canvas canvas = new Canvas(WIDTH, HEIGHT);
-            root.getChildren().add(canvas);
-            
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            
-            GraphicsContext gcBackground = canvas.getGraphicsContext2D();
-            
-            // KEYBOARD DETECTION
-            ArrayList<String> input = new ArrayList<String>();
-            
-            scene.setOnKeyPressed((KeyEvent e) -> {
-                String code = e.getCode().toString();
-                // only add once... prevent duplicates
-                if ( !input.contains(code) ) input.add( code );
-            });
-            
-            scene.setOnKeyReleased((KeyEvent e) -> {
-                String code = e.getCode().toString();
-                input.remove(code);
-            });
-            
-            // GAME ADMINISTRATION
-            GameManager Game = new GameManager(gc);
-            
-            Game.Start();
-            
-            // MAIN GAME LOOP 
-            new AnimationTimer() {
-                
-                long prevNanoTime = 0;
-                
-                @Override
-                public void handle(long currentNanoTime) {
-                    gc.clearRect(0, 0, WIDTH, HEIGHT);
-                    gc.drawImage(BACKGROUND_IMAGE, 0, 0);
-                    
-                    long t = (currentNanoTime - prevNanoTime);
-                    
-                    Game.Update(t, input);
-                    if (Game.getGameOver()) this.stop();
-                    
-                }
-            }.start();
-            
-            Game.Finish();
-            
-            // SHOW STAGE
-            stage.show();
-            
-        } catch (Exception e) {
-            System.err.println("ERRO!");
-            System.err.println("Cause: " + e.getCause());
-            System.err.println("Message: " + e.getMessage());
-            System.err.println("Localized Message: " + e.getLocalizedMessage());
-            System.err.println("Stack Trace: " + e.getStackTrace());
-        }
     }
 
+    private void initUI(Stage stage){
+        // GRAPHICS CONFIGURATIONS
+        stage.setTitle(TITLE);
+        stage.setFullScreen(false);
+        stage.setMaximized(false);
+        stage.setResizable(false);
+
+        // HANDLE WITH GAME SCENE
+        Group game_group = new Group();
+        Scene game_scene = new Scene(game_group);
+
+        Canvas canvas = new Canvas(WIDTH, HEIGHT);
+        game_group.getChildren().add(canvas);
+
+        gc = canvas.getGraphicsContext2D();
+        gc.drawImage(BACKGROUND_IMAGE_MENU, 0, 0);
+
+        stage.setScene(game_scene);
+        
+        // DETCAÇÃO DA ENTRADA DO USUÁRIO
+        detectKeyboard(game_scene);
+        
+        // GAME ADMINISTRATION
+        Game = new GameManager(gc);
+        Game.Start();
+        
+        AnimationTimer GameTimer = new GameTimer();
+        GameTimer.start();
+        
+        // SHOW STAGE
+        stage.show();
+    }
+    
+    private class GameTimer extends AnimationTimer {
+        
+        @Override
+        public void handle(long currentNanoTime) {
+            if (GAME_BEGIN == false){
+                if (input.contains("SPACE")) {
+                    GAME_BEGIN = true;
+                }
+            } else {
+                doHandle(currentNanoTime);
+            }
+        }
+        
+        public void doHandle(long currentNanoTime){
+            gc.clearRect(0, 0, WIDTH, HEIGHT);
+            gc.drawImage(BACKGROUND_IMAGE_GAME, 0, 0);
+
+            Game.Update(currentNanoTime, input);
+            if (Game.getGameOver()) {
+                Game.Finish();
+                this.stop();
+            }
+            
+        }
+        
+    }
+    
+    private void detectKeyboard(Scene game_scene){
+        // KEYBOARD DETECTION
+        input = new ArrayList<String>();
+
+        game_scene.setOnKeyPressed((KeyEvent e) -> {
+            String code = e.getCode().toString();
+            // only add once... prevent duplicates
+            if (!input.contains(code)) {
+                input.add(code);
+            }
+        });
+
+        game_scene.setOnKeyReleased((KeyEvent e) -> {
+            String code = e.getCode().toString();
+            input.remove(code);
+        });
+    }
+    
     /**
      * @param args the command line arguments
      */

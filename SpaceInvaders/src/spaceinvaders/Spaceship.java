@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 /**
@@ -20,18 +21,21 @@ import javafx.scene.text.Text;
  */
 public class Spaceship {
     
+    private long PREV_SHOOT = 0;
+    private long SHOOT_DELAY = (long) 0.65e9;
+    
+    private final int IMAGE_HEIGHT = 80;
+    private final int IMAGE_WIDTH = 80;
+
     private int CANVAS_WIDTH = 1600;
     private int CANVAS_HEIGHT = 900;
     
-    private final int IMAGE_HEIGHT = 65;
-    private final int IMAGE_WIDTH = 65;
+    private int OFFSET_SPAWN = 60;
     
-    private final int OFFSET_Y_SPAWN = 30;
-    
-    private final double posY = CANVAS_HEIGHT - IMAGE_HEIGHT - OFFSET_Y_SPAWN;
+    private final double posY;
     private double posX = 500.0;
     private int life = 3;
-    private double velocity = 8.0;
+    private double velocity = 7.0;
     private boolean dead;
     
     private Bullet bullet;
@@ -43,12 +47,32 @@ public class Spaceship {
     final Image image = new Image("images/spaceship.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
     Spaceship(GraphicsContext gc) {
-        cenario = new Cenario();
-        image.isPreserveRatio();
         this.gc = gc;
-        dead = false;
+        cenario = new Cenario(gc);
+        image.isPreserveRatio();
         bullet = new Bullet(gc);
-        draw();
+        posY = CANVAS_HEIGHT - OFFSET_SPAWN - cenario.getSizeBottonMenu();
+        dead = false;
+    }
+    
+    public double getPosX(){
+        return this.posX;
+    }
+    
+    public double getPosY(){
+        return this.posY;
+    }
+    
+    public Rectangle getBounds() {
+        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
+    }
+    
+    public int  getLife(){
+        return life;
+    }
+    
+    public void hit(){
+        life -= 1;
     }
     
     public Bullet getBullet(){
@@ -59,9 +83,14 @@ public class Spaceship {
         gc.drawImage(image, posX, posY);
     }
     
-    public void handleAction(ArrayList<String> inputKeyboard){
-        if (inputKeyboard.contains("SPACE") && bullet.isDestroyed()) {
+    public void handleAction(ArrayList<String> inputKeyboard, long TIME){
+        if (inputKeyboard.contains("SPACE") && bullet.isDestroyed() && TIME - PREV_SHOOT > SHOOT_DELAY) {
             bullet.spawn(posX, posY);
+            PREV_SHOOT = TIME;
+            // SOM
+            Sound sound = new Sound();
+            sound.selectSound(sound.getSound().SPACESHIP_SHOOT);
+            sound.play();
         } 
         if (inputKeyboard.contains("LEFT") && !cenario.itsOnTheLeftWall(posX)) {
             moveLeft();
