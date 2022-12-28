@@ -37,6 +37,8 @@ public class Spaceship {
     private int life = 3;
     private double velocity = 7.0;
     private boolean dead;
+    private boolean hit = false;
+    private boolean visible = true;
     
     private Bullet bullet;
     
@@ -69,6 +71,22 @@ public class Spaceship {
     
     public int  getLife(){
         return life;
+    }
+    
+    public void setVisible(boolean visible) {
+       this.visible = visible;
+    }
+    
+    public boolean getVisible(){
+        return this.visible;
+    }
+    
+    public void setHit(boolean hit){
+        this.hit = hit;
+    }
+    
+    public boolean getHit(){
+        return this.hit;
     }
     
     public void hit(){
