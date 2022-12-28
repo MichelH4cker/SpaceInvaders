@@ -32,10 +32,16 @@ public class GameManager implements Initializable {
     
     private long PREV_ALIEN_MOVEMENT;
     private long ALIEN_MOVEMENT_DELAY = (long) 1.2e9;
+    
     private long PREV_ALIEN_SHOOT;
     private long ALIEN_SHOOT_DELAY = (long) 1e9; 
     private long ALIEN_SHOOT_UPGRADE_DELAY = (long) 0.5e9;
     
+    private long PREV_SPACESHIP_BLINK_DELAY;
+    private long SPACESHIP_BLINK_DELAY = (long) 0.4e9; 
+
+    private int spaceship_total_blink = 5;
+    private int spaceship_blink_times = 0;
     private boolean guided_shooting = false;
     private boolean PLAYER_WON = false;
     private boolean CHANGE_SOUND = false;
@@ -175,6 +181,8 @@ public class GameManager implements Initializable {
             if (alien_bullet.collided(spaceship.getBounds())){
                 alien_bullet.destroy();
                 spaceship.hit();
+                spaceship.setHit(true);
+                spaceship.setVisible(false);
                 cenario.heart_images.remove(cenario.heart_images.size() - 1);
                 // SOM
                 Sound sound = new Sound();
@@ -184,7 +192,26 @@ public class GameManager implements Initializable {
         }
         
         // DESENHA
-        spaceship.draw();
+        
+        // SPACESHIP BLINK IF WAS HIT
+        if (spaceship.getHit()){
+            if (TIME - PREV_SPACESHIP_BLINK_DELAY > SPACESHIP_BLINK_DELAY) {
+                PREV_SPACESHIP_BLINK_DELAY = TIME;
+                spaceship.setVisible(!spaceship.getVisible());
+                
+                if (spaceship_total_blink == spaceship_blink_times){
+                    spaceship_blink_times = 0;
+                    spaceship.setHit(false);
+                }
+                spaceship_blink_times++;
+            } else {
+                if (spaceship.getVisible()) spaceship.draw();
+            }
+            
+        } else {
+            PREV_SPACESHIP_BLINK_DELAY = TIME;
+            spaceship.draw();
+        }
         drawAliens();
         cenario.drawMenu();
         for (Rock rock : rocks) rock.draw();
