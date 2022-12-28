@@ -74,7 +74,10 @@ public class GameManager implements Initializable {
         }
         
         // SET POSICOES DOS ALIENS
-        setsAliensInitialPosition(aliens);
+        setAliensInitialPosition(aliens);
+        
+        // SET IMAGENS DOS ALIENS
+        setAliensImages(aliens);
         
         // MARCA QUAIS ALIENS SÃO DA LINHA DE FRENTE
         setAliensFrontLine();
@@ -264,7 +267,6 @@ public class GameManager implements Initializable {
                     alien_shooter = aliens.get(i);
                     alien_bullet = alien_shooter.getBullet();
                     alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
-
                 }
             }
             lines_traveled++;
@@ -339,7 +341,7 @@ public class GameManager implements Initializable {
         
     }
     
-    public void setsAliensInitialPosition(ArrayList<Alien> aliens){
+    public void setAliensInitialPosition(ArrayList<Alien> aliens){
         double initialX = aliens.get(0).getVelocityX();
         double initialY = 0;
         double posX = initialX, posY = initialY;
@@ -354,6 +356,22 @@ public class GameManager implements Initializable {
                 counter = 0;
             }
             counter++;
+        }
+    }
+    
+    public void setAliensImages(ArrayList<Alien> aliens){
+        int index = 0;
+        for (int i = index; i < 2 * cenario.getNumberAliensColumn(); i++){
+            aliens.get(index).setImage(Alien.aliens.GREEN);
+            index++;
+        }
+        for (int i = 0; i < 2 * cenario.getNumberAliensColumn(); i++){
+            aliens.get(index).setImage(Alien.aliens.PURPLE);
+            index++;
+        }
+        for (int i = 0; i < cenario.getNumberAliensColumn(); i++){
+            aliens.get(index).setImage(Alien.aliens.MIKE);
+            index++;
         }
     }
     
