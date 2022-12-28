@@ -22,6 +22,9 @@ import javafx.scene.text.FontWeight;
 public class Cenario {
     
     private int ALIENS_LEFT = 40;
+    private int TOTAL_SCORE = 0;
+    private int NORMAL_SCORE = 15;
+    private int SPECIAL_SCORE = 30;
     
     private final int WIDTH_SCREEN = 1600;
     private final int HEIGHT_SCREEN = 900;
@@ -31,7 +34,7 @@ public class Cenario {
     private final int NUMBER_ALIENS_COLUMN = 11;
     private double WIDTH_ROCK = 50;
     private final double OFFSET_ROCK = (WIDTH_SCREEN - (3 * WIDTH_ROCK)) / 4;
-    private final double OFFSET_X = 50;
+    private final double OFFSET_X = 70;
     private final double OFFSET_Y = 20;
     private final double FONT_SIZE = 36;
     private final double WIDTH_LINE = 5;
@@ -39,7 +42,9 @@ public class Cenario {
     private final double END_OF_LIFE_TEXT = 220; // chute
     private final double OFFSET_HEART_IMAGE = 60;
     
-    String LIFE_TEXT = "LIFE: ";
+    private String LIFE_TEXT = "LIFE: ";
+    private String SCORE_TEXT = "SCORE: ";
+    
     Font DOGICA_PIXEL_BOLD = Font.loadFont("file:src/fonts/dogicapixelbold.ttf", FONT_SIZE);
 
     Line line;
@@ -102,11 +107,29 @@ public class Cenario {
         return y >= HEIGHT_SCREEN;
     }
     
+    public void scoreNormalAlien(){
+        TOTAL_SCORE += NORMAL_SCORE;
+    }
+    
+    public void scoreSpecialAlien(){
+        TOTAL_SCORE += SPECIAL_SCORE;
+    }
+    
     public void drawMenu(){
         // DESENHA LINHA
         gc.setStroke(Color.WHITE);
         gc.setLineWidth(WIDTH_LINE);
-        gc.strokeLine(OFFSET_X, HEIGHT_SCREEN - FONT_SIZE - (2 * OFFSET_Y), WIDTH_SCREEN - OFFSET_X, HEIGHT_SCREEN - FONT_SIZE -  2 * OFFSET_Y);        
+        gc.strokeLine(OFFSET_X, HEIGHT_SCREEN - FONT_SIZE - (2 * OFFSET_Y), WIDTH_SCREEN - OFFSET_X, HEIGHT_SCREEN - FONT_SIZE -  2 * OFFSET_Y);
+
+        // DESENHA INT SCORE
+        gc.setFont(DOGICA_PIXEL_BOLD);
+        gc.setFill(Color.WHITE) ;
+        gc.fillText(Integer.toString(TOTAL_SCORE), WIDTH_SCREEN - (2 * OFFSET_X), HEIGHT_SCREEN - OFFSET_Y);
+        
+        // DESENHA TEXTO SCORE
+        gc.setFont(DOGICA_PIXEL_BOLD);
+        gc.setFill(Color.WHITE) ;
+        gc.fillText(SCORE_TEXT, WIDTH_SCREEN - (5 * OFFSET_X), HEIGHT_SCREEN - OFFSET_Y);
         
         // DESENHA TEXTO VIDA
         gc.setFont(DOGICA_PIXEL_BOLD);

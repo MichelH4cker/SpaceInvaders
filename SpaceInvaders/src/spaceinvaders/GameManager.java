@@ -112,6 +112,7 @@ public class GameManager implements Initializable {
             // ACERTOU UM ALIEN
             for (Alien alien : aliens) {
                 if (bullet_spaceship.collided(alien.getBounds())) {
+                    cenario.scoreNormalAlien();
                     bullet_spaceship.destroy();
                     changeFrontLine(alien);
                     ALIENS_LEFT--;
@@ -220,7 +221,7 @@ public class GameManager implements Initializable {
     
     public void Finish(){
         gc.clearRect(0, 0, WIDTH, HEIGHT);
-        gc.drawImage(BACKGROUND_IMAGE, 0, 0);
+        gc.drawImage(cenario.BACKGROUND_IMAGE, 0, 0);
         
         gc.setFont(DOGICA_PIXEL_BOLD);
         gc.setFill(Color.WHITE) ;
@@ -267,7 +268,6 @@ public class GameManager implements Initializable {
                 alien.setFrontLine(true);
             }
         }
-        
     }
     
     public void aliensShoot(){
