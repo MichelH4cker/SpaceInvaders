@@ -112,6 +112,7 @@ public class GameManager implements Initializable {
             // ACERTOU UM ALIEN
             for (Alien alien : aliens) {
                 if (bullet_spaceship.collided(alien.getBounds())) {
+                    cenario.scoreNormalAlien();
                     bullet_spaceship.destroy();
                     changeFrontLine(alien);
                     ALIENS_LEFT--;
@@ -220,19 +221,23 @@ public class GameManager implements Initializable {
     
     public void Finish(){
         gc.clearRect(0, 0, WIDTH, HEIGHT);
-        gc.drawImage(BACKGROUND_IMAGE, 0, 0);
+        gc.drawImage(cenario.BACKGROUND_IMAGE, 0, 0);
         
         gc.setFont(DOGICA_PIXEL_BOLD);
         gc.setFill(Color.WHITE) ;
         
         String RESULT;
         if (PLAYER_WON){
-            RESULT = "VOCÊ GANHOU!";
+            RESULT = "YOU WIN!";
         } else {
-            RESULT = "VOCÊ PERDEU!";
+            RESULT = "GAME OVER!";
         }
-            
-        gc.fillText(RESULT, (WIDTH / 2) - 380, HEIGHT / 2);
+        
+        gc.fillText(RESULT, (WIDTH / 2) - (DOGICA_PIXEL_BOLD.getSize() * RESULT.length()) / 2, HEIGHT / 2 - 50);
+
+        // DESENHA SCORE FINAL
+        String SCORE_TEXT = "SCORE: " + Integer.toString(cenario.getTotalScore());
+        gc.fillText(SCORE_TEXT, (WIDTH / 2) - (DOGICA_PIXEL_BOLD.getSize() * SCORE_TEXT.length()) / 2, HEIGHT / 2 + 50);
     }
       
     public void checkGameOver(){
@@ -267,7 +272,6 @@ public class GameManager implements Initializable {
                 alien.setFrontLine(true);
             }
         }
-        
     }
     
     public void aliensShoot(){
