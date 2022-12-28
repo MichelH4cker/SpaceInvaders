@@ -228,12 +228,16 @@ public class GameManager implements Initializable {
         
         String RESULT;
         if (PLAYER_WON){
-            RESULT = "VOCÊ GANHOU!";
+            RESULT = "YOU WIN!";
         } else {
-            RESULT = "VOCÊ PERDEU!";
+            RESULT = "GAME OVER!";
         }
-            
-        gc.fillText(RESULT, (WIDTH / 2) - 380, HEIGHT / 2);
+        
+        gc.fillText(RESULT, (WIDTH / 2) - (DOGICA_PIXEL_BOLD.getSize() * RESULT.length()) / 2, HEIGHT / 2 - 50);
+
+        // DESENHA SCORE FINAL
+        String SCORE_TEXT = "SCORE: " + Integer.toString(cenario.getTotalScore());
+        gc.fillText(SCORE_TEXT, (WIDTH / 2) - (DOGICA_PIXEL_BOLD.getSize() * SCORE_TEXT.length()) / 2, HEIGHT / 2 + 50);
     }
       
     public void checkGameOver(){

@@ -49,7 +49,7 @@ public class Cenario {
 
     Line line;
     
-    final Image BACKGROUND_IMAGE = new Image("images/background-image.png", WIDTH_SCREEN, HEIGHT_SCREEN, false, false);
+    final Image BACKGROUND_IMAGE = new Image("images/background_space_invaders.png", WIDTH_SCREEN, HEIGHT_SCREEN, false, false);
     final Image HEART_IMAGE = new Image("images/heart.png", WIDTH_HEART, HEIGHT_HEART, false, false);
     ArrayList<Image> heart_images;
     
@@ -89,6 +89,10 @@ public class Cenario {
     
     public int getNumberAliensColumn(){
         return this.NUMBER_ALIENS_COLUMN;
+    }
+    
+    public int getTotalScore(){
+        return this.TOTAL_SCORE;
     }
     
     public boolean itsOnTheLeftWall(double x){
