@@ -26,6 +26,7 @@ public class Alien {
     private boolean dead;
     private boolean isMovingToRight;
     private boolean frontLine;
+    private boolean change_image = true;
     
     GraphicsContext gc;
     Bullet bullet;
@@ -33,9 +34,24 @@ public class Alien {
     private int IMAGE_WIDTH = 70;
     private int IMAGE_HEIGHT = 70;
     
-    final Image alien1a = new Image("images/alien-2a.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
-    final Image alien1b = new Image("images/alien-2b.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
-    Image image;
+    private final Image alien0  = new Image("images/alien-0.png" , IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    private final Image alien1a = new Image("images/alien-1a.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    private final Image alien1b = new Image("images/alien-1b.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    private final Image alien2a = new Image("images/alien-2a.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    private final Image alien2b = new Image("images/alien-2b.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    
+    private Image image_0;
+    private Image image_1;
+    
+    private Image image;
+
+    enum aliens {
+        MIKE,
+        GREEN,
+        PURPLE;
+    }
+    
+    private aliens alien;
     
     Alien(GraphicsContext gc) {
         this.frontLine = false;
@@ -43,7 +59,10 @@ public class Alien {
         this.isMovingToRight = true;
         this.life = 3;
         bullet = new Bullet(gc);
-        image = alien1a;
+    }
+    
+    public aliens getAlienType(){
+        return alien;
     }
     
     public Rectangle getBounds() {
@@ -90,6 +109,25 @@ public class Alien {
         return this.IMAGE_HEIGHT;
     }
     
+    public void setImage(aliens alien){
+        switch (alien){
+            case MIKE:
+                image_0 = alien0;
+                image_1 = alien0;
+                break;
+            case GREEN:
+                image_0 = alien1a;
+                image_1 = alien1b;
+                break;
+            case PURPLE:
+                image_0 = alien2a;
+                image_1 = alien2b;
+                break;
+            default:
+                break;
+        }
+    }
+    
     public double getPosX(){
         return this.posX;        
     }
@@ -125,11 +163,12 @@ public class Alien {
     }
     
     public void changeImage(){
-        if (image == alien1a){
-            image = alien1b;
+        if (change_image){
+            image = image_0;
         } else {
-            image = alien1a;
+            image = image_1;
         }
+        change_image = !change_image;
     }
     
     public void draw(double pos_x, double pos_y){
