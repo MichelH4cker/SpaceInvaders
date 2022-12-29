@@ -424,7 +424,7 @@ public class GameManager implements Initializable {
         for (Alien alien : aliens){
             alien.setPosX(posX);
             alien.setPosY(posY);
-            posX += alien.getOffsetX() + alien.getImageWidth();
+            posX += 10 + alien.getOffsetX() + alien.getImageWidth();
             if (counter == cenario.getNumberAliensColumn()) {
                 posY += alien.getOffsetY() + alien.getImageHeight();
                 posX = initialX;

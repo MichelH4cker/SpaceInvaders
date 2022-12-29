@@ -75,7 +75,7 @@ public class Bullet {
     }
     
     public Rectangle getBounds() {
-        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
+        return new Rectangle(posX + IMAGE_WIDTH / 2, posY, 2, IMAGE_HEIGHT);
     }
     
     public boolean collided(Rectangle target_rectangle){
