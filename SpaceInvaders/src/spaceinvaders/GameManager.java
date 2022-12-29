@@ -30,6 +30,11 @@ public class GameManager implements Initializable {
     private int ROCKS = 3;
     private boolean GAME_OVER = false;
     
+    private long PREV_SPECIAL_ALIEN_SPAWN = 0;
+    private long SPECIAL_ALIEN_SPAWN_DELAY = (long) 30e9;
+    private long PREV_SPECIAL_ALIEN_MOVEMENT;
+    private long SPECIAL_ALIEN_MOVEMENT_DELAY = (long) 0.1e9;
+    
     private long PREV_ALIEN_MOVEMENT;
     private long ALIEN_MOVEMENT_DELAY = (long) 1.2e9;
     
@@ -46,6 +51,8 @@ public class GameManager implements Initializable {
     private boolean PLAYER_WON = false;
     private boolean CHANGE_SOUND = false;
     
+    private boolean MOVED_DOWN = false;
+    
     int WIDTH = 1600;
     int HEIGHT = 900;
     int FONT_SIZE = 70;
@@ -55,6 +62,7 @@ public class GameManager implements Initializable {
     Spaceship spaceship;
     Bullet alien_bullet;
     GraphicsContext gc;
+    Alien special_alien;
     ArrayList<Alien> aliens;
     ArrayList<Rock> rocks;
     Cenario cenario;
@@ -63,6 +71,8 @@ public class GameManager implements Initializable {
         this.gc = gc;
         cenario = new Cenario(gc);
         alien_bullet = new Bullet(gc);
+        special_alien = new Alien(gc, true);
+        special_alien.setImage(Alien.aliens.SPECIAL);
     }
     
     public boolean getGameOver(){
@@ -125,6 +135,18 @@ public class GameManager implements Initializable {
                 }
             }
             
+            // ACERTOU UM ALIEN ESPECIAL
+            if (bullet_spaceship.collided(special_alien.getBounds())){
+                cenario.scoreSpecialAlien();
+                bullet_spaceship.destroy();
+                special_alien.destroy();
+                
+                // SOM
+                Sound sound = new Sound();
+                sound.selectSound(sound.getSound().ALIEN_HIT);
+                sound.play();
+            }
+            
             // ACERTOU UMA ROCHA
             for (Rock rock : rocks){
                 if (bullet_spaceship.collided(rock.getBounds())) {
@@ -138,7 +160,28 @@ public class GameManager implements Initializable {
                 }
             }
         }
-
+        
+        // MOVE SPECIAL ALIEN WITH DELAY
+        if (!special_alien.isDead()) {
+            if (TIME - PREV_SPECIAL_ALIEN_MOVEMENT > SPECIAL_ALIEN_MOVEMENT_DELAY) {
+                PREV_SPECIAL_ALIEN_MOVEMENT = TIME;
+                special_alien.changeImage();
+                special_alien.moveRight();
+            }
+        }
+        
+        // SPAWN SPECIAL ALIEN
+        if (MOVED_DOWN && TIME - PREV_SPECIAL_ALIEN_SPAWN > SPECIAL_ALIEN_SPAWN_DELAY) {
+            PREV_SPECIAL_ALIEN_SPAWN = TIME;
+            special_alien.setIsDead(false);
+            special_alien.spawn();
+        }
+        
+        // DESTROY SPECIAL ALIEN
+        if (cenario.itsOnTheRightWall(special_alien.getPosX())){
+            special_alien.destroy();
+        }
+        
         // MOVE ALIENS WITH DELAY
         if (TIME - PREV_ALIEN_MOVEMENT > ALIEN_MOVEMENT_DELAY) {
             moveAliens();
@@ -216,7 +259,7 @@ public class GameManager implements Initializable {
         drawAliens();
         cenario.drawMenu();
         for (Rock rock : rocks) rock.draw();
-        
+        if (!special_alien.isDead()) special_alien.draw();
     }
     
     public void Finish(){
@@ -356,6 +399,7 @@ public class GameManager implements Initializable {
                 alien.moveDown();
                 alien.moveLeft();
                 alien.setIsMovingToRight(!alien.getIsMovingToRight());
+                MOVED_DOWN = true;
             }
             ALIEN_SHOOT_DELAY -= ALIEN_SHOOT_UPGRADE_DELAY;
         } else if (alienMaxY.getIsMovingToRight()){
@@ -416,7 +460,7 @@ public class GameManager implements Initializable {
     
     public void drawAliens(){
         for (Alien alien : aliens) {
-            alien.draw(alien.getPosX(), alien.getPosY());
+            alien.draw();
         }
     }
      
