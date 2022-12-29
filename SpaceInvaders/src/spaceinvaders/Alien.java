@@ -21,7 +21,7 @@ public class Alien {
     private double posX;
     private double posY;
     private double velocityX = 20;
-    private double velocityY = 20;
+    private double velocityY = 30;
     private double UPGRADE_VELOCITY = 5;
     private boolean dead;
     private boolean isMovingToRight;
@@ -40,6 +40,9 @@ public class Alien {
     private final Image alien2a = new Image("images/alien-2a.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     private final Image alien2b = new Image("images/alien-2b.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
+    private final Image special_alien_a = new Image("images/special-alien-a.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    private final Image special_alien_b = new Image("images/special-alien-b.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
     private Image image_0;
     private Image image_1;
     
@@ -48,17 +51,24 @@ public class Alien {
     enum aliens {
         MIKE,
         GREEN,
-        PURPLE;
+        PURPLE,
+        SPECIAL;
     }
     
     private aliens alien;
     
-    Alien(GraphicsContext gc) {
+    public Alien(GraphicsContext gc) {
         this.frontLine = false;
         this.gc = gc;
         this.isMovingToRight = true;
         this.life = 3;
         bullet = new Bullet(gc);
+    }
+    
+    public Alien(GraphicsContext gc, boolean special){
+        this.gc = gc;
+        dead = true;
+        life = 1;
     }
     
     public aliens getAlienType(){
@@ -123,6 +133,9 @@ public class Alien {
                 image_0 = alien2a;
                 image_1 = alien2b;
                 break;
+            case SPECIAL: 
+                image_0 = special_alien_a;
+                image_1 = special_alien_b;
             default:
                 break;
         }
@@ -158,6 +171,15 @@ public class Alien {
         dead = true;
     }
     
+    public void spawn(){
+        posX = 0;
+        posY = 0;
+    }
+    
+    public void setIsDead(boolean dead){
+        this.dead = dead;
+    }
+    
     public boolean isDead(){
         return this.dead;
     }
@@ -171,8 +193,8 @@ public class Alien {
         change_image = !change_image;
     }
     
-    public void draw(double pos_x, double pos_y){
-        gc.drawImage(image, pos_x, pos_y);
+    public void draw(){
+        gc.drawImage(image, posX, posY);
     }
     
     public void moveRight(){
