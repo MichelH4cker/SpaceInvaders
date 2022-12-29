@@ -7,6 +7,7 @@ package spaceinvaders;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
@@ -76,7 +77,7 @@ public class Alien {
     }
     
     public Rectangle getBounds() {
-        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
+        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT - 20);
     }
     
     public double getVelocityX(){
