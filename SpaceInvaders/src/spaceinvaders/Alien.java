@@ -23,7 +23,6 @@ public class Alien {
     private double posY;
     private double velocityX = 20;
     private double velocityY = 30;
-    private double UPGRADE_VELOCITY = 5;
     private boolean dead;
     private boolean isMovingToRight;
     private boolean frontLine;
@@ -160,10 +159,6 @@ public class Alien {
 
     public Bullet getBullet(){
         return this.bullet;
-    }
-    
-    public void increaseVelocity(){
-        velocityX += UPGRADE_VELOCITY;
     }
     
     public void destroy(){
