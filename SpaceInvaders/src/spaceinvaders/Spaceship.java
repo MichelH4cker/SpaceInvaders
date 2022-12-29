@@ -102,7 +102,7 @@ public class Spaceship {
     }
     
     public void handleAction(ArrayList<String> inputKeyboard, long TIME){
-        if (inputKeyboard.contains("SPACE") && bullet.isDestroyed() && TIME - PREV_SHOOT > SHOOT_DELAY) {
+        if (inputKeyboard.contains("X") && bullet.isDestroyed() && TIME - PREV_SHOOT > SHOOT_DELAY) {
             bullet.spawn(posX, posY);
             PREV_SHOOT = TIME;
             // SOM
