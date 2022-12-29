@@ -40,7 +40,7 @@ public class GameManager implements Initializable {
     
     private long PREV_ALIEN_SHOOT;
     private long ALIEN_SHOOT_DELAY = (long) 1e9; 
-    private long ALIEN_SHOOT_UPGRADE_DELAY = (long) 0.5e9;
+    private long ALIEN_SHOOT_UPGRADE_DELAY = (long) 0.1e9;
     
     private long PREV_SPACESHIP_BLINK_DELAY;
     private long SPACESHIP_BLINK_DELAY = (long) 0.4e9; 
