@@ -44,7 +44,7 @@ public class Sound {
     private sounds sound;
     
     public Sound(){
-        soundString[__SOUNDTRACK__] = "src/sounds/soundtrack-0.wav";
+        soundString[__SOUNDTRACK__] = "src/sounds/soundtrack-2.wav";
         soundString[__SPACESHIP_SHOOT__] = "src/sounds/shoot-2.wav";
         soundString[__ALIEN_SHOOT__] = "src/sounds/shoot-3.wav";
         soundString[__SPACESHIP_HIT__] = "src/sounds/hit-1.wav";

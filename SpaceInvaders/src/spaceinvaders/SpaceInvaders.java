@@ -45,7 +45,10 @@ public class SpaceInvaders extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        
+        Sound sound = new Sound();
+        sound.selectSound(Sound.sounds.SOUNDTRACK);
+        sound.loop();
+        sound.play();
         initUI(stage);
         
     }
@@ -79,11 +82,6 @@ public class SpaceInvaders extends Application {
         AnimationTimer GameTimer = new GameTimer();
         GameTimer.start();
         
-        Sound sound = new Sound();
-        sound.selectSound(Sound.sounds.SOUNDTRACK);
-        sound.loop();
-        sound.play();
-        
         // SHOW STAGE
         stage.show();
     }
@@ -104,7 +102,7 @@ public class SpaceInvaders extends Application {
         public void doHandle(long currentNanoTime){
             gc.clearRect(0, 0, WIDTH, HEIGHT);
             gc.drawImage(BACKGROUND_IMAGE_GAME, 0, 0);
-
+            
             Game.Update(currentNanoTime, input);
             if (Game.getGameOver()) {
                 Game.Finish();
