@@ -37,10 +37,16 @@ public class GameManager implements Initializable {
     
     private long PREV_ALIEN_MOVEMENT;
     private long ALIEN_MOVEMENT_DELAY = (long) 1.2e9;
+    
     private long PREV_ALIEN_SHOOT;
     private long ALIEN_SHOOT_DELAY = (long) 1e9; 
     private long ALIEN_SHOOT_UPGRADE_DELAY = (long) 0.5e9;
     
+    private long PREV_SPACESHIP_BLINK_DELAY;
+    private long SPACESHIP_BLINK_DELAY = (long) 0.4e9; 
+
+    private int spaceship_total_blink = 5;
+    private int spaceship_blink_times = 0;
     private boolean guided_shooting = false;
     private boolean PLAYER_WON = false;
     private boolean CHANGE_SOUND = false;
@@ -116,6 +122,7 @@ public class GameManager implements Initializable {
             // ACERTOU UM ALIEN
             for (Alien alien : aliens) {
                 if (bullet_spaceship.collided(alien.getBounds())) {
+                    cenario.scoreNormalAlien();
                     bullet_spaceship.destroy();
                     changeFrontLine(alien);
                     ALIENS_LEFT--;
@@ -217,6 +224,8 @@ public class GameManager implements Initializable {
             if (alien_bullet.collided(spaceship.getBounds())){
                 alien_bullet.destroy();
                 spaceship.hit();
+                spaceship.setHit(true);
+                spaceship.setVisible(false);
                 cenario.heart_images.remove(cenario.heart_images.size() - 1);
                 // SOM
                 Sound sound = new Sound();
@@ -226,7 +235,26 @@ public class GameManager implements Initializable {
         }
         
         // DESENHA
-        spaceship.draw();
+        
+        // SPACESHIP BLINK IF WAS HIT
+        if (spaceship.getHit()){
+            if (TIME - PREV_SPACESHIP_BLINK_DELAY > SPACESHIP_BLINK_DELAY) {
+                PREV_SPACESHIP_BLINK_DELAY = TIME;
+                spaceship.setVisible(!spaceship.getVisible());
+                
+                if (spaceship_total_blink == spaceship_blink_times){
+                    spaceship_blink_times = 0;
+                    spaceship.setHit(false);
+                }
+                spaceship_blink_times++;
+            } else {
+                if (spaceship.getVisible()) spaceship.draw();
+            }
+            
+        } else {
+            PREV_SPACESHIP_BLINK_DELAY = TIME;
+            spaceship.draw();
+        }
         drawAliens();
         cenario.drawMenu();
         for (Rock rock : rocks) rock.draw();
@@ -235,19 +263,23 @@ public class GameManager implements Initializable {
     
     public void Finish(){
         gc.clearRect(0, 0, WIDTH, HEIGHT);
-        gc.drawImage(BACKGROUND_IMAGE, 0, 0);
+        gc.drawImage(cenario.BACKGROUND_IMAGE, 0, 0);
         
         gc.setFont(DOGICA_PIXEL_BOLD);
         gc.setFill(Color.WHITE) ;
         
         String RESULT;
         if (PLAYER_WON){
-            RESULT = "VOCÊ GANHOU!";
+            RESULT = "YOU WIN!";
         } else {
-            RESULT = "VOCÊ PERDEU!";
+            RESULT = "GAME OVER!";
         }
-            
-        gc.fillText(RESULT, (WIDTH / 2) - 380, HEIGHT / 2);
+        
+        gc.fillText(RESULT, (WIDTH / 2) - (DOGICA_PIXEL_BOLD.getSize() * RESULT.length()) / 2, HEIGHT / 2 - 50);
+
+        // DESENHA SCORE FINAL
+        String SCORE_TEXT = "SCORE: " + Integer.toString(cenario.getTotalScore());
+        gc.fillText(SCORE_TEXT, (WIDTH / 2) - (DOGICA_PIXEL_BOLD.getSize() * SCORE_TEXT.length()) / 2, HEIGHT / 2 + 50);
     }
       
     public void checkGameOver(){
@@ -282,7 +314,6 @@ public class GameManager implements Initializable {
                 alien.setFrontLine(true);
             }
         }
-        
     }
     
     public void aliensShoot(){
