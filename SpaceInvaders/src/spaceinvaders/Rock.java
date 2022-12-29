@@ -56,7 +56,7 @@ public class Rock {
     }
     
     public Rectangle getBounds() {
-        return new Rectangle(posX + 30, posY + 10, IMAGE_WIDTH - 60, IMAGE_HEIGHT - 10);
+        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
     }
     
     public int getLife(){
@@ -69,7 +69,7 @@ public class Rock {
     
     public void draw(){
         gc.drawImage(image, posX, posY);
-        // (WIDTH / 2) - (DOGICA_PIXEL_BOLD.getSize() * RESULT.length()) / 2
+
         // DESENHA INT SCORE
         gc.setFont(DOGICA_PIXEL_BOLD);
         gc.setFill(Color.WHITE) ;
