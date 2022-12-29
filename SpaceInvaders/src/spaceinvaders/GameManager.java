@@ -31,7 +31,7 @@ public class GameManager implements Initializable {
     private boolean GAME_OVER = false;
     
     private long PREV_SPECIAL_ALIEN_SPAWN = 0;
-    private long SPECIAL_ALIEN_SPAWN_DELAY = (long) 10e9;
+    private long SPECIAL_ALIEN_SPAWN_DELAY = (long) 30e9;
     private long PREV_SPECIAL_ALIEN_MOVEMENT;
     private long SPECIAL_ALIEN_MOVEMENT_DELAY = (long) 0.1e9;
     
@@ -137,6 +137,7 @@ public class GameManager implements Initializable {
             
             // ACERTOU UM ALIEN ESPECIAL
             if (bullet_spaceship.collided(special_alien.getBounds())){
+                cenario.scoreSpecialAlien();
                 bullet_spaceship.destroy();
                 special_alien.destroy();
                 
