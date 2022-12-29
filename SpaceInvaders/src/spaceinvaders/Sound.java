@@ -5,7 +5,11 @@
  */
 package spaceinvaders;
 
+import java.io.File;
 import java.net.URL;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -16,8 +20,8 @@ import javax.sound.sampled.Clip;
  */
 public class Sound {
     
-    Clip clip;
-    URL soundURL[] = new URL[30];
+    MediaPlayer mediaPlayer;
+    String soundString[] = new String[30];
     
     private static final int __SOUNDTRACK__      = 0;
     private static final int __SPACESHIP_SHOOT__ = 1;
@@ -40,13 +44,13 @@ public class Sound {
     private sounds sound;
     
     public Sound(){
-        soundURL[__SOUNDTRACK__] = getClass().getResource("/sounds/acdc.wav");
-        soundURL[__SPACESHIP_SHOOT__] = getClass().getResource("/sounds/shoot-2.wav");
-        soundURL[__ALIEN_SHOOT__] = getClass().getResource("/sounds/shoot-3.wav");
-        soundURL[__SPACESHIP_HIT__] = getClass().getResource("/sounds/hit-1.wav");
-        soundURL[__ALIEN_HIT__] = getClass().getResource("/sounds/score-0.wav");
-        soundURL[__ALIEN_MOVE_0__] = getClass().getResource("/sounds/move-3.wav");
-        soundURL[__ALIEN_MOVE_1__] = getClass().getResource("/sounds/move-4.wav");
+        soundString[__SOUNDTRACK__] = "src/sounds/soundtrack-2.wav";
+        soundString[__SPACESHIP_SHOOT__] = "src/sounds/shoot-2.wav";
+        soundString[__ALIEN_SHOOT__] = "src/sounds/shoot-3.wav";
+        soundString[__SPACESHIP_HIT__] = "src/sounds/hit-1.wav";
+        soundString[__ALIEN_HIT__] = "src/sounds/score-0.wav";
+        soundString[__ALIEN_MOVE_0__] = "src/sounds/move-3.wav";
+        soundString[__ALIEN_MOVE_1__] = "src/sounds/move-4.wav";
     }
     
     public sounds getSound(){
@@ -86,24 +90,24 @@ public class Sound {
     public void selectSound(sounds sound){
         int i = getKey(sound);
         try {
-            AudioInputStream audio_input_stream = AudioSystem.getAudioInputStream(soundURL[i]);
-            clip = AudioSystem.getClip();
-            clip.open(audio_input_stream);
+            String path = soundString[i];  
+            Media media = new Media(new File(path).toURI().toString());  
+            mediaPlayer = new MediaPlayer(media);  
         } catch (Exception e){
             System.out.println("ERRO em SoundManager: " + e.getMessage());
         }
     }
     
     public void play(){
-        clip.start();
+        mediaPlayer.setAutoPlay(true);  
     }
     
     public void loop(){
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
     
     public void stop(){
-        clip.stop();
+        mediaPlayer.stop();
     }
     
 }
