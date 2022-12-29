@@ -7,7 +7,9 @@ package spaceinvaders;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 
 /**
  *
@@ -23,8 +25,11 @@ public class Rock {
     
     private int life = 20;
     
+    private final double FONT_SIZE = 30;
+
     private final Image image = new Image("images/rock.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
-    
+    private Font DOGICA_PIXEL_BOLD = Font.loadFont("file:src/fonts/dogicapixelbold.ttf", FONT_SIZE);
+
     GraphicsContext gc;
     Rock(GraphicsContext gc){
         this.gc = gc;
@@ -64,6 +69,14 @@ public class Rock {
     
     public void draw(){
         gc.drawImage(image, posX, posY);
+        // (WIDTH / 2) - (DOGICA_PIXEL_BOLD.getSize() * RESULT.length()) / 2
+        // DESENHA INT SCORE
+        gc.setFont(DOGICA_PIXEL_BOLD);
+        gc.setFill(Color.WHITE) ;
+        String LIFE_TEXT = Integer.toString(life);
+        gc.fillText(LIFE_TEXT, 
+                posX + (IMAGE_WIDTH - DOGICA_PIXEL_BOLD.getSize() * LIFE_TEXT.length()) / 2, 
+                posY + IMAGE_HEIGHT / 2);
     }
     
 }
