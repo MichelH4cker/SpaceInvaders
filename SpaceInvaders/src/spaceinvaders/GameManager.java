@@ -21,15 +21,25 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 /**
- *
- * @author michel
+ * toda a administração do jogo está presente nessa classe. em termos práticos,
+ * essa é a classe mais importante do jogo, responsável por controlar as posições
+ * iniciais de todos os objetos, comandar o que irá acontecer, além de possuir
+ * todo o esquema de colisão, tiro, movimentação, etc.
+ * @author michel (nusp: 12609690)
  */
 public class GameManager implements Initializable {
 
+    // CONFIGURAÇÕES LÓGICAS
     private int ALIENS_LEFT = 55;
     private int ROCKS = 3;
     private boolean GAME_OVER = false;
+    private boolean guided_shooting = false;
+    private boolean PLAYER_WON = false;
+    private boolean MOVED_DOWN = false;
+    private int spaceship_total_blink = 5;
+    private int spaceship_blink_times = 0;
     
+    // CONFIGURAÇÕES DE TEMPO
     private long PREV_SPECIAL_ALIEN_SPAWN = 0;
     private long SPECIAL_ALIEN_SPAWN_DELAY = (long) 30e9;
     private long PREV_SPECIAL_ALIEN_MOVEMENT;
@@ -46,20 +56,17 @@ public class GameManager implements Initializable {
     private long PREV_SPACESHIP_BLINK_DELAY;
     private long SPACESHIP_BLINK_DELAY = (long) 0.4e9; 
 
-    private int spaceship_total_blink = 5;
-    private int spaceship_blink_times = 0;
-    private boolean guided_shooting = false;
-    private boolean PLAYER_WON = false;
+    // CONFIGURAÇÕES DE SOM
     private boolean CHANGE_SOUND = false;
-    
-    private boolean MOVED_DOWN = false;
-    
+   
+    // CONDIGURAÇÕES GRÁFICAS
     int WIDTH = 1600;
     int HEIGHT = 900;
     int FONT_SIZE = 70;
     private final Image BACKGROUND_IMAGE = new Image("images/background-image.png", WIDTH, HEIGHT, false, false);
     Font DOGICA_PIXEL_BOLD = Font.loadFont("file:src/fonts/dogicapixelbold.ttf", FONT_SIZE);
     
+    // INSTÂNCIA DE OUTRAS CLASSES
     Spaceship spaceship;
     Bullet alien_bullet;
     GraphicsContext gc;
@@ -68,6 +75,10 @@ public class GameManager implements Initializable {
     ArrayList<Rock> rocks;
     Cenario cenario;
 
+    /**
+     * construtor da classe <code>GameManager</code>
+     * @param gc 
+     */
     GameManager(GraphicsContext gc){
         this.gc = gc;
         cenario = new Cenario(gc);
@@ -76,11 +87,22 @@ public class GameManager implements Initializable {
         special_alien.setImage(Alien.aliens.SPECIAL);
     }
     
+    /**
+     * retorna se o parâmetro que indica se o jogo acabou
+     * @return <code>boolean</code> indica se o jogo acabou
+     */
     public boolean getGameOver(){
         return this.GAME_OVER;
     }
     
+    /**
+     * incializa o jogo, configurando todas as informações iniciais, criando
+     * objetos, selecionando qual alien é linha de frente, posicionando rochas
+     * em suas posições iniciais, etc. em resumo essa função cuida de todas as con
+     * figurações inciais necessárias para que o jogo comece
+     */
     public void Start(){
+        // INSTANCIA SPACESHIP
         spaceship = new Spaceship(gc);
         
         // CREATE ALIENS
@@ -91,10 +113,10 @@ public class GameManager implements Initializable {
         }
         
         // SET POSICOES DOS ALIENS
-        setAliensInitialPosition(aliens);
+        setAliensInitialPosition();
         
         // SET IMAGENS DOS ALIENS
-        setAliensImages(aliens);
+        setAliensImages();
         
         // MARCA QUAIS ALIENS SÃO DA LINHA DE FRENTE
         setAliensFrontLine();
@@ -109,6 +131,13 @@ public class GameManager implements Initializable {
         setRocks();
     }
 
+    /**
+     * atualiza o jogo. de maneira geral essa função é responsável por atualizar
+     * tudo que precisa ser atualizado instantaneamente, tal como a movimentação
+     * das classes.
+     * @param TIME tempo atual da animação
+     * @param inputKeyboard leitura do teclado
+     */
     public void Update(long TIME, ArrayList<String> inputKeyboard){
         checkGameOver();
         Bullet bullet_spaceship = spaceship.getBullet();
@@ -263,12 +292,17 @@ public class GameManager implements Initializable {
             PREV_SPACESHIP_BLINK_DELAY = TIME;
             spaceship.draw();
         }
+        
         drawAliens();
         cenario.drawMenu();
         for (Rock rock : rocks) rock.draw();
         if (!special_alien.isDead()) special_alien.draw();
     }
     
+    /**
+     * finaliza o jogo. mostra se o player ganhou ou perdeu, além de mostrar
+     * qual foi a pontuação final do jogo
+     */
     public void Finish(){
         gc.clearRect(0, 0, WIDTH, HEIGHT);
         gc.drawImage(cenario.BACKGROUND_IMAGE, 0, 0);
@@ -290,6 +324,10 @@ public class GameManager implements Initializable {
         gc.fillText(SCORE_TEXT, (WIDTH / 2) - (DOGICA_PIXEL_BOLD.getSize() * SCORE_TEXT.length()) / 2, HEIGHT / 2 + 50);
     }
       
+    /**
+     * verifica se o jogo acabou. caso a vida da spaceship seja zero ou 
+     * os aliens restantes também seja zero, o jogo acaba
+     */
     public void checkGameOver(){
         if (ALIENS_LEFT == 0){
             PLAYER_WON = true;
@@ -300,6 +338,9 @@ public class GameManager implements Initializable {
         }
     }
     
+    /**
+     * posiciona as rochas presentes no jogo
+     */
     public void setRocks(){
         double POS_X = cenario.getOffsetRock();
         for (Rock rock : rocks){
@@ -309,6 +350,12 @@ public class GameManager implements Initializable {
         }
     }
     
+    /**
+     * dado um alien que foi atingido, essa função coloca o alien atrás dele 
+     * para ser a nova linha de frente 
+     * @see <code>Alien</code>
+     * @param dead_alien alien atingido
+     */
     public void changeFrontLine(Alien dead_alien){
         double x = dead_alien.getPosX();
         double greater_y = -1;
@@ -324,6 +371,10 @@ public class GameManager implements Initializable {
         }
     }
     
+    /**
+     * método responsável por fazer os aliens atirarem. esta função decide se o 
+     * tiro será um tio teleguiado, mirando no player, ou se será um tiro aleatório
+     */
     public void aliensShoot(){
         if (guided_shooting){
             guidedShoot();
@@ -333,6 +384,9 @@ public class GameManager implements Initializable {
         guided_shooting = !guided_shooting;
     }
     
+    /**
+     * faz com que um alien aleatório atire
+     */
     public void randomShoot(){
         Alien alien_shooter;
         
@@ -354,6 +408,9 @@ public class GameManager implements Initializable {
         }
     }
     
+    /**
+     * faz com que o alien mais próximo do player, em relação a direção x, atire
+     */
     public void guidedShoot(){
         double pos_x = findClosestX(spaceship.getPosX());
         double greater_y = -1;
@@ -371,6 +428,11 @@ public class GameManager implements Initializable {
         
     }
     
+    /**
+     * acha qual é o alien que possui a posição x mais próxima do player
+     * @param target posição x a ser comparada
+     * @return <code>double</code> indica qual o x mais próximo do x do parâmetro
+     */
     public double findClosestX(double target){
         double posX = aliens.get(0).getPosX();
         double dist = Math.abs(aliens.get(0).getPosX() - target);
@@ -385,6 +447,10 @@ public class GameManager implements Initializable {
         return posX;
     }
     
+    /**
+     * move alien por alien da lista de aliens
+     * @see <code>Alien</code>
+     */
     public void moveAliens(){
         Alien alienMaxX = Collections.max(aliens, Comparator.comparing(Alien::getPosX));
         Alien alienMinX = Collections.min(aliens, Comparator.comparing(Alien::getPosX));
@@ -423,7 +489,11 @@ public class GameManager implements Initializable {
         
     }
     
-    public void setAliensInitialPosition(ArrayList<Alien> aliens){
+    /**
+     * arranja as posições inicias de todos os aliens do jogo
+     * @see <code>Alien</code>
+     */
+    public void setAliensInitialPosition(){
         double initialX = aliens.get(0).getVelocityX();
         double initialY = 0;
         double posX = initialX, posY = initialY;
@@ -441,7 +511,13 @@ public class GameManager implements Initializable {
         }
     }
     
-    public void setAliensImages(ArrayList<Alien> aliens){
+    /**
+     * dependendo da linha da 'matriz' de aliens os aliens terão imagens 
+     * diferentes, ou seja, serão aliens diferentes um do outro. essa função
+     * é responsável por fazer essa varidade de aliens
+     * @see <code>Alien</code>
+     */
+    public void setAliensImages(){
         int index = 0;
         for (int i = index; i < 2 * cenario.getNumberAliensColumn(); i++){
             aliens.get(index).setImage(Alien.aliens.GREEN);
@@ -457,6 +533,11 @@ public class GameManager implements Initializable {
         }
     }
     
+    /**
+     * coloca todos os aliens que estão na frente como linha de frente do 
+     * exército de aliens
+     * @see <code>Alien</code>
+     */
     public void setAliensFrontLine(){
         int TOTAL_COLUMNS = cenario.getNumberAliensColumn();
         for (int index = ALIENS_LEFT - cenario.getNumberAliensColumn(); 
@@ -465,6 +546,10 @@ public class GameManager implements Initializable {
         }
     }
     
+    /**
+     * chama a função de desenhar para todos os aliens presentes na lista de alien
+     * @see <code>Alien</code>
+     */
     public void drawAliens(){
         for (Alien alien : aliens) {
             alien.draw();
