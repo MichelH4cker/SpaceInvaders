@@ -15,11 +15,15 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 /**
- *
- * @author michel
+ * classe responsável pelo manejamento de toda a estrutura sonora do jogo.
+ * todos os métodos necessários para selecionar o som, instanciar, tocar, 
+ * parar, colocar em loop, etc. estão nessa classe. a classe também possui todos 
+ * os sons existentes no jogo
+ * @author michel (nusp: 12609690)
  */
 public class Sound {
     
+    // CONFIGURAÇÕES SONORAS
     MediaPlayer mediaPlayer;
     String soundString[] = new String[30];
     
@@ -32,7 +36,6 @@ public class Sound {
     private static final int __ALIEN_MOVE_1__       = 6;
     private static final int __SPECIAL_ALIEN_MOVE__ = 7;
 
-    
     enum sounds {
         SOUNDTRACK,
         SPACESHIP_SHOOT,
@@ -46,6 +49,9 @@ public class Sound {
     
     private sounds sound;
     
+    /**
+     * Construtor da classe sound
+     */
     public Sound(){
         soundString[__SOUNDTRACK__] = "src/sounds/soundtrack-2.wav";
         soundString[__SPACESHIP_SHOOT__] = "src/sounds/shoot.wav";
@@ -57,10 +63,22 @@ public class Sound {
         soundString[__SPECIAL_ALIEN_MOVE__] = "src/sounds/special_alien_move.wav";
     }
     
+    /**
+     * retorna o enum <code>sounds</code>, permitindo que o programador decida
+     * qual som ele vai selecionar
+     * @return 
+     */
     public sounds getSound(){
         return sound;
     }
     
+    /**
+     * cada som possui um inteiro para representar, ou seja, cada som possui
+     * um código de identificação. essa função é responsável por, dada um som
+     * retornar o código de identificação 
+     * @param sound indica qual som do enum <code>sounds</code>
+     * @return <code>int</code> indica o código do som desejado
+     */
     public int getKey(sounds sound){
         int key = 0;
         switch (sound) {
@@ -94,6 +112,11 @@ public class Sound {
         return key;
     }
     
+    /**
+     * com base no som desejado, essa função escolhe qual é o código de 
+     * identificação desse som e instancia um novo <code>Media</code> com base nisso
+     * @param sound indica qual o som a ser selecionado e instanciado
+     */
     public void selectSound(sounds sound){
         int i = getKey(sound);
         try {
@@ -105,14 +128,23 @@ public class Sound {
         }
     }
     
+    /**
+     * toca o som 
+     */
     public void play(){
         mediaPlayer.setAutoPlay(true);  
     }
     
+    /**
+     * deixa som em loop
+     */
     public void loop(){
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
     }
     
+    /**
+     * pausa o som
+     */
     public void stop(){
         mediaPlayer.stop();
     }
