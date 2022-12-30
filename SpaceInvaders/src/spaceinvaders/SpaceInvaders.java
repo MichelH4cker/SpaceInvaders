@@ -47,8 +47,8 @@ public class SpaceInvaders extends Application {
     public void start(Stage stage) throws Exception {
         Sound sound = new Sound();
         sound.selectSound(Sound.sounds.SOUNDTRACK);
-        sound.loop();
-        sound.play();
+        //sound.loop();
+        //sound.play();
         initUI(stage);
         
     }
