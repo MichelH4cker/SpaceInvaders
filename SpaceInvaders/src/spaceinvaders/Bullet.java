@@ -13,7 +13,7 @@ import javafx.scene.shape.Rectangle;
  * Classe Bullet responsável por ser o projétil de todos os personagens do jogo
  * esta função engloba a funcionalidade de colisão, muito importante para o
  * desenvolvimento do jogo
- * @author michel
+ * @author michel (nusp: 12609690)
  */
 public class Bullet {
 
