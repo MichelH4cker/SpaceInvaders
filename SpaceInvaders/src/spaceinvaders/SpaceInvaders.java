@@ -23,8 +23,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
- *
- * @author michel
+ * essa classe é responsável por iniciar todas as outras classes, além de possuir
+ * o método <code>main</code>e o método <code>start</code>, ambos importantes para o início do programa
+ * @author michel (nusp: 12609690)
  */
 public class SpaceInvaders extends Application {
         
@@ -53,6 +54,10 @@ public class SpaceInvaders extends Application {
         
     }
 
+    /**
+     * incializa parte gráfica do jogo
+     * @param stage 
+     */
     private void initUI(Stage stage){
         // GRAPHICS CONFIGURATIONS
         stage.setTitle(TITLE);
@@ -86,6 +91,9 @@ public class SpaceInvaders extends Application {
         stage.show();
     }
     
+    /**
+     * classe que cuida da animação principal do jogo, controlando o seu tempo
+     */
     private class GameTimer extends AnimationTimer {
         
         @Override
@@ -113,6 +121,13 @@ public class SpaceInvaders extends Application {
         
     }
     
+    /**
+     * método responsável por capturar qual tecla foi digitada pelo usuário, de 
+     * maneira a produzir uma resposta no futuro, tal como 'nada', 'atirar' e 
+     * 'mover' a Spaceship
+     * @see <code>Spaceship</code>
+     * @param game_scene scene principal do jogo
+     */
     private void detectKeyboard(Scene game_scene){
         // KEYBOARD DETECTION
         input = new ArrayList<String>();
