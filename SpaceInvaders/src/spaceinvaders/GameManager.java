@@ -176,6 +176,12 @@ public class GameManager implements Initializable {
             PREV_SPECIAL_ALIEN_SPAWN = TIME;
             special_alien.setIsDead(false);
             special_alien.spawn();
+            
+            // SOM
+            Sound sound = new Sound();
+            sound.selectSound(Sound.sounds.SPECIAL_ALIEN_MOVE);
+            sound.mediaPlayer.setCycleCount(3);
+            sound.play();
         }
         
         // DESTROY SPECIAL ALIEN
