@@ -178,7 +178,7 @@ public class Alien extends Sprite {
 
     /**
      * retorna uma classe <code>Bullet</code> do alien 
-     * @see classe <code>Bullet</code>
+     * @see <code>Bullet</code>
      * @return <code>Bullet</code> 
      */
     public Bullet getBullet(){

@@ -66,7 +66,7 @@ public class Sound {
     /**
      * retorna o enum <code>sounds</code>, permitindo que o programador decida
      * qual som ele vai selecionar
-     * @return 
+     * @return <code>sounds</code> indica o enum de som selecionado
      */
     public sounds getSound(){
         return sound;

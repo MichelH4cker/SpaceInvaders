@@ -122,8 +122,8 @@ public class Cenario {
     
     /**
      * retorna o número de colunas de aliens
-     * @see <code>int</code> indica o número de colunas de aliens
-     * @return 
+     * @see <code>Alien</code>
+     * @return <code>int</code> indica o número de colunas de aliens
      */
     public int getNumberAliensColumn(){
         return this.NUMBER_ALIENS_COLUMN;

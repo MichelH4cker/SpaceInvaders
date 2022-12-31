@@ -70,7 +70,7 @@ public class Spaceship extends Sprite {
     
     /**
      * retorna se a nave está visível(<b>true</b>) ou invisível (<b>false</b>)
-     * @return 
+     * @return <code>boolean</code> indica se a nave está visível
      */
     public boolean getVisible(){
         return this.visible;
