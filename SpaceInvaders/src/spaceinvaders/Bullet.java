@@ -15,24 +15,17 @@ import javafx.scene.shape.Rectangle;
  * desenvolvimento do jogo
  * @author michel (nusp: 12609690)
  */
-public class Bullet {
+public class Bullet extends Sprite {
 
     // CONFIGURAÇÕES LÓGICAS DA CLASSE BALA
-    private double posX;
-    private double posY;
-    private double velocity = 15.0;
     private boolean destroyed;
     
     private final int IMAGE_HEIGHT = 80;
     private final int IMAGE_WIDTH = 80;
     
-    private final int IMAGE_ALIEN_HEIGHT = 50;
-    private final int IMAGE_ALIEN_WIDTH = 50;
-
     // CONFIGURAÇÕES GRÁFICAS DA BALA
     final Image image = new Image("images/bullet.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     
-    GraphicsContext gc;
     Cenario cenario;
     
     /**
@@ -40,19 +33,23 @@ public class Bullet {
      * @param gc parte gráfica da classe
      */
     Bullet(GraphicsContext gc) {
-        this.gc = gc;
-        this.destroyed = true;
         cenario = new Cenario(gc);
+        this.destroyed = true;
+        super.gc = gc;
+        super.image = image;
+        super.WidthImage = IMAGE_WIDTH;
+        super.HeightImage = IMAGE_HEIGHT;
+        super.velocityX = 0;
+        super.velocityY = 15;
     }
     
     /**
-     * retorna a posicação y da bala
-     * @return <code>double</code> posição y da bala
+     * muda o parâmetro que indica se bala está destruída
+     * @param destroyed indica se a bala está destruída
      */
-    public double getPosY(){
-        return posY;
+    public void setIsDestroyed(boolean destroyed){
+        this.destroyed = destroyed;
     }
-    
     /**
      * retorna se a bala está destruída
      * @return <code>boolean</code> indica se a bala está destruída
@@ -65,59 +62,35 @@ public class Bullet {
      * responsável por administração a destruição lógica da bala
      */
     public void destroy(){
-        posX = 0;
-        posY = 0;
+        positionX = -100;
+        positionY = -100;
         this.destroyed = true;
     }
     
     /**
-     * desenha bala no mapa
-     */
-    public void draw(){
-        gc.drawImage(image, posX, posY);
-    }
-    
-    /**
-     * dada um parâmetro de posição x e parâmetro de posição y, as posições iniciais da bala no
-     * jogo são dadas por ambos parâmetros
+     * dada um parâmetro de posição x e parâmetro de posição y, 
+     * as posições iniciais da bala no jogo são dadas por ambos parâmetros
      * @param initial_x posição x inicial da bala no mapa
      * @param initial_y posição y inicial da bala no mapa
      */
     public void spawn(double initial_x, double initial_y){
         this.destroyed = false;
-        posX = initial_x;        
-        posY = initial_y;
-    }
-    
-    /**
-     * movimenta bala para cima
-     * utilizado no tiro da spaceship
-     * @see <code>Spaceship</code>
-     */
-    public void moveUp(){
-        posY -= velocity;
-        draw();
-        destroyed = cenario.itsOnTheTop(posY + IMAGE_HEIGHT);
-    }
-    
-    /**
-     * movimenta bala para baixo
-     * utilizado no tiro dos alien
-     * @see <code>Alien</code>
-     */
-    public void moveDown(){
-        posY += velocity;
-        draw();
-        destroyed = cenario.itsOnTheBotton(posY);
+        positionX = initial_x;        
+        positionY = initial_y;
     }
     
     /**
      * retorna um retângulo que contorna a imagem da bala, responsável pela 
-     * lógica de colisão
+     * lógica de colisão. este método é diferente do método da classe pai, 
+     * por isso foi optado deixar ele separado. para utilizar o método 
+     * <code>getBounds</code> da classe pai, teria que haver uma manipulação
+     * muito desnecessária nele. serndo assim, fica melhor repetir um método
+     * do que deixar o método pai 'feio'
      * @return <code>Rectangle</code> responsável pela lógica de colisão
      */
+    @Override
     public Rectangle getBounds() {
-        return new Rectangle(posX + IMAGE_WIDTH / 2, posY, 2, IMAGE_HEIGHT);
+        return new Rectangle(positionX + IMAGE_WIDTH / 2, positionY, 2, IMAGE_HEIGHT);
     }
     
     /**

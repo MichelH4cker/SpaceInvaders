@@ -88,7 +88,7 @@ public class GameManager implements Initializable {
     }
     
     /**
-     * retorna se o parâmetro que indica se o jogo acabou
+     * retorna parâmetro que indica se o jogo acabou
      * @return <code>boolean</code> indica se o jogo acabou
      */
     public boolean getGameOver(){
@@ -96,10 +96,10 @@ public class GameManager implements Initializable {
     }
     
     /**
-     * incializa o jogo, configurando todas as informações iniciais, criando
-     * objetos, selecionando qual alien é linha de frente, posicionando rochas
-     * em suas posições iniciais, etc. em resumo essa função cuida de todas as con
-     * figurações inciais necessárias para que o jogo comece
+     * incializa o jogo, configura todas as informações iniciais, cria
+     * objetos, seleciona qual alien é linha de frente, posiciona rochas
+     * em suas posições iniciais, etc. em resumo essa função cuida de todas as 
+     * configurações inciais necessárias para que o jogo comece
      */
     public void Start(){
         // INSTANCIA SPACESHIP
@@ -147,7 +147,16 @@ public class GameManager implements Initializable {
         
         // TIRO DA SPACESHIP
         if (!bullet_spaceship.isDestroyed()){
+            // MOVE BALA
             bullet_spaceship.moveUp();
+            
+            // DESENHA
+            bullet_spaceship.draw();
+            
+            // DESTRÓI SE ESTÁ NA PAREDE SUPERIOR
+            if (cenario.itsOnTheTop(bullet_spaceship.getPositionY() + bullet_spaceship.getHeightImage())){
+                bullet_spaceship.setIsDestroyed(true);
+            }
             
             // ACERTOU UM ALIEN
             for (Alien alien : aliens) {
@@ -181,7 +190,6 @@ public class GameManager implements Initializable {
             for (Rock rock : rocks){
                 if (bullet_spaceship.collided(rock.getBounds())) {
                     rock.hit();
-                    System.out.println("acertou");
                     bullet_spaceship.destroy();
                     if (rock.getLife() == 0){
                         rocks.remove(rock);
@@ -214,7 +222,7 @@ public class GameManager implements Initializable {
         }
         
         // DESTROY SPECIAL ALIEN
-        if (cenario.itsOnTheRightWall(special_alien.getPosX())){
+        if (cenario.itsOnTheRightWall(special_alien.getPositionX())){
             special_alien.destroy();
         }
         
@@ -241,9 +249,18 @@ public class GameManager implements Initializable {
             PREV_ALIEN_SHOOT = TIME;
         }
         
+        // HANDLE ALIENS BULLET
         if (alien_bullet != null && !alien_bullet.isDestroyed()){
             // MOVE TIRO DOS ALIENS
             alien_bullet.moveDown();
+            
+            // DESENHA
+            alien_bullet.draw();
+            
+            // DESTROI SE ACERTOU PAREDE INFERIOR
+            if(cenario.itsOnTheBotton(alien_bullet.getPositionY())) {
+                alien_bullet.setIsDestroyed(true);
+            }
             
             // VERIFICA SE TIRO DO ALIEN ACERTOU ROCHA
             for (Rock rock : rocks){
@@ -301,7 +318,7 @@ public class GameManager implements Initializable {
     
     /**
      * finaliza o jogo. mostra se o player ganhou ou perdeu, além de mostrar
-     * qual foi a pontuação final do jogo
+     * qual foi a pontuação final do jogador
      */
     public void Finish(){
         gc.clearRect(0, 0, WIDTH, HEIGHT);
@@ -344,8 +361,8 @@ public class GameManager implements Initializable {
     public void setRocks(){
         double POS_X = cenario.getOffsetRock();
         for (Rock rock : rocks){
-            rock.setPosX(POS_X);
-            rock.setPosY(cenario.getCanvasHeight() - 400);
+            rock.setPositionX(POS_X);
+            rock.setPositionY(cenario.getCanvasHeight() - 400);
             POS_X += cenario.getWidthRock() + cenario.getOffsetRock();
         }
     }
@@ -357,15 +374,15 @@ public class GameManager implements Initializable {
      * @param dead_alien alien atingido
      */
     public void changeFrontLine(Alien dead_alien){
-        double x = dead_alien.getPosX();
+        double x = dead_alien.getPositionX();
         double greater_y = -1;
         for (Alien alien : aliens){
-            if (x == alien.getPosX() && greater_y < alien.getPosY()){
-                greater_y = alien.getPosY();
+            if (x == alien.getPositionX() && greater_y < alien.getPositionY()){
+                greater_y = alien.getPositionY();
             }
         }
         for (Alien alien : aliens){
-            if (x == alien.getPosX() && greater_y == alien.getPosY()){
+            if (x == alien.getPositionX() && greater_y == alien.getPositionY()){
                 alien.setFrontLine(true);
             }
         }
@@ -373,7 +390,7 @@ public class GameManager implements Initializable {
     
     /**
      * método responsável por fazer os aliens atirarem. esta função decide se o 
-     * tiro será um tio teleguiado, mirando no player, ou se será um tiro aleatório
+     * tiro será um tiro teleguiado, mirando no player, ou se será um tiro aleatório
      */
     public void aliensShoot(){
         if (guided_shooting){
@@ -401,7 +418,7 @@ public class GameManager implements Initializable {
                 if (aliens.get(i).isFrontLine()){
                     alien_shooter = aliens.get(i);
                     alien_bullet = alien_shooter.getBullet();
-                    alien_bullet.spawn(alien_shooter.getPosX(), alien_shooter.getPosY());
+                    alien_bullet.spawn(alien_shooter.getPositionX(), alien_shooter.getPositionY());
                 }
             }
             lines_traveled++;
@@ -412,17 +429,17 @@ public class GameManager implements Initializable {
      * faz com que o alien mais próximo do player, em relação a direção x, atire
      */
     public void guidedShoot(){
-        double pos_x = findClosestX(spaceship.getPosX());
+        double pos_x = findClosestX(spaceship.getPositionX());
         double greater_y = -1;
         for (Alien alien : aliens){
-            if (pos_x == alien.getPosX() && greater_y < alien.getPosY()){
-                greater_y = alien.getPosY();
+            if (pos_x == alien.getPositionX() && greater_y < alien.getPositionY()){
+                greater_y = alien.getPositionY();
             }
         }
         for (Alien alien : aliens){
-            if (pos_x == alien.getPosX() && greater_y == alien.getPosY()){
+            if (pos_x == alien.getPositionX() && greater_y == alien.getPositionY()){
                 alien_bullet = alien.getBullet();
-                alien_bullet.spawn(alien.getPosX(), alien.getPosY());
+                alien_bullet.spawn(alien.getPositionX(), alien.getPositionY());
             }
         }
         
@@ -434,14 +451,14 @@ public class GameManager implements Initializable {
      * @return <code>double</code> indica qual o x mais próximo do x do parâmetro
      */
     public double findClosestX(double target){
-        double posX = aliens.get(0).getPosX();
-        double dist = Math.abs(aliens.get(0).getPosX() - target);
+        double posX = aliens.get(0).getPositionX();
+        double dist = Math.abs(aliens.get(0).getPositionX() - target);
         
         for (int i = 1; i < aliens.size(); i++) {
-            double cdist = Math.abs(aliens.get(i).getPosX() - target);
+            double cdist = Math.abs(aliens.get(i).getPositionX() - target);
             if (cdist < dist) {
                 dist = cdist;
-                posX = aliens.get(i).getPosX();
+                posX = aliens.get(i).getPositionX();
             }
         }
         return posX;
@@ -452,11 +469,11 @@ public class GameManager implements Initializable {
      * @see <code>Alien</code>
      */
     public void moveAliens(){
-        Alien alienMaxX = Collections.max(aliens, Comparator.comparing(Alien::getPosX));
-        Alien alienMinX = Collections.min(aliens, Comparator.comparing(Alien::getPosX));
-        Alien alienMaxY = Collections.max(aliens, Comparator.comparing(Alien::getPosY));
+        Alien alienMaxX = Collections.max(aliens, Comparator.comparing(Alien::getPositionX));
+        Alien alienMinX = Collections.min(aliens, Comparator.comparing(Alien::getPositionX));
+        Alien alienMaxY = Collections.max(aliens, Comparator.comparing(Alien::getPositionY));
         
-        if (cenario.itsOnTheLeftWall(alienMinX.getPosX())) {
+        if (cenario.itsOnTheLeftWall(alienMinX.getPositionX())) {
             for (Alien alien : aliens){
                 alien.changeImage();
                 alien.moveDown();
@@ -465,7 +482,7 @@ public class GameManager implements Initializable {
             }
             ALIEN_MOVEMENT_DELAY -= ALIEN_MOVEMENT_UPGRADE_DELAY;
             ALIEN_SHOOT_DELAY -= ALIEN_SHOOT_UPGRADE_DELAY;
-        } else if (cenario.itsOnTheRightWall(alienMaxX.getPosX() + alienMaxX.getImageWidth())){
+        } else if (cenario.itsOnTheRightWall(alienMaxX.getPositionX() + alienMaxX.getWidthImage())){
             for (Alien alien : aliens){
                 alien.changeImage();
                 alien.moveDown();
@@ -499,11 +516,11 @@ public class GameManager implements Initializable {
         double posX = initialX, posY = initialY;
         int counter = 1;
         for (Alien alien : aliens){
-            alien.setPosX(posX);
-            alien.setPosY(posY);
-            posX += 10 + alien.getOffsetX() + alien.getImageWidth();
+            alien.setPositionX(posX);
+            alien.setPositionY(posY);
+            posX += 10 + alien.getOffsetX() + alien.getWidthImage();
             if (counter == cenario.getNumberAliensColumn()) {
-                posY += alien.getOffsetY() + alien.getImageHeight();
+                posY += alien.getOffsetY() + alien.getHeightImage();
                 posX = initialX;
                 counter = 0;
             }
@@ -512,7 +529,7 @@ public class GameManager implements Initializable {
     }
     
     /**
-     * dependendo da linha da 'matriz' de aliens os aliens terão imagens 
+     * dependendo da linha da 'matriz' de aliens, os aliens terão imagens 
      * diferentes, ou seja, serão aliens diferentes um do outro. essa função
      * é responsável por fazer essa varidade de aliens
      * @see <code>Alien</code>

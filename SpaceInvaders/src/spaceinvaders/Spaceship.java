@@ -16,10 +16,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 /**
- *
- * @author michel
+ * essa classe administra todas as funcionalidades da nave 
+ * do jogo, controlado pelo jogador
+ * @author michel (nusp: 12609690)
  */
-public class Spaceship {
+public class Spaceship extends Sprite {
     
     // CONFIGURAÇÕES DE TEMPO
     private long PREV_SHOOT = 0;
@@ -28,24 +29,14 @@ public class Spaceship {
     // CONFIGURAÇÕES GRÁFICAS
     private final int IMAGE_HEIGHT = 80;
     private final int IMAGE_WIDTH = 80;
-
-    private int CANVAS_WIDTH = 1600;
-    private int CANVAS_HEIGHT = 900;
-    
     private int OFFSET_SPAWN = 60;
     
     // CONFIGURAÇÕES LÓGICAS
-    private final double posY;
-    private double posX = 500.0;
-    private int life = 3;
-    private double velocity = 7.0;
-    private boolean dead;
     private boolean hit = false;
     private boolean visible = true;
     
     private Bullet bullet;
     
-    GraphicsContext gc;
     Cenario cenario;
     
     @FXML
@@ -56,50 +47,22 @@ public class Spaceship {
      * @param gc parte gráfica
      */
     Spaceship(GraphicsContext gc) {
-        this.gc = gc;
         cenario = new Cenario(gc);
-        image.isPreserveRatio();
         bullet = new Bullet(gc);
-        posY = CANVAS_HEIGHT - OFFSET_SPAWN - cenario.getSizeBottonMenu();
-        dead = false;
+        image.isPreserveRatio();
+        super.image = image;
+        super.WidthImage = 80;
+        super.HeightImage = 80;
+        super.positionX = 500;
+        super.positionY = cenario.getCanvasHeight() - OFFSET_SPAWN - cenario.getSizeBottonMenu();
+        super.velocityX = 7;
+        super.life = 3;
+        super.gc = gc;
     }
-    
-    /**
-     * retorna a posição x da nave
-     * @return <code>double</code> indica qual a posição x da nave
-     */
-    public double getPosX(){
-        return this.posX;
-    }
-    
-    /**
-     * retorna a posição y da nave
-     * @return <code>double</code> indica qual a posição y da nave
-     */
-    public double getPosY(){
-        return this.posY;
-    }
-    
-    /**
-     * retorna um retângulo que cerca a nave. esse retângulo repreenta qual é
-     * a área de colisão da nave
-     * @return <code>Rectangle</code> indica o retângulo de colisão da nave
-     */
-    public Rectangle getBounds() {
-        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT);
-    }
-    
-    /**
-     * retorna qual a vida restante da nave
-     * @return <code>int</code> indica quantas vidas restam para a nave
-     */
-    public int  getLife(){
-        return life;
-    }
-    
+     
     /**
      * muda a visibilidade da nave
-     * @param visible indica se a nave ser visível(<u>true</u>) ou invísivel (<u>false</u>)
+     * @param visible indica se a nave será visível(<u>true</u>) ou invísivel (<u>false</u>)
      */
     public void setVisible(boolean visible) {
        this.visible = visible;
@@ -114,7 +77,7 @@ public class Spaceship {
     }
     
     /**
-     * marca de a nave foi acertada por um tiro ou não
+     * marca se a nave foi acertada por um tiro ou não
      * @param hit indica se foi acertada 
      */
     public void setHit(boolean hit){
@@ -122,18 +85,11 @@ public class Spaceship {
     }
     
     /**
-     * verifica se recenetemente a nave foi acertada por um tiro
+     * verifica se, recentemente, a nave foi acertada por um tiro
      * @return <code>boolean</code> indica se a nave foi acertada por um tiro
      */
     public boolean getHit(){
         return this.hit;
-    }
-    
-    /**
-     * faz com que a nave sofra dano e, como consequência, sua vida seja diminuída
-     */
-    public void hit(){
-        life -= 1;
     }
     
     /**
@@ -146,13 +102,6 @@ public class Spaceship {
     }
     
     /**
-     * desenha na tela a nave
-     */
-    public void draw() {
-        gc.drawImage(image, posX, posY);
-    }
-    
-    /**
      * administra as ações da bala. se o usuário apertar 'x' a nave irá 
      * disparar um tiro; se o usuário apertar 'left' a nave se moverá para a esquerda
      * e se o usuário apertar 'right' a nave se moverá para direita
@@ -161,32 +110,18 @@ public class Spaceship {
      */
     public void handleAction(ArrayList<String> inputKeyboard, long TIME){
         if (inputKeyboard.contains("X") && bullet.isDestroyed() && TIME - PREV_SHOOT > SHOOT_DELAY) {
-            bullet.spawn(posX, posY);
+            bullet.spawn(positionX, positionY);
             PREV_SHOOT = TIME;
             // SOM
             Sound sound = new Sound();
             sound.selectSound(sound.getSound().SPACESHIP_SHOOT);
             sound.play();
         } 
-        if (inputKeyboard.contains("LEFT") && !cenario.itsOnTheLeftWall(posX)) {
+        if (inputKeyboard.contains("LEFT") && !cenario.itsOnTheLeftWall(positionX)) {
             moveLeft();
-        } else if (inputKeyboard.contains("RIGHT") && !cenario.itsOnTheRightWall(posX + IMAGE_WIDTH)) {
+        } else if (inputKeyboard.contains("RIGHT") && !cenario.itsOnTheRightWall(positionX + WidthImage)) {
             moveRight();
         }
-    }
-    
-    /**
-     * move nave para direita com base em sua velocidade x
-     */
-    public void moveRight() {
-        posX += velocity;
-    }
-
-    /**
-     * move nava para esquerda com base em sua velocidade y
-     */
-    public void moveLeft(){
-        posX -= velocity;
     }
     
 }

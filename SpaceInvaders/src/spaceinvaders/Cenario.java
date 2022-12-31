@@ -16,9 +16,9 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.FontWeight;
 
 /**
- * esta class é responsável por organizar e administrar toda parte lógica e 
+ * esta classe é responsável por organizar e administrar toda parte lógica e 
  * gráfica do cenaŕio do jogo. tanto o esquema de pontuação, como a vida do
- * player são organizados nessa classe.
+ * player são organizados aqui
  * @author michel (nusp: 12609690)
  */
 public class Cenario {
@@ -43,7 +43,7 @@ public class Cenario {
     private final double FONT_SIZE = 36;
     private final double WIDTH_LINE = 5;
     private final double SIZE_BOTTON_MENU = 4 * OFFSET_Y + FONT_SIZE + WIDTH_LINE;
-    private final double END_OF_LIFE_TEXT = 220; // chute
+    private final double END_OF_LIFE_TEXT = 235; // chute
     private final double OFFSET_HEART_IMAGE = 60;
     
     private String LIFE_TEXT = "LIFE: ";
@@ -60,7 +60,7 @@ public class Cenario {
     GraphicsContext gc;
             
     /**
-     * Construtor da classe Cenario
+     * construtor da classe Cenario
      * @param gc 
      */
     Cenario (GraphicsContext gc){
@@ -191,23 +191,30 @@ public class Cenario {
     }
     
     /**
-     * desenha o menu inferior no jog
+     * desenha o menu inferior no jogo
      */
     public void drawMenu(){
         // DESENHA LINHA
         gc.setStroke(Color.WHITE);
         gc.setLineWidth(WIDTH_LINE);
-        gc.strokeLine(OFFSET_X, HEIGHT_SCREEN - FONT_SIZE - (2 * OFFSET_Y), WIDTH_SCREEN - OFFSET_X, HEIGHT_SCREEN - FONT_SIZE -  2 * OFFSET_Y);
+        gc.strokeLine(OFFSET_X, 
+                HEIGHT_SCREEN - FONT_SIZE - (2 * OFFSET_Y), 
+                WIDTH_SCREEN - OFFSET_X, 
+                HEIGHT_SCREEN - FONT_SIZE -  2 * OFFSET_Y);
 
         // DESENHA INT SCORE
         gc.setFont(DOGICA_PIXEL_BOLD);
         gc.setFill(Color.WHITE) ;
-        gc.fillText(Integer.toString(TOTAL_SCORE), WIDTH_SCREEN - (2 * OFFSET_X), HEIGHT_SCREEN - OFFSET_Y);
+        gc.fillText(Integer.toString(TOTAL_SCORE), 
+                WIDTH_SCREEN - (2 * OFFSET_X), 
+                HEIGHT_SCREEN - OFFSET_Y);
         
         // DESENHA TEXTO SCORE
         gc.setFont(DOGICA_PIXEL_BOLD);
         gc.setFill(Color.WHITE) ;
-        gc.fillText(SCORE_TEXT, WIDTH_SCREEN - (5 * OFFSET_X), HEIGHT_SCREEN - OFFSET_Y);
+        gc.fillText(SCORE_TEXT, 
+                WIDTH_SCREEN - (5 * OFFSET_X), 
+                HEIGHT_SCREEN - OFFSET_Y);
         
         // DESENHA TEXTO VIDA
         gc.setFont(DOGICA_PIXEL_BOLD);
@@ -217,7 +224,9 @@ public class Cenario {
         // DESENHA CORAÇÕES
         int mulitply_space = 0;
         for (int i = 0; i < heart_images.size(); i++){
-            gc.drawImage(HEART_IMAGE, END_OF_LIFE_TEXT + mulitply_space * OFFSET_HEART_IMAGE, HEIGHT_SCREEN - SIZE_BOTTON_MENU / 2);
+            gc.drawImage(HEART_IMAGE, 
+                    END_OF_LIFE_TEXT + mulitply_space * OFFSET_HEART_IMAGE, 
+                    HEIGHT_SCREEN - SIZE_BOTTON_MENU / 2);
             mulitply_space++;
         }
     }
