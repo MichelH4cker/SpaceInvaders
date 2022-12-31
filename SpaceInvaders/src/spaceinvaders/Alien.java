@@ -34,7 +34,8 @@ public class Alien extends Sprite {
     private int IMAGE_WIDTH = 70;
     private int IMAGE_HEIGHT = 70;
     
-    private final Image alien0  = new Image("images/alien-0.png" , IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    private final Image alien0a = new Image("images/alien-0a.png" , IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+    private final Image alien0b = new Image("images/alien-0b.png" , IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     private final Image alien1a = new Image("images/alien-1a.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     private final Image alien1b = new Image("images/alien-1b.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
     private final Image alien2a = new Image("images/alien-2a.png", IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
@@ -156,8 +157,8 @@ public class Alien extends Sprite {
     public void setImage(aliens alien){
         switch (alien){
             case MIKE:
-                image_0 = alien0;
-                image_1 = alien0;
+                image_0 = alien0a;
+                image_1 = alien0b;
                 break;
             case GREEN:
                 image_0 = alien1a;
