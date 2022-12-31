@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bullet</title>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic|Source+Code+Pro:300,400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="../assets/css/bootstrap.css">
+<link rel="stylesheet" href="../assets/css/jquery.bonsai.css">
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="stylesheet" href="../assets/icon-font/icons.css">
+<script type="text/javascript" src="../assets/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="../assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="../assets/js/jquery.bonsai.js"></script>
+
+  </head>
+  <body>
+    <div>
+
+      <!-- Name Title -->
+
+      <h1>Bullet</h1>
+
+      <!-- Type and Stereotype -->
+
+      <section style="margin-top: .5em;">
+        <span class="alert alert-info">
+          <span class="node-icon staruml-icon icon-UMLClass"></span>
+          UMLClass
+        </span>
+        
+      </section>
+
+      <!-- Path -->
+
+      <section style="margin-top: 10px">
+        
+        
+        
+          
+          <span class="label label-info"><a href='cf9c8b720f3815adeccaf3ef6e48c6c4.html'><span class='node-icon staruml-icon icon-Project'></span>Untitled</a></span>
+        
+          <span>::</span>
+          <span class="label label-info"><a href='3e2708639046689f3d34ff45a6b80644.html'><span class='node-icon staruml-icon icon-UMLModel'></span>JavaReverse</a></span>
+        
+          <span>::</span>
+          <span class="label label-info"><a href='cde24e53364c5f433d70ee9951c562ee.html'><span class='node-icon staruml-icon icon-UMLPackage'></span>spaceinvaders</a></span>
+        
+          <span>::</span>
+          <span class="label label-info"><a href='b594e7b9d45848c61f18f5b591921c66.html'><span class='node-icon staruml-icon icon-UMLClass'></span>Bullet</a></span>
+        
+      </section>
+
+      <!-- Diagram -->
+
+      
+
+      <!-- Description -->
+
+      
+      <section>
+        <h3>Description</h3>
+        <div>
+          
+            <p>To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+Classe Bullet responsável por ser o projétil de todos os personagens do jogo
+esta função engloba a funcionalidade de colisão, muito importante para o
+desenvolvimento do jogo
+@author michel (nusp: 12609690)</p>
+          
+        </div>
+      </section>
+      
+
+      <!-- Specification -->
+
+      
+
+      <!-- Directed Relationship -->
+
+      
+
+      <!-- Undirected Relationship -->
+
+      
+
+      <!-- Classifier -->
+
+      
+        
+        
+<section class="element-list">
+    <h3>Generalized Elements</h3>
+    <ul class="nav nav-list">
+        
+        <li><a href='d27b5f05caff987fb39093de670310c2.html'><span class='node-icon staruml-icon icon-UMLClass'></span>Sprite</a></li>
+        
+    </ul>
+</section>
+
+
+
+        
+        
+
+
+        
+        
+
+
+        
+        
+
+
+        
+        
+
+      
+
+      <!-- Interface -->
+
+      
+
+      <!-- Component -->
+
+      
+
+      <!-- Node -->
+
+      
+
+      <!-- Actor -->
+
+      
+
+      <!-- Use Case -->
+
+      
+
+      <!-- Template Parameters -->
+
+      
+
+      <!-- Literals -->
+
+      
+
+      <!-- Attributes -->
+
+      
+      <section>
+        <h3>Attributes</h3>
+        <table class="table table-striped table-bordered">
+          <tr>
+            <th>Visibility</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+          
+          <tr>
+            <td>private</td>
+            <td><a href="e706981ce1f14eb7ed852666b9dba014.html">destroyed</a></td>
+            <td>boolean </td>
+            <td></td>
+          </tr>
+          
+          <tr>
+            <td>private</td>
+            <td><a href="4dc43e075c8bbfb61e099827d8915f52.html">IMAGE_HEIGHT</a></td>
+            <td>int </td>
+            <td></td>
+          </tr>
+          
+          <tr>
+            <td>private</td>
+            <td><a href="8b16ca29a449d08e2d22c6418f598721.html">IMAGE_WIDTH</a></td>
+            <td>int </td>
+            <td></td>
+          </tr>
+          
+          <tr>
+            <td>package</td>
+            <td><a href="048886d5407c285c8193be3813178529.html">image</a></td>
+            <td><a href='b932f8c9b9d2fd73ebb77959e69481df.html'><span class='node-icon staruml-icon icon-UMLClass'></span>Image</a> </td>
+            <td></td>
+          </tr>
+          
+        </table>
+      </section>
+      
+
+      <!-- Operations -->
+
+      
+      <section>
+        <h3>Operations</h3>
+        <table class="table table-striped table-bordered">
+          <tr>
+            <th>Visibility</th>
+            <th>Name</th>
+            <th>Description</th>
+          </tr>
+          
+          <tr>
+            <td>package</td>
+            <td><a href="b9f0388960beac85582197a3e7dba2de.html">Bullet(gc: GraphicsContext)</a></td>
+            <td><p>construtor da classe bala
+@param gc parte gráfica da classe</p></td>
+          </tr>
+          
+          <tr>
+            <td>public</td>
+            <td><a href="71e36ff12a692a6855b8b71eb651c1d3.html">setIsDestroyed(destroyed: boolean): void</a></td>
+            <td><p>muda o parâmetro que indica se bala está destruída
+@param destroyed indica se a bala está destruída</p></td>
+          </tr>
+          
+          <tr>
+            <td>public</td>
+            <td><a href="70085b07d3b3217cddba624ec0de124d.html">isDestroyed(): boolean</a></td>
+            <td><p>retorna se a bala está destruída
+@return &lt;code&gt;boolean&lt;/code&gt; indica se a bala está destruída</p></td>
+          </tr>
+          
+          <tr>
+            <td>public</td>
+            <td><a href="33015b125d84eaa960d3d23599145881.html">destroy(): void</a></td>
+            <td><p>responsável por administração a destruição lógica da bala</p></td>
+          </tr>
+          
+          <tr>
+            <td>public</td>
+            <td><a href="2173fa942847f81fdf3d8978f0759c43.html">spawn(initial_x: double, initial_y: double): void</a></td>
+            <td><p>dada um parâmetro de posição x e parâmetro de posição y,
+as posições iniciais da bala no jogo são dadas por ambos parâmetros
+@param initial<em>x posição x inicial da bala no mapa
+@param initial</em>y posição y inicial da bala no mapa</p></td>
+          </tr>
+          
+          <tr>
+            <td>public</td>
+            <td><a href="970fc49183a213e862b052aa7eddd238.html">getBounds(): Rectangle</a></td>
+            <td><p>retorna um retângulo que contorna a imagem da bala, responsável pela
+lógica de colisão. este método é diferente do método da classe pai,
+por isso foi optado deixar ele separado. para utilizar o método
+&lt;code&gt;getBounds&lt;/code&gt; da classe pai, teria que haver uma manipulação
+muito desnecessária nele. serndo assim, fica melhor repetir um método
+do que deixar o método pai &#39;feio&#39;
+@return &lt;code&gt;Rectangle&lt;/code&gt; responsável pela lógica de colisão</p></td>
+          </tr>
+          
+          <tr>
+            <td>public</td>
+            <td><a href="e6d4631986e674055070c5f336aae6fe.html">collided(target_rectangle: Rectangle): boolean</a></td>
+            <td><p>dado um retângulo qualquer, esta função verifica se a bala colidiu com o
+parâmetro passado. o retângulo passado como parâmetro pode ser tanto um
+Alien, uma Rock ou até mesmo a Spacechip
+@see &lt;code&gt;Alien&lt;/code&gt;
+@see &lt;code&gt;Rock&lt;/code&gt;
+@see &lt;code&gt;Spaceship&lt;/code&gt;
+@param target_rectangle retângulo a ser verificado se colidiu com bala
+@return &lt;code&gt;boolean&lt;/code&gt; indica se colidiu ou não</p></td>
+          </tr>
+          
+        </table>
+      </section>
+      
+
+      <!-- Receptions -->
+
+      
+
+      <!-- Extension Points -->
+
+      
+
+      <!-- Parameters -->
+
+      
+
+      <!-- Diagrams -->
+
+      
+      
+
+      <!-- Behavior -->
+
+      
+
+      <!-- Action -->
+
+      
+
+      <!-- Interaction -->
+
+      
+
+      <!-- CombinedFragment -->
+
+      
+
+      <!-- Activity -->
+
+      
+
+      <!-- State Machine -->
+
+      
+
+      <!-- State Machine -->
+
+      
+
+      <!-- State -->
+
+      
+
+      <!-- Vertex -->
+
+      
+
+      <!-- Transition -->
+
+      
+
+      <!-- Data Model (ERD) -->
+
+      
+
+      <!-- Columns (ERD) -->
+
+      
+
+      <!-- Related Entities (ERD) -->
+
+      
+
+      <!-- Data Flows (DFD) -->
+
+      
+
+      <!-- Flows (Flowchart) -->
+
+      
+
+      <!-- Properties -->
+
+      <section>
+        <h3>Properties</h3>
+        
+        <table class="table table-striped table-bordered">
+    <tr>
+        <th width="50%">Name</th>
+        <th width="50%">Value</th>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+        <td>name</td>
+        <td>Bullet</td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+        <td>stereotype</td>
+        <td><span class='label label-info'>null</span></td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+        <td>visibility</td>
+        <td>public</td>
+    </tr>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <tr>
+        <td>isAbstract</td>
+        <td><span class='label label-info'>false</span></td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+        <td>isFinalSpecialization</td>
+        <td><span class='label label-info'>false</span></td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+        <td>isLeaf</td>
+        <td><span class='label label-info'>false</span></td>
+    </tr>
+    
+    
+    
+    
+    
+    <tr>
+        <td>isActive</td>
+        <td><span class='label label-info'>false</span></td>
+    </tr>
+    
+    
+    
+</table>                
+
+      </section>
+
+      <!-- Tags -->
+
+      
+
+      <!-- Constraints, Dependencies, Dependants -->
+
+      
+        
+        
+
+
+        
+        
+
+
+        
+        
+
+      
+
+      <!-- Relationships -->
+
+      
+      
+<section class="element-list">
+    <h3>Relationships</h3>
+    <ul class="nav nav-list">
+        
+        <li><a href='aaf1d831b24a22b5afc942dfef2ce7b1.html'><span class='node-icon staruml-icon icon-UMLAssociation'></span>(Alien—Bullet)</a></li>
+        
+        <li><a href='579fdc02aebb34443facbc2a07952d44.html'><span class='node-icon staruml-icon icon-UMLGeneralization'></span>(Bullet→Sprite)</a></li>
+        
+        <li><a href='fa6480aa7aaad308c82062fb1ced6f52.html'><span class='node-icon staruml-icon icon-UMLAssociation'></span>(Bullet—Cenario)</a></li>
+        
+        <li><a href='05af6db74cb025eb44e0f45efaa8df15.html'><span class='node-icon staruml-icon icon-UMLAssociation'></span>(Spaceship—Bullet)</a></li>
+        
+    </ul>
+</section>
+
+
+
+      <!-- Owned Elements -->
+
+      
+      
+<section class="element-list">
+    <h3>Owned Elements</h3>
+    <ul class="nav nav-list">
+        
+        <li><a href='579fdc02aebb34443facbc2a07952d44.html'><span class='node-icon staruml-icon icon-UMLGeneralization'></span>(Bullet→Sprite)</a></li>
+        
+        <li><a href='fa6480aa7aaad308c82062fb1ced6f52.html'><span class='node-icon staruml-icon icon-UMLAssociation'></span>(Bullet—Cenario)</a></li>
+        
+    </ul>
+</section>
+
+
+
+    </div>
+  </body>
+</html>
