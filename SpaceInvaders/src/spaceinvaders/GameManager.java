@@ -288,6 +288,12 @@ public class GameManager implements Initializable {
             }
         }
         
+        // COLISÃO ENTRE PROJÉTEIS
+        if (bullet_spaceship.collided(alien_bullet.getBounds())){
+            bullet_spaceship.destroy();
+            alien_bullet.destroy();
+        }
+        
         // DESENHA
         
         // SPACESHIP BLINK IF WAS HIT

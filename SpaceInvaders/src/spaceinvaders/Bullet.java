@@ -90,7 +90,7 @@ public class Bullet extends Sprite {
      */
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(positionX + IMAGE_WIDTH / 2, positionY, 2, IMAGE_HEIGHT);
+        return new Rectangle(positionX + IMAGE_WIDTH / 2, positionY, 3, IMAGE_HEIGHT);
     }
     
     /**
