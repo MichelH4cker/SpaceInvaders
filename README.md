@@ -14,3 +14,18 @@ A pasta ```manuais``` contém dois manuais, sendo eles:
 
 ## UML
 O UML do projeto foi gerado utilizando o software <b>StarUML</b>, muito útil para geração e mantenção de tais diagramas. Todos arquivos de UML, tanto imagens ```JPEG```, como o arquivo ```mdj``` estão localizados na pasta ```uml```.
+
+## Telas
+Abaixo está representada as três telas principais do jogo, sendo elas a tela de menu, tela de <i>gameplay</i> e tela final.
+
+### Menu
+A tela de menu é bem simples, somente espera o jogador ficar pronto para começar a <i>gameplay</i>.
+<img title="Menu do jogo" alt="Menu" src="images/menu.jpeg">
+
+### Gameplay
+Essa tela é onde ocorre todo o desenvolvimento do <i>game</i>. Nela o jogador utilizará a nave para eliminar os alienígenas presentes, as rochas para se proteger dos tiros dos monstros e marcará seus pontos, acertando os <i>aliens</i> normais como o especial que surge as vezes.
+<img title="tela de Gameplay" alt="Gameplay" src="images/gameplay.jpeg">
+
+### Final
+A tela final, como a tela de menu, também é bem simples. Ela mostra se o jogador ganhou ou perdeu. Ademais, a pontuação do jogo também é mostrada.
+<img title="Tela final do jogo" alt="Tela final" src="images/gameover.jpeg">
