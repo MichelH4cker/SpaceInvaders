@@ -16,14 +16,9 @@ import javafx.scene.shape.Rectangle;
  * especiais são configurados nessa classe
  * @author michel (nusp: 12609690)
  */
-public class Alien {
+public class Alien extends Sprite {
     
     // CONFIGURAÇÕES LÓGICAS PARA O ALIEN
-    private int life;
-    private double posX;
-    private double posY;
-    private double velocityX = 20;
-    private double velocityY = 30;
     private boolean dead;
     private boolean isMovingToRight;
     private boolean frontLine;
@@ -31,8 +26,6 @@ public class Alien {
     Bullet bullet;
     
     // CONFIGURAÇÕES GRÁFICAS
-    GraphicsContext gc;
-    
     private boolean change_image = true;
     
     private double OFFSET_X = 23.0;
@@ -69,11 +62,15 @@ public class Alien {
      * @param gc parte gráfica do jogo
      */
     public Alien(GraphicsContext gc) {
-        this.frontLine = false;
-        this.gc = gc;
-        this.isMovingToRight = true;
-        this.life = 3;
         bullet = new Bullet(gc);
+        this.frontLine = false;
+        this.isMovingToRight = true;
+        super.gc = gc;
+        super.image = image;
+        super.WidthImage = IMAGE_WIDTH;
+        super.HeightImage = IMAGE_HEIGHT;
+        super.velocityX = 20;
+        super.velocityY = 30;
     }
     
     /**
@@ -82,41 +79,23 @@ public class Alien {
      * @param special segundo parâmetro para permitir um segundo construtor
      */
     public Alien(GraphicsContext gc, boolean special){
-        this.gc = gc;
         dead = true;
-        life = 1;
+        super.gc = gc;
+        super.positionX = -100; // só para setar uma posição inicial
+        super.positionY = -100; // e a memória não 'chutar' um valor
+        super.image = image;
+        super.WidthImage = IMAGE_WIDTH;
+        super.HeightImage = IMAGE_HEIGHT;
+        super.velocityX = 20;
+        super.velocityY = 30;
     }
     
     /**
-     * retorna qual o é o alien a ser desenhado. não tem a ver com o tipo do alien e sim com sua imagem
+     * retorna qual o é o alien a ser desenhado
      * @return <code>aliens</code> tipo do alien
      */
     public aliens getAlienType(){
         return alien;
-    }
-    
-    /**
-     * retorna um retângulo que contorna a imagem do alienm útil para detectar colisão
-     * @return <code>Rectangle</code> retângulo de colisão
-     */
-    public Rectangle getBounds() {
-        return new Rectangle(posX, posY, IMAGE_WIDTH, IMAGE_HEIGHT - 20);
-    }
-    
-    /**
-     * retorna velocidade no eixo x
-     * @return <code>double</code> velocidade x
-     */
-    public double getVelocityX(){
-        return this.velocityX;
-    }
-    
-    /**
-     * retorna velocidade no eixo y
-     * @return <code>double</code> velocidade y
-     */
-    public double getVelocityY(){
-        return this.velocityY;
     }
     
     /**
@@ -168,22 +147,6 @@ public class Alien {
     }
     
     /**
-     * retorna a largura da imagem do alien
-     * @return <code>int</code> largura da imagem do alien
-     */
-    public int getImageWidth(){
-        return this.IMAGE_WIDTH;
-    }
-    
-    /**
-     * retorna a alturada imagem do alien
-     * @return <code>int</code> altura da imagem do alien
-     */
-    public int getImageHeight(){
-        return this.IMAGE_HEIGHT;
-    }
-    
-    /**
      * de acordo com o tipo de alien passado como parâmetro, os atributos 
      * <code>image_0</code> e <code>image_1</code> são modificados
      * estes atributos são responsáveis por serem a parte gráfica de um alien, 
@@ -212,37 +175,6 @@ public class Alien {
         }
     }
     
-    /**
-     * retorna a posição x do alien
-     * @return <code>double</code> indica a posição x
-     */
-    public double getPosX(){
-        return this.posX;        
-    }
-    
-    /**
-     * retorna a posição y do alien
-     * @return <code>double</code> indica a posição y
-     */
-    public double getPosY(){
-        return this.posY;
-    }
-    
-    /**
-     * muda a posição x do alien
-     * @param posX nova a posição x
-     */
-    public void setPosX(double posX){
-        this.posX = posX;
-    }
-    
-    /**
-     * muda a posição y do alien
-     * @param posY nova a posição y
-     */
-    public void setPosY(double posY){
-        this.posY = posY;
-    }
 
     /**
      * retorna uma classe <code>Bullet</code> do alien 
@@ -257,8 +189,8 @@ public class Alien {
      * seta as configurações necessárias para o alien ser destruído do jogo
      */
     public void destroy(){
-        posX = 50;
-        posY = 0;
+        positionX = 50;
+        positionY = 0;
         dead = true;
     }
     
@@ -266,8 +198,8 @@ public class Alien {
      * coloca o alien no jogo
      */
     public void spawn(){
-        posX = 0;
-        posY = 0;
+        positionX = 0;
+        positionY = 0;
     }
     
     /**
@@ -287,7 +219,7 @@ public class Alien {
     }
     
     /**
-     * para dar noção de movimento para os aliens, está função é muito útil.
+     * para dar noção de movimento para os aliens, esta função é muito útil.
      * a cada passada, essa função é chamada para trocar as imagens dos aliens,
      * dando uma leve noção de movimento
      */
@@ -298,33 +230,7 @@ public class Alien {
             image = image_1;
         }
         change_image = !change_image;
+        super.image = image;
     }
     
-    /**
-     * desenha o alien no jogo
-     */
-    public void draw(){
-        gc.drawImage(image, posX, posY);
-    }
-    
-    /**
-     * movimenta o alien para direita com base em sua velocidade x
-     */
-    public void moveRight(){
-        posX += velocityX;
-    }
-
-    /**
-     * movimenta o alien para esquerda com base em sua velocidade x
-     */
-    public void moveLeft(){
-        posX -= velocityX;
-    }
-    
-    /**
-     * movimenta o alien para baixi com base em sua velocidade y
-     */
-    public void moveDown(){
-        posY += velocityY;
-    }
 }

@@ -50,7 +50,7 @@ public class Sound {
     private sounds sound;
     
     /**
-     * Construtor da classe sound
+     * construtor da classe sound
      */
     public Sound(){
         soundString[__SOUNDTRACK__] = "src/sounds/soundtrack-2.wav";
@@ -73,9 +73,9 @@ public class Sound {
     }
     
     /**
-     * cada som possui um inteiro para representar, ou seja, cada som possui
-     * um código de identificação. essa função é responsável por, dada um som
-     * retornar o código de identificação 
+     * cada som possui um inteiro para representá-lo, ou seja, cada som possui
+     * um código de identificação. essa função é responsável por, dada um som,
+     * retornar seu código de identificação 
      * @param sound indica qual som do enum <code>sounds</code>
      * @return <code>int</code> indica o código do som desejado
      */
